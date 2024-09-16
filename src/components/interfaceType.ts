@@ -12,3 +12,11 @@ export interface result {
     msg: string,
     data: any
 }
+
+// 后端返回分类信息接口
+export interface category {
+    id: number,
+    name: string,
+    description: string,
+    imageUrl: string
+}

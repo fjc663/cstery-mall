@@ -44,7 +44,9 @@ const login = async () => {
     const res: result = await userLoginAPI(loginRegisterForm.value);
     if (res.code === 1) {
         ElMessage.success("登录成功");
-        router.push('/');
+
+        const redirect: any = query.redirect || '/';
+        router.push(redirect);
 
         // 设置token和用户名
         const useUserInfo = useUserInfoStore()

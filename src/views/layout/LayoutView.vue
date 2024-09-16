@@ -7,17 +7,19 @@ import HeaderView from '@/views/layout/components/HeaderView.vue'
 <template>
   <div class="ecommerce-homepage">
     <el-container>
-      
-      <HeaderView/>
 
+      <!-- 顶部导航栏 -->
+      <el-header height="80px" class="nav-container">
+        <HeaderView />
+      </el-header>
 
       <el-main>
-        <RouterView/>
+        <RouterView />
       </el-main>
 
       <!-- 页脚 -->
       <el-footer class="footer">
-        <FooterView/>
+        <FooterView />
       </el-footer>
 
     </el-container>
@@ -25,13 +27,18 @@ import HeaderView from '@/views/layout/components/HeaderView.vue'
 </template>
 
 <style scoped>
+/* 导航容器整体样式 */
+.nav-container {
+  background-color: #1f2d3d;
+  padding: 0 20px;
+  color: #fff;
+}
 
-
-
-/* 页脚 */
+/* Footer整体布局和样式 */
 .footer {
-  background-color: #222;
-  color: white;
-  padding: 40px 0;
+  background-color: #1f2d3d;
+  color: #fff;
+  padding: 40px 20px;
+  height: auto;
 }
 </style>
