@@ -29,7 +29,7 @@ const goToCategory = (id: number, categoryName: string) => {
         <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="category in categories" :key="category.id"
             class="category-col">
             <el-card shadow="always" class="category-card">
-                <img :src="category.imageUrl" alt="category image" class="category-image" />
+                <img v-lazy="category.imageUrl" alt="category image" class="category-image" />
                 <div class="category-info">
                     <h3 class="category-title">{{ category.name }}</h3>
                     <p class="category-description">{{ category.description }}</p>

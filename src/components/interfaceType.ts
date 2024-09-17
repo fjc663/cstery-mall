@@ -20,3 +20,12 @@ export interface category {
     description: string,
     imageUrl: string
 }
+
+// 后端返回商品信息接口
+export interface product {
+    id: number,
+    name: string,
+    description: string,
+    imageUrl: string,
+    price: number
+}

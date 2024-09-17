@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onBeforeRouteUpdate } from "vue-router";
+import { onBeforeRouteUpdate, useRoute } from "vue-router";
 import { ref } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue';
 
@@ -7,6 +7,12 @@ import { ArrowRight } from '@element-plus/icons-vue';
 // 设置面包屑导航在路由跳转时更新
 const categoryNmame = ref();
 const isSub = ref<boolean>(false);
+const route = useRoute();
+if (route.query.name != null) {
+    isSub.value = true;
+    categoryNmame.value = route.query.name;
+}
+
 onBeforeRouteUpdate(to => {
     const query = to.query;
     

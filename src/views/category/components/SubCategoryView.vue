@@ -2,58 +2,47 @@
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router';
 import { getSubCategoryListAPI } from '@/apis/categoryApi';
-import type { category, result } from '@/components/interfaceType';
+import { getProductListByCategoryIdAPI } from '@/apis/productApis';
+import type { category, product, result } from '@/components/interfaceType';
 
 // 二级分类数据
-const subCategories = ref<category[]>([])
+const subCategories = ref<category[]>([]);
+
+// 当前选中的二级分类及其对应商品
+const activeSubCategory = ref<number>(0);
+const currentCategoryName = ref<string>('');
+const currentProducts = ref<product[]>([]);
+
+// 根据二级分类id获得商品数据
+const getProductListByCategoryId = async (categoryId: number) => {
+  const res: result = await getProductListByCategoryIdAPI(categoryId);
+
+  currentProducts.value = res.data;
+}
 
 // 根据一级分类id获得二级分类
 const getSubCategoryList = async () => {
   const route = useRoute();
-  const subCategoryId: string | string [] = route.params.subCategoryId;
-  
+  const subCategoryId: string | string[] = route.params.subCategoryId;
+
   const res: result = await getSubCategoryListAPI(subCategoryId);
 
   subCategories.value = res.data;
+
+  // 设置默认展示的二级分类和商品
+  activeSubCategory.value = subCategories.value[0].id;
+  currentCategoryName.value = subCategories.value[0].name;
+  getProductListByCategoryId(activeSubCategory.value)
+
 }
+onMounted(() => getSubCategoryList());
 
-onMounted(() => getSubCategoryList())
-
-
-// 当前选中的分类及其对应商品
-const activeSubCategory = ref('1')
-const currentCategory = ref({ name: '手机配件' })
-
-const products = {
-  1: [
-    { id: 101, name: '手机壳', description: '高质量手机壳，适用于多种型号，坚固耐用。', price: 59.99, image: 'https://via.placeholder.com/300x200?text=手机壳' },
-    { id: 102, name: '手机充电器', description: '快速充电，安全稳定。兼容多种品牌手机。', price: 89.99, image: 'https://via.placeholder.com/300x200?text=手机充电器' },
-    { id: 103, name: '手机充电器', description: '快速充电，安全稳定。兼容多种品牌手机。', price: 89.99, image: 'https://via.placeholder.com/300x200?text=手机充电器' },
-    { id: 104, name: '手机充电器', description: '快速充电，安全稳定。兼容多种品牌手机。', price: 89.99, image: 'https://via.placeholder.com/300x200?text=手机充电器' },
-    { id: 105, name: '手机充电器', description: '快速充电，安全稳定。兼容多种品牌手机。', price: 89.99, image: 'https://via.placeholder.com/300x200?text=手机充电器' },
-    { id: 106, name: '手机充电器', description: '快速充电，安全稳定。兼容多种品牌手机。', price: 89.99, image: 'https://via.placeholder.com/300x200?text=手机充电器' },
-  ],
-  2: [
-    { id: 201, name: '键盘', description: '人体工学设计，舒适打字体验。', price: 199.99, image: 'https://via.placeholder.com/300x200?text=键盘' },
-    { id: 202, name: '鼠标', description: '灵敏精准，轻松应对办公和游戏需求。', price: 129.99, image: 'https://via.placeholder.com/300x200?text=鼠标' },
-  ],
-  3: [
-    { id: 301, name: '冰箱滤水器', description: '过滤杂质，保持水质清新，适用于多品牌冰箱。', price: 49.99, image: 'https://via.placeholder.com/300x200?text=冰箱滤水器' },
-    { id: 302, name: '空调遥控器', description: '兼容多种空调品牌，轻松控制。', price: 39.99, image: 'https://via.placeholder.com/300x200?text=空调遥控器' },
-  ],
-  4: [
-    { id: 401, name: '智能手表表带', description: '多种颜色选择，舒适耐用，适配多品牌智能手表。', price: 69.99, image: 'https://via.placeholder.com/300x200?text=智能手表表带' },
-    { id: 402, name: 'VR眼镜配件', description: '增强虚拟现实体验，适配多种VR设备。', price: 299.99, image: 'https://via.placeholder.com/300x200?text=VR眼镜配件' },
-  ],
-}
-
-const currentProducts = ref(products[1])
 
 // 处理选择分类时更新显示的商品
-const handleCategorySelect = (subCategoryId: string) => {
-  activeSubCategory.value = subCategoryId
-  currentCategory.value = subCategories.value.find((cat) => cat.id.toString() === subCategoryId) || { name: '' }
-  currentProducts.value = products[subCategoryId]
+const handleCategorySelect = (subCategoryId: number) => {
+  activeSubCategory.value = subCategoryId;
+  currentCategoryName.value = subCategories.value.find((cat) => cat.id == subCategoryId)?.name || '';
+  getProductListByCategoryId(subCategoryId);
 }
 
 // 模拟查看商品详情
@@ -67,7 +56,7 @@ const viewProduct = (id: number) => {
     <el-row>
       <!-- 左侧二级分类导航 -->
       <el-col :span="5">
-        <el-menu class="category-menu" :default-active="activeSubCategory" @select="handleCategorySelect"
+        <el-menu class="category-menu" :default-active="activeSubCategory.toString()" @select="handleCategorySelect"
           background-color="#f5f5f5" text-color="#333" active-text-color="#f56c6c">
           <el-menu-item v-for="subCategory in subCategories" :key="subCategory.id" :index="subCategory.id.toString()">
             {{ subCategory.name }}
@@ -78,12 +67,12 @@ const viewProduct = (id: number) => {
       <!-- 右侧商品展示区 -->
       <el-col :span="19">
         <div class="products-section">
-          <h2 class="products-title">{{ currentCategory.name }} - 商品列表</h2>
+          <h2 class="products-title">{{ currentCategoryName }} - 商品列表</h2>
           <el-row :gutter="20" class="products-grid">
             <!-- 单个商品卡片 -->
             <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="product in currentProducts" :key="product.id">
               <el-card shadow="hover" class="product-card" @click="viewProduct(product.id)">
-                <img :src="product.image" alt="product image" class="product-image" />
+                <img v-lazy="product.imageUrl" alt="product image" class="product-image" />
                 <div class="product-info">
                   <h3 class="product-title">{{ product.name }}</h3>
                   <p class="product-description">
@@ -172,7 +161,7 @@ const viewProduct = (id: number) => {
 /* 商品图片 */
 .product-image {
   width: 100%;
-  height: 200px;
+  height: 230px;
   object-fit: cover;
 }
 
