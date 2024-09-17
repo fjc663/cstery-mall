@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { getSubCategoryListAPI } from '@/apis/categoryApi';
 import { getProductListByCategoryIdAPI } from '@/apis/productApis';
-import type { category, product, result } from '@/components/interfaceType';
+import type { category, iproduct, result } from '@/components/interfaceType';
 
 // 二级分类数据
 const subCategories = ref<category[]>([]);
@@ -11,7 +11,7 @@ const subCategories = ref<category[]>([]);
 // 当前选中的二级分类及其对应商品
 const activeSubCategory = ref<number>(0);
 const currentCategoryName = ref<string>('');
-const currentProducts = ref<product[]>([]);
+const currentProducts = ref<iproduct[]>([]);
 
 // 根据二级分类id获得商品数据
 const getProductListByCategoryId = async (categoryId: number) => {
@@ -45,9 +45,10 @@ const handleCategorySelect = (subCategoryId: number) => {
   getProductListByCategoryId(subCategoryId);
 }
 
-// 模拟查看商品详情
+const router = useRouter();
+// 查看商品详情
 const viewProduct = (id: number) => {
-  console.log('查看商品详情:', id)
+  router.push('/productDetail/' + id);
 }
 </script>
 
@@ -76,9 +77,21 @@ const viewProduct = (id: number) => {
                 <div class="product-info">
                   <h3 class="product-title">{{ product.name }}</h3>
                   <p class="product-description">
-                    {{ product.description.length > 20 ? product.description.slice(0, 20) + '...' : product.description
-                    }}
-                    <span v-if="product.description.length > 20" class="more-text">查看更多</span>
+                    <!-- Tooltip: 当描述长度超过 20 时使用 Tooltip 显示完整内容 -->
+                    <el-tooltip placement="bottom" effect="light"
+                      v-if="product.description.length > 20" popper-class="custom-tooltip">
+                      <template #content>
+                        <div style="min-width: 80px; max-width: 500px;text-align: center;">
+                          {{product.description}}
+                        </div>
+                      </template>
+                      {{ product.description.slice(0, 20) + '...' }}
+                    </el-tooltip>
+
+                    <!-- 否则显示完整描述 -->
+                    <span v-else>
+                      {{ product.description }}
+                    </span>
                   </p>
                   <p class="product-price">￥{{ product.price }}</p>
                 </div>
@@ -205,4 +218,5 @@ const viewProduct = (id: number) => {
   color: #f56c6c;
   font-weight: bold;
 }
+
 </style>

@@ -17,7 +17,7 @@ onMounted(() => getCategoryList())
 
 // 跳转到具体的分类页面
 const goToCategory = (id: number, categoryName: string) => {
-    router.push({path: "/subCategory/" + id, query: {name: categoryName}})
+    router.push({ path: "/subCategory/" + id, query: { name: categoryName } })
 }
 
 </script>
@@ -28,13 +28,27 @@ const goToCategory = (id: number, categoryName: string) => {
         <!-- 单个分类卡片 -->
         <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="category in categories" :key="category.id"
             class="category-col">
-            <el-card shadow="always" class="category-card">
+            <el-card shadow="always" class="category-card" @click="goToCategory(category.id, category.name)">
                 <img v-lazy="category.imageUrl" alt="category image" class="category-image" />
                 <div class="category-info">
                     <h3 class="category-title">{{ category.name }}</h3>
-                    <p class="category-description">{{ category.description }}</p>
-                    <el-button type="primary" @click="goToCategory(category.id, category.name)" size="small"
-                        class="category-btn">查看商品</el-button>
+                    <p class="category-description">
+                        <!-- Tooltip: 当描述长度超过 20 时使用 Tooltip 显示完整内容 -->
+                        <el-tooltip placement="bottom" effect="light" v-if="category.description.length > 22"
+                            popper-class="custom-tooltip">
+                            <template #content>
+                                <div style="min-width: 80px; max-width: 500px;text-align: center;">
+                                    {{ category.description }}
+                                </div>
+                            </template>
+                            {{ category.description.slice(0, 22) + '...' }}
+                        </el-tooltip>
+
+                        <!-- 否则显示完整描述 -->
+                        <span v-else>
+                            {{ category.description }}
+                        </span>
+                    </p>
                 </div>
             </el-card>
         </el-col>
@@ -61,6 +75,7 @@ const goToCategory = (id: number, categoryName: string) => {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: #fff;
+    cursor: pointer;
 }
 
 .category-card:hover {
@@ -91,9 +106,5 @@ const goToCategory = (id: number, categoryName: string) => {
     font-size: 14px;
     color: #777;
     margin-bottom: 20px;
-}
-
-.category-btn {
-    font-size: 14px;
 }
 </style>
