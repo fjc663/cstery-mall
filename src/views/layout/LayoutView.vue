@@ -9,7 +9,7 @@ import HeaderView from '@/views/layout/components/HeaderView.vue'
     <el-container>
 
       <!-- 顶部导航栏 -->
-      <el-header height="80px" class="nav-container">
+      <el-header class="nav-container">
         <HeaderView />
       </el-header>
 
@@ -32,6 +32,7 @@ import HeaderView from '@/views/layout/components/HeaderView.vue'
   background-color: #1f2d3d;
   padding: 0 20px;
   color: #fff;
+  height: 80px;
 }
 
 /* Footer整体布局和样式 */

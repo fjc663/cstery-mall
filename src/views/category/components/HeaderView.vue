@@ -4,36 +4,60 @@ import { ref } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue';
 
 
-// 设置面包屑导航在路由跳转时更新
-const categoryNmame = ref();
-const isSub = ref<boolean>(false);
 const route = useRoute();
+
+// 一级分类时刷新
+const categoryNmame = ref();
+const isCate = ref<boolean>(false);
 if (route.query.name != null) {
-    isSub.value = true;
+    isCate.value = true;
     categoryNmame.value = route.query.name;
 }
 
+// 二级分类时刷新
+const subCategoryNmame = ref();
+const redirect = ref();
+const isSub = ref<boolean>(false);
+if (route.query.subName != null) {
+    isSub.value = true;
+    subCategoryNmame.value = route.query.subName;
+    redirect.value = route.query.redirect;
+}
+
+// 设置面包屑导航在路由跳转时更新
 onBeforeRouteUpdate(to => {
     const query = to.query;
     
+    // 一级分类
     if (query.name != null) {
-        isSub.value = true;
+        isCate.value = true;
         categoryNmame.value = query.name;
     }else{
-        isSub.value = false;
+        isCate.value = false;
         categoryNmame.value = '';
     }
 
+    
+    // 二级分类
+    if (query.subName != null) {
+        isSub.value = true;
+        subCategoryNmame.value = query.subName;
+        redirect.value = query.redirect;
+    }else{
+        isSub.value = false;
+        subCategoryNmame.value = '';
+        redirect.value = '';
+    }
+
 });
-
-
 </script>
 
 <template>
     <!-- 面包屑导航 -->
     <el-breadcrumb :separator-icon="ArrowRight">
         <el-breadcrumb-item :to="{ path: '/category' }">商品分类</el-breadcrumb-item>
-        <el-breadcrumb-item v-if="isSub">{{ categoryNmame }}</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="isCate" :to="{path: redirect, query: {name: categoryNmame}}">{{ categoryNmame }}</el-breadcrumb-item>
+        <el-breadcrumb-item v-if="isSub">{{ subCategoryNmame }}</el-breadcrumb-item>
     </el-breadcrumb>
 
 </template>

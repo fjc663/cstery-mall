@@ -99,11 +99,16 @@ const goToProfile = () => {
 
 <style scoped>
 .nav-bar {
+    position: fixed; /* 固定顶栏在页面顶部 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* 确保顶栏在最前面 */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
-    margin-top: 10px;
+    background-color: #333; /* 适当设置背景颜色 */
+    padding: 10px 20px;
 }
 
 .logo {

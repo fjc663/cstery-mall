@@ -5,6 +5,13 @@ import { getSubCategoryListAPI } from '@/apis/categoryApi';
 import { getProductListByCategoryIdAPI } from '@/apis/productApis';
 import type { category, iproduct, result } from '@/components/interfaceType';
 
+
+const route = useRoute();
+
+// 获得当前一级分类名字
+const firstCategoryName = ref();
+firstCategoryName.value = route.query.name;
+
 // 二级分类数据
 const subCategories = ref<category[]>([]);
 
@@ -22,7 +29,6 @@ const getProductListByCategoryId = async (categoryId: number) => {
 
 // 根据一级分类id获得二级分类
 const getSubCategoryList = async () => {
-  const route = useRoute();
   const subCategoryId: string | string[] = route.params.subCategoryId;
 
   const res: result = await getSubCategoryListAPI(subCategoryId);
@@ -47,8 +53,8 @@ const handleCategorySelect = (subCategoryId: number) => {
 
 const router = useRouter();
 // 查看商品详情
-const viewProduct = (id: number) => {
-  router.push('/productDetail/' + id);
+const viewProduct = (id: Number, categoryName: string, subCategoryName: string) => {
+  router.push({path: '/productDetail/' + id, query: {name: categoryName, subName: subCategoryName, redirect: route.fullPath}});
 }
 </script>
 
@@ -72,7 +78,7 @@ const viewProduct = (id: number) => {
           <el-row :gutter="20" class="products-grid">
             <!-- 单个商品卡片 -->
             <el-col :xs="24" :sm="12" :md="8" :lg="6" v-for="product in currentProducts" :key="product.id">
-              <el-card shadow="hover" class="product-card" @click="viewProduct(product.id)">
+              <el-card shadow="hover" class="product-card" @click="viewProduct(product.id, firstCategoryName, currentCategoryName)">
                 <img v-lazy="product.imageUrl" alt="product image" class="product-image" />
                 <div class="product-info">
                   <h3 class="product-title">{{ product.name }}</h3>
