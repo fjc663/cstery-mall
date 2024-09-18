@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import { getProductDetailAPI } from '@/apis/productApis';
+import { getProductDetailAPI } from '@/apis/productApi';
+import { addPorductToCartAPI } from '@/apis/cartApi';
+import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import { useRoute } from 'vue-router';
-import type { iproduct, result, ispecifications } from '@/components/interfaceType';
+import type { iproduct, result, ispecifications, icartProduct } from '@/components/interfaceType';
+import { ElMessage } from 'element-plus';
 
 const route = useRoute();
 
@@ -21,8 +24,12 @@ const selectedSpecs = ref<{[key:string]:string}>({});
 
 // 根据id请求商品详细信息
 const getProductDetail = async () => {
-    const productId: number = Number(route.params.productId)
+    const productId: number = Number(route.params.productId);
     const res: result = await getProductDetailAPI(productId);
+    if (res.code === 0){
+        ElMessage.error(res.msg);
+        return;
+    }
 
     product.value = res.data;
 
@@ -30,19 +37,30 @@ const getProductDetail = async () => {
 
     specifications.value.forEach(specification => {
         selectedSpecs.value[specification.name] = specification.specificationOptions.split(',')[0];
-    })
+    });
 } 
 onMounted(() => getProductDetail());
 
-// 商品数量
-const quantity = ref(1)
+// 提交的购物车数据格式
+const cartProduct = ref<icartProduct>({
+    productId: Number(route.params.productId),  // 商品ID
+    quantity: 1,  // 商品数量
+    specifications: JSON.stringify(selectedSpecs.value)  // 商品规格
+})
 
 // 添加到购物车
-const addToCart = () => {
-    // 将用户选择的规格和数量显示出来
-    console.log('已选规格:', specifications.value)
-    console.log('数量:', quantity.value)
-    alert('商品已加入购物车，规格: ' + JSON.stringify(specifications.value) + '，数量: ' + quantity.value);
+const addToCart = async () => {
+    cartProduct.value.specifications = JSON.stringify(selectedSpecs.value);
+    const res:result = await addPorductToCartAPI(cartProduct.value);
+
+    if (res.code === 1) {
+        ElMessage.success("添加成功");
+
+        const cartItemsNumStore = useCartItemsNumStore();
+        cartItemsNumStore.getCartItemsNum();
+    }else {
+        ElMessage.error(res.msg);
+    }
 }
 </script>
 
@@ -77,7 +95,7 @@ const addToCart = () => {
                     <!-- 数量选择 -->
                     <div class="product-quantity">
                         <h3>数量</h3>
-                        <el-input-number v-model="quantity" :min="1" />
+                        <el-input-number v-model="cartProduct.quantity" :min="1" />
                     </div>
 
                     <!-- 购买按钮和收藏 -->

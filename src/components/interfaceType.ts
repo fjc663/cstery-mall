@@ -35,3 +35,21 @@ export interface ispecifications {
     name: string,
     specificationOptions: string
 }
+
+// 提交的购物车数据类型
+export interface icartProduct {
+    productId: number,
+    quantity: number,
+    specifications: string
+}
+
+// 后端返回的购物车数据类型
+export interface icart {
+    id: number,
+    productId: number,
+    productName: string,
+    productImageUrl: string,
+    productPrice: number,
+    quantity: number,
+    specifications: string
+}

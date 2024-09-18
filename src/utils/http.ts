@@ -27,7 +27,7 @@ httpInstance.interceptors.response.use(res => res.data, e => {
         const userInfoStore = useUserInfoStore();
         userInfoStore.removeTokenAndUsername();  // 清除token
 
-        router.push({path: 'login', query: {redirect: router.currentRoute.value.fullPath}})  // 登录完返回登录前页面
+        router.push({path: '/login', query: {redirect: router.currentRoute.value.fullPath}})  // 登录完返回登录前页面
     }
 
     return Promise.reject(e)

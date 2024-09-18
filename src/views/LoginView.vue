@@ -5,6 +5,7 @@ import { type form, type result } from '@/components/interfaceType'
 import { ElMessage } from 'element-plus';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfoStore';
+import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 
 // 判断当前是登录还是注册
 const isLogin = ref<boolean>(true);
@@ -34,6 +35,9 @@ const cleanForm = () => {
     };
 }
 
+// 购物车状态管理
+const cartItemsNumStore = useCartItemsNumStore();
+
 // 点击登录按钮触发
 const login = async () => {
     //删除用户名和密码左右两端的空格
@@ -51,6 +55,9 @@ const login = async () => {
         // 设置token和用户名
         const useUserInfo = useUserInfoStore()
         useUserInfo.setTokenAndUsername(res.data.token, loginRegisterForm.value.username, res.data.avatarUrl);
+
+        // 获得购物车中商品数量
+        cartItemsNumStore.getCartItemsNum();
 
         cleanForm();
     } else {

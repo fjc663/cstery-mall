@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue'
 import type { category, result } from '@/components/interfaceType';
 import { getCategoryListAPI } from '@/apis/categoryApi';
 import router from '@/router';
+import { ElMessage } from 'element-plus';
 
 // 商品无父级分类数据
 const categories = ref<category[]>([])
@@ -10,6 +11,10 @@ const categories = ref<category[]>([])
 // 获取无父级分类
 const getCategoryList = async () => {
     const res: result = await getCategoryListAPI();
+    if (res.code === 0){
+        ElMessage.error(res.msg);
+        return;
+    }
     categories.value = res.data;
 }
 

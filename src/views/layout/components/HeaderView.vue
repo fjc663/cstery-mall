@@ -1,8 +1,14 @@
 <script lang="ts" setup>
 import router from '@/router';
-import { ref } from 'vue';
 import { useUserInfoStore } from '@/stores/userInfoStore';
-import { Search } from '@element-plus/icons-vue'
+import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
+import { Search } from '@element-plus/icons-vue';
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+
+// 购物车商品数量
+const cartItemsNumStore = useCartItemsNumStore();
+const {cartItemsNum} = storeToRefs(cartItemsNumStore);
 
 // 判断是否显示登录注册按钮
 const useUserInfo = useUserInfoStore();
@@ -24,9 +30,9 @@ const onRegister = () => {
 // 点击退出登录按钮触发
 const onLogout = () => {
     useUserInfo.removeTokenAndUsername()
+    cartItemsNumStore.removeCartItemsNum();
     router.push({ path: '/login', query: { isLogin: 1 } });
 }
-
 
 const searchQuery = ref<string>('')
 
@@ -39,6 +45,10 @@ const goToProfile = () => {
     router.push('/userInfo')
 }
 
+// 跳转购物车页面
+const goToCart = () => {
+    router.push('/cart');
+}
 
 </script>
 
@@ -69,6 +79,20 @@ const goToProfile = () => {
                         <el-button :icon="Search" @click="search"></el-button>
                     </template>
                 </el-input>
+
+                <!-- 购物车图标 -->
+                <el-badge :value="cartItemsNum" class="cart-badge" type="danger" v-if="cartItemsNum > 0">
+                    <el-button icon="ShoppingCart" @click="goToCart" class="cart-icon-button">
+                        <el-icon>
+                            <ShoppingCart />
+                        </el-icon>
+                    </el-button>
+                </el-badge>
+                <el-button v-else icon="ShoppingCart" @click="goToCart" class="cart-icon-button">
+                    <el-icon>
+                        <ShoppingCart />
+                    </el-icon>
+                </el-button>
             </el-col>
 
             <!-- 右边 登录/用户信息 -->
@@ -99,15 +123,18 @@ const goToProfile = () => {
 
 <style scoped>
 .nav-bar {
-    position: fixed; /* 固定顶栏在页面顶部 */
+    position: fixed;
+    /* 固定顶栏在页面顶部 */
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 1000; /* 确保顶栏在最前面 */
+    z-index: 1000;
+    /* 确保顶栏在最前面 */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #333; /* 适当设置背景颜色 */
+    background-color: #333;
+    /* 适当设置背景颜色 */
     padding: 10px 20px;
 }
 
@@ -180,5 +207,39 @@ const goToProfile = () => {
 .el-dropdown-menu {
     background-color: #f5f7fa;
     color: #333;
+}
+
+/* 购物车样式 */
+.cart-badge {
+    margin-left: 10px;
+    position: relative;
+    font-size: 18px; /* 调整购物车图标的大小 */
+}
+
+.cart-icon-button {
+    background-color: #0e4677; /* 设置更突出的蓝色背景 */
+    color: white; /* 设置图标的颜色 */
+    border-radius: 100%; /* 让按钮变成圆形 */
+    width: 50px; /* 按钮宽度 */
+    height: 50px; /* 按钮高度 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px; /* 调整购物车图标的大小 */
+    transition: background-color 0.3s ease;
+}
+
+.cart-icon-button:hover {
+    background-color: #020e1b; /* 鼠标悬停时，背景颜色变深 */
+}
+
+.el-badge .el-badge__content {
+    font-size: 12px; /* 调整小红点上的数字字体大小 */
+    height: 16px; /* 小红点的高度 */
+    min-width: 16px; /* 小红点的最小宽度 */
+    background-color: #ee0707; /* 突出小红点颜色 */
+    border-radius: 100%; /* 小红点圆形 */
+    top: -8px; /* 调整小红点的位置 */
+    right: -8px; /* 调整小红点的位置 */
 }
 </style>

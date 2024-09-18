@@ -2,8 +2,9 @@
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
 import { getSubCategoryListAPI } from '@/apis/categoryApi';
-import { getProductListByCategoryIdAPI } from '@/apis/productApis';
+import { getProductListByCategoryIdAPI } from '@/apis/productApi';
 import type { category, iproduct, result } from '@/components/interfaceType';
+import { ElMessage } from 'element-plus';
 
 
 const route = useRoute();
@@ -23,6 +24,10 @@ const currentProducts = ref<iproduct[]>([]);
 // 根据二级分类id获得商品数据
 const getProductListByCategoryId = async (categoryId: number) => {
   const res: result = await getProductListByCategoryIdAPI(categoryId);
+  if (res.code === 0){
+        ElMessage.error(res.msg);
+        return;
+    }
 
   currentProducts.value = res.data;
 }
@@ -32,6 +37,10 @@ const getSubCategoryList = async () => {
   const subCategoryId: string | string[] = route.params.subCategoryId;
 
   const res: result = await getSubCategoryListAPI(subCategoryId);
+  if (res.code === 0){
+        ElMessage.error(res.msg);
+        return;
+    }
 
   subCategories.value = res.data;
 
