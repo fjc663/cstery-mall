@@ -38,14 +38,37 @@ const router = createRouter({
         {
           path: '/cart',
           name: 'cart',
-          component: () => import('@/views/cart/CartView.vue')
+          component: () => import('@/views/product/CartView.vue')
+        },
+        {
+          path: '/order',
+          name: 'order',
+          component: () => import('@/views/product/OrderView.vue')
+        },
+        {
+          path: '/pay',
+          name: 'pay',
+          component: () => import('@/views/product/PayView.vue')
+        },
+        {
+          path: '/personalCenter',
+          name: 'personalCenter',
+          component: () => import('@/views/user/PersonalCenter.vue'),
+          children: [
+            {
+              path: '/userInfo',
+              name: 'userInfo',
+              component: () => import('@/views/user/components/UserInfoView.vue')
+            },
+            {
+              path: '/addressManager',
+              name: 'addressManager',
+              component: () => import('@/views/user/components/AddressManager.vue')
+            },
+          ]
         }
+
       ]
-    },
-    {
-      path: '/userInfo',
-      name: 'userInfo',
-      component: () => import('@/views/UserInfoView.vue')
     },
     {
       path: '/login',
@@ -61,6 +84,20 @@ const router = createRouter({
       // 否则滚动到页面顶部
       return { top: 0 };
     }
+  }
+});
+
+// 全局路由守卫,控制支付界面的跳转
+router.beforeEach((to, from, next) => {
+  if (to.path === '/pay') {
+    // 检查是否是从 /order 页面跳转过来的
+    if (from.path === '/order') {
+      next(); // 允许跳转
+    } else {
+      next(false); // 阻止跳转
+    }
+  } else {
+    next(); // 对其他页面不做限制
   }
 });
 

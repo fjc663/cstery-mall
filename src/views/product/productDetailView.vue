@@ -4,7 +4,7 @@ import { getProductDetailAPI } from '@/apis/productApi';
 import { addPorductToCartAPI } from '@/apis/cartApi';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import { useRoute } from 'vue-router';
-import type { iproduct, result, ispecifications, icartProduct } from '@/components/interfaceType';
+import type { iproduct, result, ispecifications, icartProduct } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 
 const route = useRoute();

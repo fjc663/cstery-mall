@@ -219,7 +219,7 @@ const goToCart = () => {
 .cart-icon-button {
     background-color: #0e4677; /* 设置更突出的蓝色背景 */
     color: white; /* 设置图标的颜色 */
-    border-radius: 100%; /* 让按钮变成圆形 */
+    border-radius: 50%; /* 让按钮变成圆形 */
     width: 50px; /* 按钮宽度 */
     height: 50px; /* 按钮高度 */
     display: flex;
@@ -238,7 +238,7 @@ const goToCart = () => {
     height: 16px; /* 小红点的高度 */
     min-width: 16px; /* 小红点的最小宽度 */
     background-color: #ee0707; /* 突出小红点颜色 */
-    border-radius: 100%; /* 小红点圆形 */
+    border-radius: 50%; /* 小红点圆形 */
     top: -8px; /* 调整小红点的位置 */
     right: -8px; /* 调整小红点的位置 */
 }

@@ -53,3 +53,25 @@ export interface icart {
     quantity: number,
     specifications: string
 }
+
+// 后端返回的地址数据类型
+export interface iaddress {
+    id: number,
+    receiverName: string,
+    receiverPhone: string,
+    province: string,
+    city: string,
+    district: string,
+    detailedAddress: string,
+    isDefault: boolean
+}
+
+// 提交给后端的订单数据类型
+export interface iorder {
+    totalAmount: number,
+    paymentMethod: number,
+    addressId: number,
+    shippingCost?: number,
+    discountAmount?: number,
+    remark: string
+}

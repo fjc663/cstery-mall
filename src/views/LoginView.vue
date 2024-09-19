@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { userRegisterAPI, userLoginAPI } from '@/apis/userApi';
-import { type form, type result } from '@/components/interfaceType'
+import { type form, type result } from '@/composables/interfaceType'
 import { ElMessage } from 'element-plus';
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfoStore';

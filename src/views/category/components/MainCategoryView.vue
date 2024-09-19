@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import type { category, result } from '@/components/interfaceType';
+import type { category, result } from '@/composables/interfaceType';
 import { getCategoryListAPI } from '@/apis/categoryApi';
 import router from '@/router';
 import { ElMessage } from 'element-plus';

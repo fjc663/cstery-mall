@@ -1,5 +1,5 @@
 import http from '@/utils/http'
-import {type form} from '@/components/interfaceType'
+import {type form} from '@/composables/interfaceType'
 
 // 用户注册
 export function userRegisterAPI(data: form): any {

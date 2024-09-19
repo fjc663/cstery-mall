@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
 import { getSubCategoryListAPI } from '@/apis/categoryApi';
 import { getProductListByCategoryIdAPI } from '@/apis/productApi';
-import type { category, iproduct, result } from '@/components/interfaceType';
+import type { category, iproduct, result } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 
 

@@ -1,31 +1,14 @@
 <script lang="ts" setup>
-import { ref, computed, onMounted } from 'vue';
-import { deleteAllCartAPI, deleteCartAPI, getCartItemsAPI, updateCartItemQuantityAPI } from '@/apis/cartApi';
-import type { icart, result } from '@/components/interfaceType';
+import { ref } from 'vue';
+import { deleteAllCartAPI, deleteCartAPI, updateCartItemQuantityAPI } from '@/apis/cartApi';
+import type { icart, result } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
+import { useCart } from '@/composables/useCart';
+import router from '@/router';
 
-// 购物车数据
-const cartItems = ref<icart[]>([])
-
-// 请求当前用户购物车数据
-const getCartItems = async () => {
-    const res: result = await getCartItemsAPI();
-
-    if (res.code === 0) {
-        cartItems.value = [];
-        ElMessage.warning(res.msg);
-        return;
-    }
-
-    cartItems.value = res.data;
-}
-onMounted(() => getCartItems())
-
-// 计算总价
-const cartTotal = computed(() => {
-    return cartItems.value.reduce((total, item) => total + item.productPrice * item.quantity, 0);
-});
+// 购物车数据、计算总价、请求当前用户购物车数据函数
+const { cartItems, cartTotal, getCartItems } = useCart();
 
 // 更新商品数量
 const updateQuantity = async (item: icart) => {
@@ -62,6 +45,11 @@ const clearCart = async () => {
     }
     clearCartConfirmDialogVisible.value = false
 };
+
+// 创建订单
+const createOrder = () => {
+    router.push('/order')
+}
 </script>
 
 <template>
@@ -142,7 +130,7 @@ const clearCart = async () => {
             <!-- 总价部分 -->
             <div class="cart-summary">
                 <span class="cart-total">总计：￥{{ cartTotal.toFixed(2) }}</span>
-                <el-button type="primary" size="large" class="checkout-btn">去结算</el-button>
+                <el-button type="primary" size="large" class="checkout-btn" @click="createOrder">去结算</el-button>
                 <el-button type="danger" size="large" @click="clearCartConfirmDialogVisible = true" class="clear-cart-btn">清空购物车</el-button>
             </div>
         </el-main>
