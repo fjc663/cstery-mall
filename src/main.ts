@@ -10,6 +10,11 @@ import Lazyload from "vue3-lazyload";  //引入图片懒加载插件
 import App from './App.vue'
 import router from './router'
 
+// 初始化阿里图标样式
+import '@/assets/csteryMallIcon/iconfont.css'
+// 引入阿里巴巴图标库
+import '@/assets/csteryMallIcon/iconfont.js'
+
 const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)

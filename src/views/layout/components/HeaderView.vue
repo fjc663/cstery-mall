@@ -111,7 +111,7 @@ const goToCart = () => {
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <el-dropdown-item @click="goToProfile">个人中心</el-dropdown-item>
-                                <el-dropdown-item @click="onLogout">退出登录</el-dropdown-item>
+                                <el-dropdown-item @click="onLogout" divided>退出登录</el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>

@@ -54,7 +54,9 @@ const login = async () => {
 
         // 设置token和用户名
         const useUserInfo = useUserInfoStore()
-        useUserInfo.setTokenAndUsername(res.data.token, loginRegisterForm.value.username, res.data.avatarUrl);
+        useUserInfo.setToken(res.data.token);
+        useUserInfo.setUsername(loginRegisterForm.value.username);
+        useUserInfo.setAvatar(res.data.avatarUrl);
 
         // 获得购物车中商品数量
         cartItemsNumStore.getCartItemsNum();

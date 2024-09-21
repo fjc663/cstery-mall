@@ -54,7 +54,7 @@ const addToCart = async () => {
     const res:result = await addPorductToCartAPI(cartProduct.value);
 
     if (res.code === 1) {
-        ElMessage.success("添加成功");
+        ElMessage.success("加入购物车成功");
 
         const cartItemsNumStore = useCartItemsNumStore();
         cartItemsNumStore.getCartItemsNum();

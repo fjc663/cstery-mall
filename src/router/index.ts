@@ -94,7 +94,7 @@ router.beforeEach((to, from, next) => {
     if (from.path === '/order') {
       next(); // 允许跳转
     } else {
-      next(false); // 阻止跳转
+      next('/'); // 阻止跳转,直接返回首页
     }
   } else {
     next(); // 对其他页面不做限制

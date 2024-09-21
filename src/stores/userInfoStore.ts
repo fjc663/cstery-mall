@@ -6,9 +6,15 @@ export const useUserInfoStore = defineStore('userInfo', () => {
     const username = ref<string>('');
     const avatarUrl = ref<string>('');
 
-    function setTokenAndUsername(newToken: string, newUsername: string, newAvatarUrl: string) {
+    function setToken(newToken: string) {
         token.value = newToken;
+    }
+
+    function setUsername(newUsername: string) {
         username.value = newUsername;
+    }
+
+    function setAvatar(newAvatarUrl: string) {
         avatarUrl.value = newAvatarUrl;
     }
 
@@ -18,7 +24,7 @@ export const useUserInfoStore = defineStore('userInfo', () => {
         avatarUrl.value = '';
     }
 
-    return { token, username, avatarUrl, setTokenAndUsername, removeTokenAndUsername }
+    return { token, username, avatarUrl, setToken, setUsername, setAvatar, removeTokenAndUsername }
 
 },
     {

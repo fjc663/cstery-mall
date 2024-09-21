@@ -1,0 +1,58 @@
+{
+  "id": "4690318",
+  "name": "cstery-mall",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "700831",
+      "name": "地址",
+      "font_class": "dizhi",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
+      "icon_id": "1203869",
+      "name": "phone",
+      "font_class": "phone",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "3483790",
+      "name": "年龄",
+      "font_class": "nianling",
+      "unicode": "e673",
+      "unicode_decimal": 58995
+    },
+    {
+      "icon_id": "3742862",
+      "name": "邮箱",
+      "font_class": "youxiang",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "5054887",
+      "name": "生日提醒",
+      "font_class": "shengritixing",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "36140855",
+      "name": "上次登录时间",
+      "font_class": "shangcidenglushijian",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "15989508",
+      "name": "性别",
+      "font_class": "xingbie",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    }
+  ]
+}

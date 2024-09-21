@@ -56,7 +56,7 @@ export interface icart {
 
 // 后端返回的地址数据类型
 export interface iaddress {
-    id: number,
+    id?: number,
     receiverName: string,
     receiverPhone: string,
     province: string,
@@ -74,4 +74,17 @@ export interface iorder {
     shippingCost?: number,
     discountAmount?: number,
     remark: string
+}
+
+// 后端返回的用户信息类型
+export interface iuserInfo {
+    id: number,
+    username: string,
+    email: string,
+    phone: string,
+    avatarUrl: string,
+    gender: number,
+    birthdate: string,
+    address: string,
+    lastLogin: string,
 }

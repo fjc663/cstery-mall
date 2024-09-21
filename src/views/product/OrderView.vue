@@ -1,44 +1,38 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
-import { geTAddressAPI } from '@/apis/addressApi';
 import { submitOrderAPI } from '@/apis/orderApi';
-import  type { iorder,  iaddress, result } from '@/composables/interfaceType';
+import type { iorder, result } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 import { useCart } from '@/composables/useCart';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import router from '@/router';
+import { useAddress } from '@/composables/useAddress';
 
 // 购物车数量状态管理
 const cartItemsNumStore = useCartItemsNumStore();
 
 // 购物车无商品时跳回原页面
-if (cartItemsNumStore.cartItemsNum === 0){
+if (cartItemsNumStore.cartItemsNum === 0) {
     router.push('/');
 }
 
-// 地址数据
-const addresses = ref<iaddress[]>([]);
 // 用户选择的地址ID和支付方式
 const selectedAddressId = ref<number>(1);
 
+// 地址数据
+const { addresses, getAddress } = useAddress();
 // 请求地址数据
-const geTAddress = async() => {
-    const res: result = await geTAddressAPI();
-
-    if (res.code === 0){
-        ElMessage.error(res.msg);
-    }
-
-    addresses.value = res.data;
-
+onMounted(async () => {
+    await getAddress();
+ 
     addresses.value.forEach(a => {
         if (a.isDefault) {
-            selectedAddressId.value = a.id;
+            selectedAddressId.value = a.id || -1;
+            console.log(a.id);
             return;
         }
     })
-}
-onMounted(() => geTAddress())
+})
 
 // 添加新地址
 const addNewAddress = () => {
@@ -54,21 +48,24 @@ const discountAmount = ref(0); // 优惠金额
 
 // 订单数据
 const orderData = ref<iorder>({
-    totalAmount: computed(() => cartTotal.value + shippingCost.value - discountAmount.value).value, // 应付总金额
+    totalAmount: cartTotal.value, // 应付总金额
     paymentMethod: 1,  // 用户选择的地址ID和支付方式
     addressId: 0,
     remark: ''  // 订单备注
 });
 
+const totalAmount = computed(() => cartTotal.value + shippingCost.value - discountAmount.value);
+
 
 
 // 提交订单
-const submitOrder = async() => {
+const submitOrder = async () => {
     orderData.value.addressId = selectedAddressId.value;
+    orderData.value.totalAmount = totalAmount.value;
 
     const res: result = await submitOrderAPI(orderData.value);
 
-    if (res.code === 0){
+    if (res.code === 0) {
         ElMessage.error(res.msg);
     }
 
@@ -176,7 +173,7 @@ const submitOrder = async() => {
                 </div>
                 <div class="summary-item total-amount">
                     <strong>应付总额：</strong>
-                    <strong>￥{{ orderData.totalAmount.toFixed(2) }}</strong>
+                    <strong>￥{{ totalAmount.toFixed(2) }}</strong>
                 </div>
             </section>
 
