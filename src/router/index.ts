@@ -65,6 +65,28 @@ const router = createRouter({
               name: 'addressManager',
               component: () => import('@/views/user/components/AddressManager.vue')
             },
+            {
+              path: '/orderManager',
+              name: 'orderManager',
+              component: () => import('@/views/order/OrderManager.vue'),
+              children: [
+                {
+                  path: '',
+                  name: 'orderHistory',
+                  component: () => import('@/views/order/components/OrderHistoryView.vue')
+                },
+                {
+                  path: '/orderDetail/:orderId',
+                  name: 'orderDetail',
+                  component: () => import('@/views/order/components/OrderDetail.vue')
+                }
+              ]
+            },
+            {
+              path: '/editPassword',
+              name: 'editPassword',
+              component: () => import('@/views/user/components/EditPassword.vue')
+            },
           ]
         }
 

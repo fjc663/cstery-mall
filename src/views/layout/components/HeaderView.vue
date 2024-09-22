@@ -41,7 +41,6 @@ const search = () => {
 }
 
 const goToProfile = () => {
-    console.log('进入个人中心')
     router.push('/userInfo')
 }
 

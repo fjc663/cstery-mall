@@ -1,10 +1,5 @@
 <script lang="ts" setup>
 import router from '@/router';
-import { User, Location } from '@element-plus/icons-vue'; // 使用 Element Plus 图标
-
-
-
-
 
 </script>
 
@@ -14,23 +9,35 @@ import { User, Location } from '@element-plus/icons-vue'; // 使用 Element Plus
         <el-aside width="240px" class="sidebar">
             <el-menu :default-active="router.currentRoute.value.path" class="menu" router>
                 <el-menu-item index="/userInfo">
-                    <el-icon>
-                        <User />
-                    </el-icon>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-yonghu"></use>
+                    </svg>
                     <span>个人信息</span>
                 </el-menu-item>
                 <el-menu-item index="/addressManager">
-                    <el-icon>
-                        <Location />
-                    </el-icon>
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-dizhi"></use>
+                    </svg>
                     <span>地址管理</span>
+                </el-menu-item>
+                <el-menu-item index="/orderManager">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-dingdan"></use>
+                    </svg>
+                    <span>订单管理</span>
+                </el-menu-item>
+                <el-menu-item index="/editPassword">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-xiugaimima"></use>
+                    </svg>
+                    <span>修改密码</span>
                 </el-menu-item>
             </el-menu>
         </el-aside>
 
         <!-- 右侧：个人信息和功能操作 -->
         <el-main class="main-content">
-            <RouterView/>
+            <RouterView />
         </el-main>
     </el-container>
 </template>

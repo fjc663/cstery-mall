@@ -88,3 +88,33 @@ export interface iuserInfo {
     address: string,
     lastLogin: string,
 }
+
+// 后端返回的订单商品数据类型
+export interface iorderItemVO {
+    productName: string,
+    quantity: number,
+    productPrice: number,
+    productImageUrl: string,
+    specifications: string
+}
+
+// 后端返回的订单数据类型
+export interface iorderVO {
+    id: number,
+    orderNumber: string,
+    totalAmount: number,
+    status: number,
+    paymentStatus: number,
+    paymentMethod: number,
+    shippingAddress: string,
+    shippingCost: number,
+    itemCount: number,
+    discountAmount: number,
+    createdAt: string,
+    paidAt: string,
+    shippingAt: string,
+    completedAt: string,
+    cancelAt: string,
+    remark: string,
+    orderItemVOList: iorderItemVO[]
+}

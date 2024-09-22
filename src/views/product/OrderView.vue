@@ -30,7 +30,6 @@ const getAndSetDefault = async () => {
     addresses.value.forEach(a => {
         if (a.isDefault) {
             selectedAddressId.value = a.id || -1;
-            console.log(a.id);
             return;
         }
     })
@@ -147,7 +146,7 @@ const submitOrder = async () => {
             <section class="address-section">
                 <h2 class="section-title">收货地址</h2>
                 <el-radio-group v-model="selectedAddressId" class="address-list">
-                    <el-radio v-for="address in addresses" :label="address.id" :key="address.id" class="address-item">
+                    <el-radio v-for="address in addresses" :value="address.id" :key="address.id" class="address-item">
                         <div class="address-content">
                             <p><strong>{{ address.receiverName }}</strong> {{ address.receiverPhone }}</p>
                             <p>{{ address.province }} {{ address.city }} {{ address.district }} {{
@@ -241,9 +240,9 @@ const submitOrder = async () => {
             <section class="payment-section">
                 <h2 class="section-title">选择支付方式</h2>
                 <el-radio-group v-model="orderData.paymentMethod">
-                    <el-radio :label="1">支付宝</el-radio>
-                    <el-radio :label="2">微信支付</el-radio>
-                    <el-radio :label="3">信用卡支付</el-radio>
+                    <el-radio :value="1">支付宝</el-radio>
+                    <el-radio :value="2">微信支付</el-radio>
+                    <el-radio :value="3">信用卡支付</el-radio>
                 </el-radio-group>
             </section>
 
