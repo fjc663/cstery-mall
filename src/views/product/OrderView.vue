@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
 import { submitOrderAPI } from '@/apis/orderApi';
-import type { iorder, result } from '@/composables/interfaceType';
+import type { iorder, result, iaddress } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 import { useCart } from '@/composables/useCart';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import router from '@/router';
 import { useAddress } from '@/composables/useAddress';
+import { type FormRules, type FormInstance } from 'element-plus'
+import { pcaTextArr } from 'element-china-area-data'
 
 // 购物车数量状态管理
 const cartItemsNumStore = useCartItemsNumStore();
@@ -20,11 +22,11 @@ if (cartItemsNumStore.cartItemsNum === 0) {
 const selectedAddressId = ref<number>(1);
 
 // 地址数据
-const { addresses, getAddress } = useAddress();
+const { addresses, getAddress, addNewAddress } = useAddress();
 // 请求地址数据
-onMounted(async () => {
+const getAndSetDefault = async () => {
     await getAddress();
- 
+
     addresses.value.forEach(a => {
         if (a.isDefault) {
             selectedAddressId.value = a.id || -1;
@@ -32,11 +34,69 @@ onMounted(async () => {
             return;
         }
     })
-})
+}
+onMounted(() => getAndSetDefault())
 
-// 添加新地址
-const addNewAddress = () => {
-    console.log('跳转到添加新地址页面');
+// 用户修改的地址数据暂存处
+const selectedOptions = ref<string[]>([]);
+
+// 地址表单校验规则
+const rules = ref<FormRules<iaddress>>({
+    receiverName: [
+        { required: true, message: '请输入用户名', trigger: 'blur' },
+        { max: 50, message: '收货人名字字符长度最大为50', trigger: 'blur' },
+    ],
+    receiverPhone: [
+        { required: true, message: '请输入手机号码', trigger: 'blur' },
+        { min: 11, max: 11, message: "请输入11位手机号码", trigger: "blur" },
+        { pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/, message: "请输入正确的手机号码" }
+    ],
+    detailedAddress: [
+        { required: true, message: '请输入详细地址', trigger: 'blur' },
+    ]
+});
+
+// 预校验表单数据
+const currentAddressRef = ref<FormInstance>();
+
+// 弹窗控制
+const addressDialogVisible = ref(false);
+const currentAddress = ref<iaddress>({
+    receiverName: '',
+    receiverPhone: '',
+    province: '',
+    city: '',
+    district: '',
+    detailedAddress: '',
+    isDefault: false
+});
+
+// 打开添加新地址弹窗
+const onAddNewAddress = () => {
+    currentAddress.value = {
+        receiverName: '',
+        receiverPhone: '',
+        province: '',
+        city: '',
+        district: '',
+        detailedAddress: '',
+        isDefault: false
+    };
+    selectedOptions.value = [];
+    addressDialogVisible.value = true;
+};
+
+// 提交地址（添加或编辑）
+const submitAddress = (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+    formEl.validate(async (valid) => {
+        if (valid) {
+            [currentAddress.value.province, currentAddress.value.city, currentAddress.value.district] = selectedOptions.value;
+            await addNewAddress(currentAddress.value); // 调用添加新地址 API
+            getAndSetDefault(); // 更新地址显示
+            addressDialogVisible.value = false; // 关闭弹窗
+        }
+    })
 };
 
 // 订单商品和商品总价
@@ -54,9 +114,8 @@ const orderData = ref<iorder>({
     remark: ''  // 订单备注
 });
 
+// 计算总金额
 const totalAmount = computed(() => cartTotal.value + shippingCost.value - discountAmount.value);
-
-
 
 // 提交订单
 const submitOrder = async () => {
@@ -97,7 +156,8 @@ const submitOrder = async () => {
                         </div>
                     </el-radio>
                 </el-radio-group>
-                <el-button type="primary" @click="addNewAddress" style="margin-left: 10px;">添加新地址</el-button>
+                <el-button type="primary" @click="onAddNewAddress" style="margin-left: 10px;" size="small"
+                    plain>添加新地址</el-button>
             </section>
 
             <!-- 订单商品信息 -->
@@ -194,6 +254,33 @@ const submitOrder = async () => {
         </el-main>
 
     </el-container>
+
+    <!-- 地址表单弹窗 -->
+    <el-dialog v-model="addressDialogVisible" title="地址信息" width="500px">
+        <el-form :model="currentAddress" label-width="100px" :rules="rules" ref="currentAddressRef">
+            <el-form-item label="收货人" prop="receiverName">
+                <el-input v-model="currentAddress.receiverName" placeholder="请输入收货人姓名"></el-input>
+            </el-form-item>
+            <el-form-item label="联系电话" prop="receiverPhone">
+                <el-input v-model="currentAddress.receiverPhone" placeholder="请输入联系电话"></el-input>
+            </el-form-item>
+            <el-form-item label="省/市/区">
+                <el-cascader :options="pcaTextArr" v-model="selectedOptions">
+                </el-cascader>
+            </el-form-item>
+            <el-form-item label="详细地址" prop="detailedAddress">
+                <el-input v-model="currentAddress.detailedAddress" placeholder="请输入详细地址"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-checkbox v-model="currentAddress.isDefault">设为默认地址</el-checkbox>
+            </el-form-item>
+        </el-form>
+
+        <div class="dialog-footer">
+            <el-button @click="addressDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="submitAddress(currentAddressRef)">{{ '添加地址' }}</el-button>
+        </div>
+    </el-dialog>
 </template>
 
 <style scoped>
