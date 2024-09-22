@@ -1,5 +1,5 @@
 import http from '@/utils/http'
-import type {form, iuserInfo} from '@/composables/interfaceType'
+import type { form, ieditPasswordDTO, iuserInfo } from '@/composables/interfaceType'
 
 // 用户注册
 export function userRegisterAPI(data: form): any {
@@ -30,6 +30,15 @@ export function getUserInfoAPI(): any {
 export function updateUserInfoAPI(data: iuserInfo): any {
     return http({
         url: 'user/user',
+        method: 'Put',
+        data: data
+    })
+}
+
+// 修改密码
+export function editPasswordAPI(data: ieditPasswordDTO): any {
+    return http({
+        url: '/user/user/editPassword',
         method: 'Put',
         data: data
     })

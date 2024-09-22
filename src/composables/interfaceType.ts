@@ -118,3 +118,10 @@ export interface iorderVO {
     remark: string,
     orderItemVOList: iorderItemVO[]
 }
+
+// 修改密码传输的数据类型
+export interface ieditPasswordDTO {
+    oldPassword: string,
+    newPassword: string,
+    confirmPassword: string
+}

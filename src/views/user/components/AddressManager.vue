@@ -30,7 +30,7 @@ const rules = ref<FormRules<iaddress>>({
   ]
 });
 
-// 预校验表单数据
+// 表单实例的引用
 const currentAddressRef = ref<FormInstance>();
 
 // 弹窗控制
@@ -75,7 +75,7 @@ const editAddress = (address: iaddress) => {
 // 提交地址（添加或编辑）
 const submitAddress = (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-   formEl.validate(async (valid) => {
+   formEl.validate(async (valid: boolean) => {
     if (valid) {
       [currentAddress.value.province, currentAddress.value.city, currentAddress.value.district] = selectedOptions.value;
       if (isEditing.value) {
