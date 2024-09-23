@@ -1,9 +1,14 @@
 <script lang="ts" setup>
 import { useOrder } from '@/composables/useOrder';
+import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
+
+// 购物车数量显示状态管理
+const cartItemsNumStore = useCartItemsNumStore();
 
 // 使用组合函数获取订单数据
-const { orders } = useOrder();
+const { orders, getOrdersByStatus, cancelOrder, buyagain, countdowns, formatTime } = useOrder();
 
 // 路由对象，用于跳转订单详情页
 const router = useRouter();
@@ -12,43 +17,67 @@ const router = useRouter();
 const viewOrderDetail = (orderId: number) => {
   router.push(`/orderDetail/${orderId}`);
 };
+
+// 取消订单
+const onCancelOrder = async (orderId: number) => {
+  const code = await cancelOrder(orderId);
+  if (code === 1) {
+    ElMessage.success("取消成功");
+  }
+  router.push('/orderManager');
+  getOrdersByStatus(-1);
+}
+
+// 再来一单
+const onBuyAgain = async (orderId: number) => {
+    await buyagain(orderId);
+    cartItemsNumStore.getCartItemsNum();
+    router.push("/cart");
+}
+
 </script>
 
 <template>
-    <!-- 订单列表：使用 grid 布局，确保每张卡片大小一致 -->
-    <div class="order-grid">
-      <el-card class="order-card" v-for="order in orders" :key="order.id" @click="viewOrderDetail(order.id)"
-        shadow="hover">
-        <div class="order-header">
-          <h3 class="order-number">订单编号: {{ order.orderNumber }}</h3>
-          <el-tag v-if="order.status === 1" type="warning">待支付</el-tag>
-          <el-tag v-if="order.status === 2" type="success">已支付</el-tag>
-          <el-tag v-if="order.status === 3" type="info">已发货</el-tag>
-          <el-tag v-if="order.status === 4" type="primary">已完成</el-tag>
-          <el-tag v-if="order.status === 5" type="danger">已取消</el-tag>
-        </div>
-        <div class="order-info">
-          <p><strong>总金额:</strong> ￥{{ order.totalAmount.toFixed(2) }}</p>
-          <p><strong>商品数量:</strong> {{ order.itemCount }} 件</p>
-          <p><strong>下单时间:</strong> {{ order.createdAt }}</p>
-        </div>
+  <!-- 订单列表：使用 grid 布局，确保每张卡片大小一致 -->
+  <div class="order-grid">
+    <el-card class="order-card" v-for="order in orders" :key="order.id" @click="viewOrderDetail(order.id)" shadow="hover">
+      <div class="order-header">
+        <h3 class="order-number">订单编号: {{ order.orderNumber }}</h3>
+        <el-tag v-if="order.status === 1" type="warning">待支付</el-tag>
+        <el-tag v-if="order.status === 2" type="success">已支付</el-tag>
+        <el-tag v-if="order.status === 3" type="info">已发货</el-tag>
+        <el-tag v-if="order.status === 4" type="primary">已完成</el-tag>
+        <el-tag v-if="order.status === 5" type="danger">已取消</el-tag>
+      </div>
 
-        <!-- 商品列表 -->
-        <div class="order-items">
-          <el-row :gutter="10">
-            <el-col :span="8" v-for="item in order.orderItemVOList" :key="item.productName">
-              <el-image :src="item.productImageUrl" class="product-image" fit="cover" />
-            </el-col>
-          </el-row>
-        </div>
+      <div class="order-info">
+        <p><strong>总金额:</strong> ￥{{ order.totalAmount.toFixed(2) }}</p>
+        <p><strong>商品数量:</strong> {{ order.itemCount }} 件</p>
+        <p><strong>下单时间:</strong> {{ order.createdAt }}</p>
 
-        <!-- 订单操作按钮 -->
-        <div class="order-actions">
-          <el-button v-if="order.status === 1" type="primary" size="small">支付订单</el-button>
-          <el-button v-if="order.status === 1" type="danger" size="small">取消订单</el-button>
+        <!-- 倒计时显示 -->
+        <div v-if="order.status === 1">
+          <p><strong>剩余支付时间:</strong> <el-tag type="danger">{{ formatTime(countdowns[order.id]) }}</el-tag></p>
         </div>
-      </el-card>
-    </div>
+      </div>
+
+      <!-- 商品列表 -->
+      <div class="order-items">
+        <el-row :gutter="10">
+          <el-col :span="8" v-for="item in order.orderItemVOList" :key="item.productName">
+            <el-image :src="item.productImageUrl" class="product-image" fit="cover" />
+          </el-col>
+        </el-row>
+      </div>
+
+      <!-- 订单操作按钮 -->
+      <div class="order-actions">
+        <el-button v-if="order.status === 4" type="primary" size="small" @click="onBuyAgain(order.id)">再次购买</el-button>
+        <el-button v-if="order.status === 1" type="primary" size="small">支付订单</el-button>
+        <el-button v-if="order.status === 1" type="danger" size="small" @click="onCancelOrder(order.id)">取消订单</el-button>
+      </div>
+    </el-card>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -66,7 +95,6 @@ const viewOrderDetail = (orderId: number) => {
 .order-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  /* 固定每行 3 列 */
   grid-gap: 20px;
 }
 
@@ -79,12 +107,10 @@ const viewOrderDetail = (orderId: number) => {
   justify-content: space-between;
   transition: transform 0.3s ease;
   overflow-y: auto;
-  /* 商品多时滚动查看 */
 }
 
 .order-card:hover {
   transform: translateY(-5px);
-  /* 悬停时轻微上移效果 */
 }
 
 .order-header {
@@ -107,7 +133,6 @@ const viewOrderDetail = (orderId: number) => {
 .order-items {
   margin-bottom: 10px;
   flex-grow: 1;
-  /* 让商品展示区填满剩余空间 */
 }
 
 .product-image {

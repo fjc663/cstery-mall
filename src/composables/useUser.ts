@@ -12,8 +12,20 @@ const logout = () => {
     router.push({ path: '/login', query: { isLogin: 1 } });
 }
 
+// 点击登录按钮触发
+const login = () => {
+    router.push({ path: '/login', query: { isLogin: 1 } });
+}
+
+// 点击注册按钮触发
+const register = () => {
+    router.push({ path: '/login', query: { isLogin: 0 } });
+}
+
 export function useUser() {
     return {
+        login,
+        register,
         logout
     }
 }

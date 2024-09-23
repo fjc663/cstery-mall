@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { deleteAllCartAPI, deleteCartAPI, updateCartItemQuantityAPI } from '@/apis/cartApi';
 import type { icart, result } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
@@ -8,7 +8,18 @@ import { useCart } from '@/composables/useCart';
 import router from '@/router';
 
 // 购物车数据、计算总价、请求当前用户购物车数据函数
-const { cartItems, cartTotal, getCartItems } = useCart();
+const { cartItems, getCartItems } = useCart();
+
+// 初始化购物车数据
+onMounted(() => getCartItems());
+
+// 选中的商品列表
+const selectedItems = ref<icart[]>([]);
+
+// 计算购物车总价
+const cartSelectTotal = computed(() => {
+    return selectedItems.value.reduce((total, item) => total + item.productPrice * item.quantity, 0);
+});
 
 // 更新商品数量
 const updateQuantity = async (item: icart) => {
@@ -43,16 +54,29 @@ const clearCart = async () => {
         const cartItemsNumStore = useCartItemsNumStore();
         cartItemsNumStore.getCartItemsNum();
     }
-    clearCartConfirmDialogVisible.value = false
+    clearCartConfirmDialogVisible.value = false;
 };
 
 // 创建订单
 const createOrder = () => {
-    router.push('/order')
-}
+    if (selectedItems.value.length === 0) {
+        ElMessage.warning('请至少选择一件商品进行结算');
+        return;
+    }
+
+    // 获取选中的商品ID列表
+    const selectedItemIds = selectedItems.value.map(item => item.id);
+
+    // 通过路由传递选中的商品ID
+    router.push({
+        path: '/order',
+        query: { selectedItems: JSON.stringify(selectedItemIds) },
+    });
+};
 </script>
 
 <template>
+    <!-- 清空购物车确认弹窗 -->
     <el-dialog v-model="clearCartConfirmDialogVisible" title="温馨提示" width="500">
         <span>您确定要清空购物车吗？</span>
         <template #footer>
@@ -65,17 +89,17 @@ const createOrder = () => {
         </template>
     </el-dialog>
 
-
+    <!-- 购物车页面 -->
     <el-container class="cart-page">
         <el-header>
-            <!-- 标题 -->
             <h1 class="cart-title">购物车</h1>
-            <!-- 购物车商品表格 -->
         </el-header>
 
-
         <el-main>
-            <el-table :data="cartItems" stripe border>
+            <el-table :data="cartItems" stripe border @selection-change="selectedItems = $event">
+                <!-- 左侧选择框 -->
+                <el-table-column type="selection" width="50" align="center" />
+
                 <!-- 商品图片 -->
                 <el-table-column label="商品图片" width="120">
                     <template #default="scope">
@@ -127,11 +151,13 @@ const createOrder = () => {
                     </template>
                 </el-table-column>
             </el-table>
-            <!-- 总价部分 -->
+
+            <!-- 总价和操作部分 -->
             <div class="cart-summary">
-                <span class="cart-total">总计：￥{{ cartTotal.toFixed(2) }}</span>
+                <span class="cart-total">总计：￥{{ cartSelectTotal.toFixed(2) }}</span>
                 <el-button type="primary" size="large" class="checkout-btn" @click="createOrder">去结算</el-button>
-                <el-button type="danger" size="large" @click="clearCartConfirmDialogVisible = true" class="clear-cart-btn">清空购物车</el-button>
+                <el-button type="danger" size="large" @click="clearCartConfirmDialogVisible = true"
+                    class="clear-cart-btn">清空购物车</el-button>
             </div>
         </el-main>
     </el-container>

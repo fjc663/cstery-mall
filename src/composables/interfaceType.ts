@@ -73,7 +73,8 @@ export interface iorder {
     addressId: number,
     shippingCost?: number,
     discountAmount?: number,
-    remark: string
+    remark: string,
+    selectedCardId: number[]
 }
 
 // 后端返回的用户信息类型
@@ -114,7 +115,7 @@ export interface iorderVO {
     paidAt: string,
     shippingAt: string,
     completedAt: string,
-    cancelAt: string,
+    canceledAt: string,
     remark: string,
     orderItemVOList: iorderItemVO[]
 }

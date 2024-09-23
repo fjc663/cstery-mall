@@ -18,18 +18,8 @@ if (useUserInfo.token.length != 0) {
     isLogin.value = true;
 }
 
-// 点击登录按钮触发
-const onLogin = () => {
-    router.push({ path: '/login', query: { isLogin: 1 } });
-}
-
-// 点击注册按钮触发
-const onRegister = () => {
-    router.push({ path: '/login', query: { isLogin: 0 } });
-}
-
-// 点击退出登录按钮触发
-const { logout } = useUser();
+// 登录、注册、退出登录
+const { login, register, logout } = useUser();
 
 const searchQuery = ref<string>('')
 
@@ -94,8 +84,8 @@ const goToCart = () => {
             <!-- 右边 登录/用户信息 -->
             <el-col :span="4" class="nav-right">
                 <div v-if="!isLogin" class="auth-buttons">
-                    <el-button type="primary" @click="onLogin" link>登录</el-button>
-                    <el-button type="success" @click="onRegister" link>注册</el-button>
+                    <el-button type="primary" @click="login" link>登录</el-button>
+                    <el-button type="success" @click="register" link>注册</el-button>
                 </div>
 
                 <div v-else class="user-info">

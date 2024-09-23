@@ -7,16 +7,19 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 // 使用组合函数获取订单数据
-const { getOrdersByStatus } = useOrder();
+const { getOrdersByStatus, initCountdowns } = useOrder();
 
 // 当前选中的订单状态
 const selectedStatus = ref<number>(-1);
 
 // 获取订单数据
-onMounted(() => {
+onMounted(async () => {
     router.push('/orderManager');
-    getOrdersByStatus(selectedStatus.value);
+    await getOrdersByStatus(-1);
+    // 初始化倒计时
+    initCountdowns();
 });
+
 
 // 筛选订单
 const handleStatusChange = () => {

@@ -26,3 +26,19 @@ export function getOrderDetailAPI(orderId: number): any {
         }
     })
 }
+
+// 根据订单id取消订单
+export function cancelOrderAPI(orderId: number): any {
+    return http({
+        url: `user/order/cancel/${orderId}`,
+        method: 'Put'
+    })
+}
+
+// 根据订单id再次购买
+export function buyAgainAPI(orderId: number): any {
+    return http({
+        url: `user/order/buyagain/${orderId}`,
+        method: 'Post',
+    })
+}

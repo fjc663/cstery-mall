@@ -1,4 +1,4 @@
-import { getOrderDetailAPI, getOrdersByStatusAPI } from "@/apis/orderApi";
+import { buyAgainAPI, cancelOrderAPI, getOrderDetailAPI, getOrdersByStatusAPI } from "@/apis/orderApi";
 import { ref } from "vue";
 import type { iorderVO, result } from "./interfaceType";
 import { ElMessage } from "element-plus";
@@ -22,7 +22,7 @@ const orderDetail = ref<iorderVO>({
     paidAt: '',
     shippingAt: '',
     completedAt: '',
-    cancelAt: '',
+    canceledAt: '',
     remark: '',
     orderItemVOList: []
 });
@@ -51,11 +51,73 @@ const getOrderDetail = async (orderId: number) => {
     orderDetail.value = res.data;
 } 
 
+// 取消待支付订单
+const cancelOrder = async (orderId: number): Promise<number> => {
+    const res: result = await cancelOrderAPI(orderId);
+
+    if (res.code === 0) {
+        ElMessage.error(res.msg);
+    }
+
+    return res.code;
+}
+
+// 再次购买
+const buyagain = async (orderId: number) => {
+    const res:result = await buyAgainAPI(orderId);
+
+    if (res.code === 0) {
+        ElMessage.error(res.msg);
+        return;
+    }
+}
+
+// 设置倒计时并自动取消订单
+const countdowns = ref<{ [key: number]: number }>({}); // 保存每个订单的剩余时间
+
+const calculateRemainingTime = (createdAt: string) => {
+  const orderCreatedTime = new Date(createdAt).getTime();
+  const currentTime = new Date().getTime();
+  const timeDifference = Math.max(900000 - (currentTime - orderCreatedTime), 0); // 15分钟 (900秒)
+  return timeDifference;
+};
+
+// 初始化倒计时
+const initCountdowns = () => {
+  orders.value.forEach(order => {
+    
+    if (order.status === 1) { // 仅针对待支付订单
+      countdowns.value[order.id] = calculateRemainingTime(order.createdAt);
+      // 每秒更新倒计时
+      const timer = setInterval(() => {
+        if (countdowns.value[order.id] > 0) {
+          countdowns.value[order.id] -= 1000;
+        } else {
+          clearInterval(timer); // 清除计时器
+        //   cancelOrder(order.id); // 倒计时为0，自动取消订单 === 后端实现定时取消
+        }
+      }, 1000);
+    }
+  });
+};
+
+// 格式化倒计时
+const formatTime = (ms: number) => {
+  const minutes = Math.floor(ms / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+
 export function useOrder() {
     return {
         orders,
         orderDetail,
         getOrdersByStatus,
-        getOrderDetail
+        getOrderDetail,
+        cancelOrder,
+        buyagain,
+        initCountdowns,
+        countdowns,
+        formatTime
     }
 }

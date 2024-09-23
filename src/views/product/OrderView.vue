@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
 import { submitOrderAPI } from '@/apis/orderApi';
-import type { iorder, result, iaddress } from '@/composables/interfaceType';
+import type { iorder, result, iaddress, icart } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 import { useCart } from '@/composables/useCart';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
@@ -9,6 +9,7 @@ import router from '@/router';
 import { useAddress } from '@/composables/useAddress';
 import { type FormRules, type FormInstance } from 'element-plus'
 import { pcaTextArr } from 'element-china-area-data'
+import { useRoute } from 'vue-router';
 
 // 购物车数量状态管理
 const cartItemsNumStore = useCartItemsNumStore();
@@ -98,28 +99,57 @@ const submitAddress = (formEl: FormInstance | undefined) => {
     })
 };
 
+// 路由对象
+const route = useRoute();
+
+//选中商品的 ID 列表
+const selectedItemIds = ref<number[]>([]);
+
+// 选中的购物车数据
+const selectedCartItems = ref<icart[]>([]);
+
 // 订单商品和商品总价
-const { cartItems, cartTotal } = useCart();
+const { cartItems, getCartItems } = useCart();
+
+// 初始化购物车数据
+onMounted(async () => {
+    await getCartItems();
+
+    const querySelectedItems = route.query.selectedItems;
+    if (querySelectedItems) {
+        selectedItemIds.value = JSON.parse(querySelectedItems as string);
+        console.log('选中的商品 ID:', selectedItemIds.value);
+    }
+
+    // 从 cartItems 中筛选出 selectedItemIds 中的商品
+    selectedCartItems.value = cartItems.value.filter(item => selectedItemIds.value.includes(item.id));
+
+    
+});
 
 // 订单金额  ---TODO:暂未被使用
 const shippingCost = ref(0); // 运费
 const discountAmount = ref(0); // 优惠金额
 
-// 订单数据
-const orderData = ref<iorder>({
-    totalAmount: cartTotal.value, // 应付总金额
-    paymentMethod: 1,  // 用户选择的地址ID和支付方式
-    addressId: 0,
-    remark: ''  // 订单备注
+// 计算总金额
+const totalAmount = computed(() => {
+    return selectedCartItems.value.reduce((total, item) => total + item.productPrice * item.quantity, 0);
 });
 
-// 计算总金额
-const totalAmount = computed(() => cartTotal.value + shippingCost.value - discountAmount.value);
+// 订单数据
+const orderData = ref<iorder>({
+    totalAmount: totalAmount.value, // 应付总金额
+    paymentMethod: 1,  // 用户选择的地址ID和支付方式
+    addressId: 0,
+    remark: '',  // 订单备注
+    selectedCardId: []
+});
 
 // 提交订单
 const submitOrder = async () => {
     orderData.value.addressId = selectedAddressId.value;
     orderData.value.totalAmount = totalAmount.value;
+    orderData.value.selectedCardId = selectedItemIds.value;
 
     const res: result = await submitOrderAPI(orderData.value);
 
@@ -127,7 +157,7 @@ const submitOrder = async () => {
         ElMessage.error(res.msg);
     }
 
-    cartItemsNumStore.removeCartItemsNum();
+    cartItemsNumStore.getCartItemsNum();
     router.push("/pay");
 };
 </script>
@@ -151,7 +181,7 @@ const submitOrder = async () => {
                             <p><strong>{{ address.receiverName }}</strong> {{ address.receiverPhone }}</p>
                             <p>{{ address.province }} {{ address.city }} {{ address.district }} {{
                                 address.detailedAddress
-                                }}</p>
+                            }}</p>
                         </div>
                     </el-radio>
                 </el-radio-group>
@@ -162,7 +192,7 @@ const submitOrder = async () => {
             <!-- 订单商品信息 -->
             <section class="order-items-section">
                 <h2 class="section-title">订单商品</h2>
-                <el-table :data="cartItems" border stripe>
+                <el-table :data="selectedCartItems" border stripe>
                     <!-- 商品图片 -->
                     <el-table-column label="商品图片" width="120">
                         <template #default="scope">
@@ -220,7 +250,7 @@ const submitOrder = async () => {
                 <h2 class="section-title">订单金额明细</h2>
                 <div class="summary-item">
                     <span>商品总金额：</span>
-                    <span>￥{{ cartTotal.toFixed(2) }}</span>
+                    <span>￥{{ totalAmount.toFixed(2) }}</span>
                 </div>
                 <div class="summary-item">
                     <span>运费：</span>
