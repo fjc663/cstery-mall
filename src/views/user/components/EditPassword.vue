@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { ieditPasswordDTO, result } from '@/composables/interfaceType';
+import type { ieditPasswordDTO } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 import { type FormRules, type FormInstance } from 'element-plus'
-import { editPasswordAPI } from '@/apis/userApi';
 import { useUser } from '@/composables/useUser';
 
 // 表单实例的引用
@@ -40,8 +39,8 @@ const rules = ref<FormRules<ieditPasswordDTO>>({
     ]
 });
 
-// 退出登录函数
-const { logout } = useUser();
+// 修改密码函数
+const { editPassword } = useUser();
 
 // 提交表单
 const submitForm = (formEl: any) => {
@@ -49,22 +48,7 @@ const submitForm = (formEl: any) => {
 
     formEl.validate(async (valid: boolean) => {
         if (valid) {
-            const res: result = await editPasswordAPI(form.value);
-
-            if (res.code === 1) {
-                ElMessage.success('密码修改成功');
-
-                form.value = {
-                    oldPassword: '',
-                    newPassword: '',
-                    confirmPassword: ''
-                };
-
-                logout();
-                ElMessage.success('请用新密码登录');
-            } else {
-                ElMessage.error(res.msg);
-            }
+            editPassword(form.value);
         } else {
             ElMessage.error('请输入正确格式');
             return false;

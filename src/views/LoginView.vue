@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { userRegisterAPI, userLoginAPI } from '@/apis/userApi';
-import { type form, type result } from '@/composables/interfaceType'
+import type{ form } from '@/composables/interfaceType'
 import { ElMessage } from 'element-plus';
 import router from '@/router';
-import { useUserInfoStore } from '@/stores/userInfoStore';
-import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
+import { useUser } from '@/composables/useUser';
 
 // 判断当前是登录还是注册
 const isLogin = ref<boolean>(true);
@@ -35,37 +33,19 @@ const cleanForm = () => {
     };
 }
 
-// 购物车状态管理
-const cartItemsNumStore = useCartItemsNumStore();
+const { userLogin, userRegister } = useUser();
 
 // 点击登录按钮触发
 const login = async () => {
-    //删除用户名和密码左右两端的空格
-    loginRegisterForm.value.username = loginRegisterForm.value.username.replace(/(^\s*)|(\s*$)/g, "");
-    loginRegisterForm.value.password = loginRegisterForm.value.password.replace(/(^\s*)|(\s*$)/g, "");
-
     // 发送登录请求
-    const res: result = await userLoginAPI(loginRegisterForm.value);
-    if (res.code === 1) {
-        ElMessage.success("登录成功");
+    const code: number = await userLogin(loginRegisterForm.value);
 
+    if (code === 1) {
         const redirect: any = query.redirect || '/';
         router.push(redirect);
 
-        // 设置token和用户名
-        const useUserInfo = useUserInfoStore()
-        useUserInfo.setToken(res.data.token);
-        useUserInfo.setUsername(loginRegisterForm.value.username);
-        useUserInfo.setAvatar(res.data.avatarUrl);
-
-        // 获得购物车中商品数量
-        cartItemsNumStore.getCartItemsNum();
-
         cleanForm();
-    } else {
-        ElMessage.error(res.msg);
     }
-
 };
 
 // 点击注册按钮触发
@@ -100,13 +80,10 @@ const register = async () => {
     }
 
     // 发送注册请求和处理响应结果
-    const res: result = await userRegisterAPI(loginRegisterForm.value);
-    if (res.code === 1) {
-        ElMessage.success("注册成功，请用该账号登录");
+    const code: number = await userRegister(loginRegisterForm.value);
+    if (code === 1) {
         cleanForm();
         isLogin.value = true;
-    } else {
-        ElMessage.success(res.msg);
     }
 };
 

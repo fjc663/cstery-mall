@@ -1,50 +1,36 @@
 <script lang="ts" setup>
 import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue'
-import { getUserInfoAPI, updateUserInfoAPI } from '@/apis/userApi';
-import type { ComponentSize, FormRules, UploadProps } from 'element-plus'
+import type { ComponentSize, FormRules, FormInstance, UploadProps } from 'element-plus'
 import type { iuserInfo, result } from '@/composables/interfaceType';
 import { pcaTextArr } from 'element-china-area-data'
-import { uploadAvatarAPI } from '@/apis/uploadApli';
 import { useUserInfoStore } from '@/stores/userInfoStore';
+import { useUser } from '@/composables/useUser';
+import { useUpload } from '@/composables/useUpload';
 
 // 用户信息展示页面设置
 const size = ref<ComponentSize>('default')
 
 // 用户数据
-const user = ref<iuserInfo>({
-    id: -1,
-    username: '',
-    email: '',
-    phone: '',
-    avatarUrl: '',
-    gender: -1,
-    birthdate: '',
-    address: '',
-    lastLogin: '',
-});
+const { user, getUserInfo, updateUserInfo } = useUser();
 
 // 用户修改的地址数据暂存处
 const selectedOptions = ref<string[]>([]);
 const detailAddress = ref<string>('');
 
 // 请求用户数据
-const getUserInfo = async () => {
-    const res: result = await getUserInfoAPI();
-
-    if (res.code === 0) {
-        ElMessage.error(res.msg);
-        return;
-    }
-    user.value = res.data;
+onMounted(async () => {
+    await getUserInfo();
 
     selectedOptions.value = user.value.address.split(' ').slice(0, 3);
     detailAddress.value = user.value.address.split(' ')[3];
-}
-onMounted(() => getUserInfo())
+})
 
 // 控制修改个人信息抽屉弹出
 const editUserInfoDrawer = ref<boolean>(false)
+
+// 表单实例的引用
+const userRef = ref<FormInstance>();
 
 // 校验要修改的用户数据
 const rules = ref<FormRules<iuserInfo>>({
@@ -74,18 +60,19 @@ const cancelEdit = () => {
 }
 
 // 修改个人信息
-const editPersonalInfo = async () => {
-    user.value.address = selectedOptions.value.join(' ') + ' ' + detailAddress.value;
+const editPersonalInfo = (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
 
-    const res: result = await updateUserInfoAPI(user.value);
+    formEl.validate(async (valid: boolean) => {
+        if (valid) {
+            user.value.address = selectedOptions.value.join(' ') + ' ' + detailAddress.value;
 
-    if (res.code === 0) {
-        ElMessage.error(res.msg);
-    } else {
-        ElMessage.success("修改成功");
-    }
-    getUserInfo();
-    editUserInfoDrawer.value = false;
+            // 请求更新信息
+            updateUserInfo();
+
+            editUserInfoDrawer.value = false;
+        }
+    })
 };
 
 // 根据出生日期计算年龄
@@ -95,23 +82,20 @@ const calculateAge = (birthday: string) => {
     return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
 
+const { uploadAvatar } = useUpload();
 
 // 上传头像
-const uploadAvatar = async (avatar: any) => {
+const onUploadAvatar = async (avatar: any) => {
     const formData = new FormData();
     formData.append('avatarFile', avatar.file);
 
-    const res: result = await uploadAvatarAPI(formData);
+    const res: result = await uploadAvatar(formData);
 
     if (res.code === 1) {
-        ElMessage.success("修改成功");
         user.value.avatarUrl = res.data;
 
         const userInfoStore = useUserInfoStore();
         userInfoStore.setAvatar(res.data);
-
-    } else {
-        ElMessage.error(res.msg);
     }
 }
 
@@ -131,7 +115,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
     <!-- 用户信息卡片 -->
     <el-card class="info-card" shadow="hover">
         <div class="card-header">
-            <el-upload class="avatar-uploader" :http-request="uploadAvatar" :show-file-list="false"
+            <el-upload class="avatar-uploader" :http-request="onUploadAvatar" :show-file-list="false"
                 :before-upload="beforeAvatarUpload">
                 <img v-if="user.avatarUrl" v-lazy="user.avatarUrl" fit="cover" class="avatar" />
                 <el-icon v-else class="avatar-uploader-icon">
@@ -228,7 +212,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
     <!-- 修改用户信息的抽屉 -->
     <el-drawer v-model="editUserInfoDrawer" title="修改基本信息" :before-close="cancelEdit">
-        <el-form :model="user" label-width="auto" style="max-width: 600px" :rules="rules" :ref="user">
+        <el-form :model="user" label-width="auto" style="max-width: 600px" :rules="rules" ref="userRef">
             <el-form-item label="用户名" prop="username">
                 <el-input v-model="user.username" />
             </el-form-item>
@@ -258,7 +242,7 @@ const beforeAvatarUpload: UploadProps['beforeUpload'] = (rawFile) => {
             </el-form-item>
             <div class="edit-button">
                 <el-button @click="cancelEdit">取消</el-button>
-                <el-button type="primary" @click="editPersonalInfo">确定</el-button>
+                <el-button type="primary" @click="editPersonalInfo(userRef)">确定</el-button>
             </div>
         </el-form>
     </el-drawer>

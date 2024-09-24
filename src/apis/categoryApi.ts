@@ -8,8 +8,8 @@ export function getCategoryListAPI(): any {
 }
 
 // 根据父级分类id获得分类
-export function getSubCategoryListAPI(id: string | string[]): any {
+export function getSubCategoryListAPI(id: number): any {
     return http({
-        url: 'user/category/list/' + id,
+        url: `user/category/list/${id}`,
     })
 }

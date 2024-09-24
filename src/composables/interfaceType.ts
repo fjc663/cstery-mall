@@ -18,7 +18,8 @@ export interface category {
     id: number,
     name: string,
     description: string,
-    imageUrl: string
+    imageUrl: string,
+    subCategories?: category[]
 }
 
 // 后端返回商品信息接口

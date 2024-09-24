@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue';
 import { useAddress } from '@/composables/useAddress';
 import type { iaddress } from '@/composables/interfaceType';
-import { type FormRules, type FormInstance } from 'element-plus'
+import type{  FormRules, FormInstance } from 'element-plus'
 import { pcaTextArr } from 'element-china-area-data'
 
 // 地址数据

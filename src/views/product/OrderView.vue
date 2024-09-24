@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
-import { submitOrderAPI } from '@/apis/orderApi';
-import type { iorder, result, iaddress, icart } from '@/composables/interfaceType';
-import { ElMessage } from 'element-plus';
+import type { iorder, iaddress, icart } from '@/composables/interfaceType';
 import { useCart } from '@/composables/useCart';
+import { useOrder } from '@/composables/useOrder';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import router from '@/router';
 import { useAddress } from '@/composables/useAddress';
@@ -145,20 +144,19 @@ const orderData = ref<iorder>({
     selectedCardId: []
 });
 
+const {submitOrder} = useOrder();
+
 // 提交订单
-const submitOrder = async () => {
+const onSubmitOrder = async () => {
+    // 设置订单信息
     orderData.value.addressId = selectedAddressId.value;
     orderData.value.totalAmount = totalAmount.value;
     orderData.value.selectedCardId = selectedItemIds.value;
 
-    const res: result = await submitOrderAPI(orderData.value);
-
-    if (res.code === 0) {
-        ElMessage.error(res.msg);
-    }
+    // 提交订单
+    await submitOrder(orderData.value);
 
     cartItemsNumStore.getCartItemsNum();
-    router.push("/pay");
 };
 </script>
 
@@ -278,7 +276,7 @@ const submitOrder = async () => {
 
             <!-- 提交订单按钮 -->
             <section class="submit-section">
-                <el-button type="primary" size="large" @click="submitOrder">去支付</el-button>
+                <el-button type="primary" size="large" @click="onSubmitOrder">去支付</el-button>
             </section>
         </el-main>
 

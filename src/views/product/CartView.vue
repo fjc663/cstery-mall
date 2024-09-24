@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
-import { deleteAllCartAPI, deleteCartAPI, updateCartItemQuantityAPI } from '@/apis/cartApi';
-import type { icart, result } from '@/composables/interfaceType';
+import type { icart } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
-import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import { useCart } from '@/composables/useCart';
 import router from '@/router';
 
 // 购物车数据、计算总价、请求当前用户购物车数据函数
-const { cartItems, getCartItems } = useCart();
+const { cartItems, getCartItems, deleteAllCart, deleteCart, updateCartItemQuantity } = useCart();
 
 // 初始化购物车数据
 onMounted(() => getCartItems());
@@ -23,37 +21,20 @@ const cartSelectTotal = computed(() => {
 
 // 更新商品数量
 const updateQuantity = async (item: icart) => {
-    const res: result = await updateCartItemQuantityAPI(item.id, item.quantity);
-    if (res.code === 0) {
-        ElMessage.error(res.msg);
-    }
+    updateCartItemQuantity(item);
 };
 
 // 删除商品
-const removeItem = async (item: icart) => {
-    const res: result = await deleteCartAPI(item.id);
-    if (res.code === 0) {
-        ElMessage.error(res.msg);
-    } else {
-        const cartItemsNumStore = useCartItemsNumStore();
-        cartItemsNumStore.getCartItemsNum();
-        getCartItems();
-    }
+const removeItem = (item: icart) => {
+    deleteCart(item);
 };
 
 // 清空购物车确认弹窗
 const clearCartConfirmDialogVisible = ref<boolean>(false);
+
 // 清空购物车
-const clearCart = async () => {
-    const res: result = await deleteAllCartAPI();
-    if (res.code === 0) {
-        ElMessage.error(res.msg);
-    } else {
-        ElMessage.success('购物车已清空');
-        cartItems.value = [];
-        const cartItemsNumStore = useCartItemsNumStore();
-        cartItemsNumStore.getCartItemsNum();
-    }
+const clearCart = () => {
+    deleteAllCart();
     clearCartConfirmDialogVisible.value = false;
 };
 

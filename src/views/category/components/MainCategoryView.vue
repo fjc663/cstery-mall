@@ -1,28 +1,17 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import type { category, result } from '@/composables/interfaceType';
-import { getCategoryListAPI } from '@/apis/categoryApi';
+import { onMounted } from 'vue'
 import router from '@/router';
-import { ElMessage } from 'element-plus';
+import { useCategory } from '@/composables/useCategory';
 
 // 商品无父级分类数据
-const categories = ref<category[]>([])
+const {categories, getCategoryList} = useCategory();
 
 // 获取无父级分类
-const getCategoryList = async () => {
-    const res: result = await getCategoryListAPI();
-    if (res.code === 0){
-        ElMessage.error(res.msg);
-        return;
-    }
-    categories.value = res.data;
-}
-
 onMounted(() => getCategoryList())
 
 // 跳转到具体的分类页面
 const goToCategory = (id: number, categoryName: string) => {
-    router.push({ path: "/subCategory/" + id, query: { name: categoryName } })
+    router.push({ path: `/subCategory/${id}`, query: { name: categoryName } })
 }
 
 </script>
