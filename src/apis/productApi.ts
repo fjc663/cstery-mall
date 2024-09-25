@@ -15,3 +15,10 @@ export function getProductDetailAPI(id: number): any {
         params: {id: id}
     })
 }
+
+// 请求特色商品数据
+export function getFeaturedProductsAPI(): any {
+    return http({
+        url: 'user/product/featured'
+    })
+}

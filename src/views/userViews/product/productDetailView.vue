@@ -18,9 +18,11 @@ const selectedSpecs = ref<{ [key: string]: string }>({});
 onMounted(async () => {
     await getProductDetail(productId);
 
-    specifications.value.forEach((specification) => {
-        selectedSpecs.value[specification.name] = specification.specificationOptions.split(',')[0];
-    });
+    if (specifications.value != null) {
+        specifications.value.forEach((specification) => {
+            selectedSpecs.value[specification.name] = specification.specificationOptions.split(',')[0];
+        });
+    }
 });
 
 // 提交的购物车数据格式
@@ -105,6 +107,7 @@ const addToCart = async () => {
 
 .product-card {
     padding: 30px;
+    min-width: 1000px;
     max-width: 1200px;
     border-radius: 12px;
     background-color: #fff;

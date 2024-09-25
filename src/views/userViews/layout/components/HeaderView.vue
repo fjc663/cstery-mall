@@ -66,7 +66,7 @@ const goToCart = () => {
                     <el-menu-item index="/category">商品分类</el-menu-item>
                     <el-menu-item index="/price">特价专区</el-menu-item>
                     <el-menu-item index="/newItem">新品上架</el-menu-item>
-                    <el-menu-item index="/aboutUs">关于我们</el-menu-item>
+                    <el-menu-item index="/about">关于我们</el-menu-item>
                 </el-menu>
 
                 <!-- 搜索框 -->

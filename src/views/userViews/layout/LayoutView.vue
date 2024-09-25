@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import FooterView from '@/views/layout/components/FooterView.vue'
-import HeaderView from '@/views/layout/components/HeaderView.vue'
+import FooterView from '@/views/userViews/layout/components/FooterView.vue'
+import HeaderView from '@/views/userViews/layout/components/HeaderView.vue'
 
 </script>
 

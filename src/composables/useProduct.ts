@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import { getProductListByCategoryIdAPI, getProductDetailAPI } from '@/apis/productApi';
-import type { iproduct, result, ispecifications } from '@/composables/interfaceType';
+import { getProductListByCategoryIdAPI, getProductDetailAPI, getFeaturedProductsAPI } from '@/apis/productApi';
+import type { iproduct, result, ispecifications, iFeaturedproduct } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 
 // 当前选中的二级分类对应商品
@@ -15,6 +15,10 @@ const product = ref<iproduct>({
     price: 0,
 });
 const specifications = ref<ispecifications[]>([]);
+
+// 特色商品数据
+const featuredProducts = ref<iFeaturedproduct[]>([]);
+
 
 // 根据二级分类id获得商品数据
 const getProductListByCategoryId = async (categoryId: number) => {
@@ -41,12 +45,26 @@ const getProductDetail = async (productId: number) => {
 
 };
 
+// 请求特色商品数据
+const getFeaturedProducts = async () => {
+    const res: result = await getFeaturedProductsAPI();
+
+    if (res.code === 0) {
+        ElMessage.error(res.msg);
+        return;
+    }
+
+    featuredProducts.value = res.data;
+}
+
 export function useProduct() {
     return {
         products,
         product,
+        featuredProducts,
         specifications,
         getProductListByCategoryId,
-        getProductDetail
+        getProductDetail,
+        getFeaturedProducts
     }
 }

@@ -31,6 +31,22 @@ export interface iproduct {
     price: number
 }
 
+// 后端返回商品信息接口
+export interface iproduct {
+    id: number,
+    name: string,
+    description: string,
+    imageUrl: string,
+    price: number
+}
+
+// 后端返回特色商品信息接口
+export interface iFeaturedproduct {
+    id: number,
+    type: number,
+    product: iproduct
+}
+
 // 后端返回商品规格信息接口
 export interface ispecifications {
     name: string,
