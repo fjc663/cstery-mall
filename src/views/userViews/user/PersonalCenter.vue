@@ -26,6 +26,12 @@ import router from '@/router';
                     </svg>
                     <span>订单管理</span>
                 </el-menu-item>
+                <el-menu-item index="/favorites">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-dingdan"></use>
+                    </svg>
+                    <span>商品收藏</span>
+                </el-menu-item>
                 <el-menu-item index="/editPassword">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-xiugaimima"></use>

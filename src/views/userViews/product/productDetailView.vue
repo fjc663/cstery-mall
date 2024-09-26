@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router';
 import type { icartProduct } from '@/composables/interfaceType';
 import { useProduct } from '@/composables/useProduct';
 import { useCart } from '@/composables/useCart';
+import useFavorites from '@/composables/useFavorites'
 
 const route = useRoute();
 const productId: number = route.params.productId as unknown as number;
@@ -35,10 +36,24 @@ const cartProduct = ref<icartProduct>({
 const { addPorductToCart } = useCart();
 
 // 添加到购物车
-const addToCart = async () => {
+const addToCart = () => {
     cartProduct.value.specifications = JSON.stringify(selectedSpecs.value);
     addPorductToCart(cartProduct.value);
 };
+
+const { addProductToFavorites, deleteFavoritesProduct } = useFavorites();
+
+// 收藏商品
+const addToFavorites = async (productId: number) => {
+    await addProductToFavorites(productId);
+    getProductDetail(productId);
+}
+
+// 移除收藏商品
+const removeFavorites = async (productId: number) => {
+    await deleteFavoritesProduct(productId);
+    getProductDetail(productId);
+}
 </script>
 
 <template>
@@ -81,7 +96,12 @@ const addToCart = async () => {
                         <el-button type="primary" size="large" class="custom-add-to-cart" @click="addToCart">
                             <i class="el-icon-shopping-cart-full"></i> 加入购物车
                         </el-button>
-                        <el-button type="success" size="large" class="custom-favorite">
+                        <el-button v-if="product.isFavorites" type="info" size="large" class="remove-custom-favorite"
+                            @click="removeFavorites(product.id)">
+                            <i class="el-icon-star-off"></i> 移除收藏
+                        </el-button>
+                        <el-button v-else type="success" size="large" class="custom-favorite"
+                            @click="addToFavorites(product.id)">
                             <i class="el-icon-star-off"></i> 收藏
                         </el-button>
                     </div>
@@ -107,7 +127,7 @@ const addToCart = async () => {
 
 .product-card {
     padding: 30px;
-    min-width: 1000px;
+    min-width: 1200px;
     max-width: 1200px;
     border-radius: 12px;
     background-color: #fff;
@@ -181,6 +201,7 @@ const addToCart = async () => {
 }
 
 .custom-add-to-cart,
+.remove-custom-favorite,
 .custom-favorite {
     display: inline-flex;
     align-items: center;

@@ -83,6 +83,11 @@ const router = createRouter({
               ]
             },
             {
+              path: '/favorites',
+              name: 'favorites',
+              component: () => import('@/views/userViews/user/components/FavoritesView.vue')
+            },
+            {
               path: '/editPassword',
               name: 'editPassword',
               component: () => import('@/views/userViews/user/components/EditPassword.vue')

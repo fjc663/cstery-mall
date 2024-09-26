@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import { onBeforeRouteUpdate, useRoute } from "vue-router";
+import { onBeforeRouteUpdate, useRoute, useRouter } from "vue-router";
 import { ref } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue';
 
 
 const route = useRoute();
+const router = useRouter();
 
 // 一级分类时刷新
 const categoryNmame = ref();
@@ -57,9 +58,17 @@ onBeforeRouteUpdate(to => {
     }
 
 });
+
+// 返回上级路由
+const goBack = () => {
+  router.back();
+}
 </script>
 
 <template>
+
+    <el-page-header @back="goBack" v-if="!isDisplayBreadcrumb" />
+
     <!-- 面包屑导航 -->
     <el-breadcrumb :separator-icon="ArrowRight" v-if="isDisplayBreadcrumb">
         <el-breadcrumb-item :to="{ path: '/category' }">商品分类</el-breadcrumb-item>

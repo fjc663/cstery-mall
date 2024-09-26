@@ -37,13 +37,20 @@ export interface iproduct {
     name: string,
     description: string,
     imageUrl: string,
-    price: number
+    price: number,
+    isFavorites: boolean
 }
 
 // 后端返回特色商品信息接口
-export interface iFeaturedproduct {
+export interface ifeaturedproduct {
     id: number,
     type: number,
+    product: iproduct
+}
+
+// 后端返回收藏商品信息接口
+export interface ifavoritesproduct {
+    createdAt: string,
     product: iproduct
 }
 

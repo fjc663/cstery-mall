@@ -3,7 +3,7 @@ import { ElCarousel, ElCarouselItem, ElCard, ElRow, ElCol } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import { useCategory } from '@/composables/useCategory';
 import { useRouter } from 'vue-router';
-import type { category, iFeaturedproduct } from '@/composables/interfaceType';
+import type { category, ifeaturedproduct } from '@/composables/interfaceType';
 import { useProduct } from '@/composables/useProduct';
 
 const router = useRouter();
@@ -11,13 +11,13 @@ const { categories, getCategoryList, subCategories, getSubCategoryList } = useCa
 const { featuredProducts, getFeaturedProducts } = useProduct();
 
 // 轮播图展示数据
-const slides = ref<iFeaturedproduct[]>([]);
+const slides = ref<ifeaturedproduct[]>([]);
 
 // 热门商品展示数据
-const products = ref<iFeaturedproduct[]>([]);
+const products = ref<ifeaturedproduct[]>([]);
 
 // 新品展示数据
-const news = ref<iFeaturedproduct[]>([]);
+const news = ref<ifeaturedproduct[]>([]);
 
 // 获得特色商品数据
 onMounted(async () => {
@@ -114,6 +114,7 @@ const handleClick = (category: category, subCategory: category) => {
                             <img :src="product.product.imageUrl" :alt="product.product.name" class="product-image" />
                             <div class="product-info">
                                 <h3>{{ product.product.name }}</h3>
+                                <p>{{ product.product.description }}</p>
                                 <p class="product-price">￥{{ product.product.price }}</p>
                             </div>
                         </el-card>
