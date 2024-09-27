@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { useOrder } from '@/composables/useOrder';
+import useOrder from '@/composables/useOrder';
 import { useRouter } from 'vue-router';
 
 // 路由对象，用于路由跳转

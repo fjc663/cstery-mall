@@ -114,7 +114,7 @@ const updateUserInfo = async () => {
     getUserInfo();
 };
 
-export function useUser() {
+export default function() {
     return {
         user,
         userLogin,

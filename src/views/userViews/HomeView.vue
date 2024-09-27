@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import { ElCarousel, ElCarouselItem, ElCard, ElRow, ElCol } from 'element-plus';
 import { onMounted, ref } from 'vue';
-import { useCategory } from '@/composables/useCategory';
+import useCategory from '@/composables/useCategory';
 import { useRouter } from 'vue-router';
 import type { category, ifeaturedproduct } from '@/composables/interfaceType';
-import { useProduct } from '@/composables/useProduct';
+import useProduct from '@/composables/useProduct';
 
 const router = useRouter();
 const { categories, getCategoryList, subCategories, getSubCategoryList } = useCategory();
@@ -60,12 +60,12 @@ const handleClick = (category: category, subCategory: category) => {
     <div class="home-layout">
         <el-container>
             <el-aside width="200px" class="left-aside-container">
-                <div v-for="(category, index) in categories.slice(0, categories.length / 2)" :key="index">
+                <div v-for="category in categories.slice(0, categories.length / 2)" :key="category.id">
                     <span @click="handleCategoryClick(category)" class="category-name" style="cursor: pointer;">
                         {{ category.name }}:
                     </span>
                     <span class="sub-categories">
-                        <span v-for="(subCategory, subIndex) in category.subCategories" :key="subIndex"
+                        <span v-for="subCategory in category.subCategories" :key="subCategory.id"
                             @click="handleClick(category, subCategory)" class="sub-category" style="cursor: pointer;">
                             {{ subCategory.name }}
                         </span>
@@ -76,7 +76,7 @@ const handleClick = (category: category, subCategory: category) => {
             <el-main class="carousel-container">
                 <!-- 轮播图 -->
                 <el-carousel height="400px" :interval="5000" arrow="always">
-                    <el-carousel-item v-for="(slide, index) in slides" :key="index">
+                    <el-carousel-item v-for="slide in slides" :key="slide.id">
                         <img :src="slide.product.imageUrl" :alt="slide.product.name"
                             style="width: 100%; height: 100%; object-fit: cover;cursor: pointer;"
                             @click="goToProductDetail(slide.product.id)" />
@@ -90,12 +90,12 @@ const handleClick = (category: category, subCategory: category) => {
             </el-main>
 
             <el-aside width="200px" class="right-aside-container">
-                <div v-for="(category, index) in categories.slice(categories.length / 2)" :key="index">
+                <div v-for="category in categories.slice(categories.length / 2)" :key="category.id">
                     <span @click="handleCategoryClick(category)" class="category-name" style="cursor: pointer;">
                         {{ category.name }}:
                     </span>
                     <span class="sub-categories">
-                        <span v-for="(subCategory, subIndex) in category.subCategories" :key="subIndex"
+                        <span v-for="subCategory in category.subCategories" :key="subCategory.id"
                             @click="handleClick(category, subCategory)" class="sub-category" style="cursor: pointer;">
                             {{ subCategory.name }}
                         </span>
@@ -111,7 +111,7 @@ const handleClick = (category: category, subCategory: category) => {
                 <el-row :gutter="20">
                     <el-col v-for="product in products" :key="product.id" :span="6">
                         <el-card class="product-card" @click="goToProductDetail(product.product.id)">
-                            <img :src="product.product.imageUrl" :alt="product.product.name" class="product-image" />
+                            <img v-lazy="product.product.imageUrl" :alt="product.product.name" class="product-image" />
                             <div class="product-info">
                                 <h3>{{ product.product.name }}</h3>
                                 <p>{{ product.product.description }}</p>
@@ -130,7 +130,7 @@ const handleClick = (category: category, subCategory: category) => {
                 <el-row :gutter="20">
                     <el-col v-for="newsItem in news" :key="newsItem.id" :span="8">
                         <el-card class="news-card" @click="goToProductDetail(newsItem.product.id)">
-                            <img :src="newsItem.product.imageUrl" :alt="newsItem.product.name" class="news-image" />
+                            <img v-lazy="newsItem.product.imageUrl" :alt="newsItem.product.name" class="news-image" />
                             <h3>{{ newsItem.product.name }}</h3>
                             <p>{{ newsItem.product.description }}</p>
                             <p class="product-price">￥{{ newsItem.product.price }}</p>

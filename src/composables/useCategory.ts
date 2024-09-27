@@ -37,7 +37,7 @@ const getSubCategoryList = async (subCategoryId: number) => {
 
 }
 
-export function useCategory() {
+export default function() {
     return {
         categories,
         subCategories,

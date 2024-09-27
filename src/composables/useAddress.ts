@@ -63,7 +63,7 @@ const deleteAddress = async (id: number) => {
 }
 
 
-export function useAddress() {
+export default function () {
     return {
         addresses,
         getAddress,

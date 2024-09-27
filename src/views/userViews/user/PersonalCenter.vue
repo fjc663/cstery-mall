@@ -28,7 +28,7 @@ import router from '@/router';
                 </el-menu-item>
                 <el-menu-item index="/favorites">
                     <svg class="icon" aria-hidden="true">
-                        <use xlink:href="#icon-dingdan"></use>
+                        <use xlink:href="#icon-shoucang1"></use>
                     </svg>
                     <span>商品收藏</span>
                 </el-menu-item>

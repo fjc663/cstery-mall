@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue'
 import router from '@/router';
-import { useCategory } from '@/composables/useCategory';
+import useCategory from '@/composables/useCategory';
 
 // 商品无父级分类数据
 const {categories, getCategoryList} = useCategory();

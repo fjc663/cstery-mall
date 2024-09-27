@@ -41,7 +41,7 @@ const deleteFavoritesProduct = async(productId: number) => {
     }
 }
 
-export default function useFavorites() {
+export default function() {
     return {
         favoritesProducts,
         addProductToFavorites,

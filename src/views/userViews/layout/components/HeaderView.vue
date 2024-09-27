@@ -2,10 +2,10 @@
 import router from '@/router';
 import { useUserInfoStore } from '@/stores/userInfoStore';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
-import { Search } from '@element-plus/icons-vue';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useUser } from '@/composables/useUser';
+import useUser from '@/composables/useUser';
+import useProduct from '@/composables/useProduct';
 
 // 购物车商品数量
 const cartItemsNumStore = useCartItemsNumStore();
@@ -31,10 +31,23 @@ const toRegister = () => {
     router.push({ path: '/login', query: { isLogin: 0 } });
 }
 
+// 引入商品查询的相关逻辑
+const { pageQuery, pageQueryByCategoryId } = useProduct();
+
+// 搜索框内容
 const searchQuery = ref<string>('')
 
+// 跳到搜索结果页面
 const search = () => {
-    console.log('搜索:', searchQuery.value)
+    if (searchQuery.value.length <= 0) {
+        return;
+    }
+
+    pageQuery.value.name = searchQuery.value;
+    pageQuery.value.isALLData = true;
+
+    pageQueryByCategoryId();
+    router.push({ path: '/search', query: { searchQuery: searchQuery.value } });
 }
 
 const goToProfile = () => {
@@ -54,7 +67,12 @@ const goToCart = () => {
         <el-row class="nav-bar">
             <!-- 左边 Logo -->
             <el-col :span="4">
-                <div class="logo">ChengSteryMall</div>
+                <div class="logo">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-yuanzi"></use>
+                    </svg>
+                    ChengSteryMall
+                </div>
             </el-col>
 
             <!-- 中间 菜单和搜索 -->
@@ -70,23 +88,31 @@ const goToCart = () => {
                 </el-menu>
 
                 <!-- 搜索框 -->
-                <el-input v-model="searchQuery" placeholder="搜索商品..." class="search-input">
+                <el-input v-model="searchQuery" placeholder="搜索商品..." clearable class="search-input">
                     <template #append>
-                        <el-button :icon="Search" @click="search"></el-button>
+                        <el-button @click="search">
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-find"></use>
+                            </svg>
+                        </el-button>
                     </template>
                 </el-input>
 
                 <!-- 购物车图标 -->
-                <el-badge :value="cartItemsNum" class="cart-badge" type="danger" v-if="cartItemsNum > 0">
-                    <el-button icon="ShoppingCart" @click="goToCart" class="cart-icon-button">
+                <el-badge v-if="cartItemsNum > 0" :value="cartItemsNum" class="cart-badge" type="danger">
+                    <el-button @click="goToCart" class="cart-icon-button">
                         <el-icon>
-                            <ShoppingCart />
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-gouwuche"></use>
+                            </svg>
                         </el-icon>
                     </el-button>
                 </el-badge>
-                <el-button v-else icon="ShoppingCart" @click="goToCart" class="cart-icon-button">
+                <el-button v-else @click="goToCart" class="cart-icon-button">
                     <el-icon>
-                        <ShoppingCart />
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-gouwuche"></use>
+                        </svg>
                     </el-icon>
                 </el-button>
             </el-col>
@@ -214,15 +240,11 @@ const goToCart = () => {
 }
 
 .cart-icon-button {
-    background-color: #0e4677;
-    /* 设置更突出的蓝色背景 */
-    color: white;
-    /* 设置图标的颜色 */
     border-radius: 50%;
     /* 让按钮变成圆形 */
-    width: 50px;
+    width: 40px;
     /* 按钮宽度 */
-    height: 50px;
+    height: 40px;
     /* 按钮高度 */
     display: flex;
     align-items: center;
@@ -233,7 +255,7 @@ const goToCart = () => {
 }
 
 .cart-icon-button:hover {
-    background-color: #020e1b;
+    background-color: #a6c4e4;
     /* 鼠标悬停时，背景颜色变深 */
 }
 

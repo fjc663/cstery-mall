@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { useOrder } from '@/composables/useOrder';
+import useOrder from '@/composables/useOrder';
 import { ElMessage } from 'element-plus';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import router from '@/router';

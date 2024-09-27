@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
 import type { iorder, iaddress, icart } from '@/composables/interfaceType';
-import { useCart } from '@/composables/useCart';
-import { useOrder } from '@/composables/useOrder';
+import useCart from '@/composables/useCart';
+import useOrder from '@/composables/useOrder';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import router from '@/router';
-import { useAddress } from '@/composables/useAddress';
+import useAddress from '@/composables/useAddress';
 import { type FormRules, type FormInstance } from 'element-plus'
 import { pcaTextArr } from 'element-china-area-data'
 import { useRoute } from 'vue-router';

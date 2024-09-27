@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import type { ieditPasswordDTO } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
 import { type FormRules, type FormInstance } from 'element-plus'
-import { useUser } from '@/composables/useUser';
+import useUser from '@/composables/useUser';
 
 // 表单实例的引用
 const formRef = ref<FormInstance>();

@@ -64,13 +64,15 @@ const cancelOrder = async (orderId: number): Promise<number> => {
 }
 
 // 再次购买
-const buyagain = async (orderId: number) => {
+const buyagain = async (orderId: number): Promise<number[]> => {
   const res: result = await buyAgainAPI(orderId);
 
   if (res.code === 0) {
     ElMessage.error(res.msg);
-    return;
+    return [];
   }
+
+  return res.data;
 }
 
 // 提交订单
@@ -122,7 +124,7 @@ const formatTime = (ms: number) => {
   return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
 };
 
-export function useOrder() {
+export default function() {
   return {
     orders,
     orderDetail,

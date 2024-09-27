@@ -31,6 +31,17 @@ export interface iproduct {
     price: number
 }
 
+// 分页查询商品信息接口
+export interface ipageQueryProduct {
+    categoryId: number,
+    page: number,
+    pageSize: number,
+    name: string,
+    isOrderBypriceASC: boolean,
+    isOrderBypriceDESC: boolean,
+    isALLData: boolean
+}
+
 // 后端返回商品信息接口
 export interface iproduct {
     id: number,

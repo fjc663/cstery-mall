@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useOrder } from '@/composables/useOrder';
+import useOrder from '@/composables/useOrder';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
@@ -30,9 +30,13 @@ const onCancelOrder = async (orderId: number) => {
 
 // 再来一单
 const onBuyAgain = async (orderId: number) => {
-    await buyagain(orderId);
-    cartItemsNumStore.getCartItemsNum();
-    router.push("/cart");
+  const cartIds: number[] = await buyagain(orderId);
+  cartItemsNumStore.getCartItemsNum();
+
+  router.push({
+    path: '/cart',
+    query: { selectedCartIds: JSON.stringify(cartIds) }
+  });
 }
 
 </script>
@@ -40,7 +44,8 @@ const onBuyAgain = async (orderId: number) => {
 <template>
   <!-- 订单列表：使用 grid 布局，确保每张卡片大小一致 -->
   <div class="order-grid">
-    <el-card class="order-card" v-for="order in orders" :key="order.id" @click="viewOrderDetail(order.id)" shadow="hover">
+    <el-card class="order-card" v-for="order in orders" :key="order.id" @click="viewOrderDetail(order.id)"
+      shadow="hover">
       <div class="order-header">
         <h3 class="order-number">订单编号: {{ order.orderNumber }}</h3>
         <el-tag v-if="order.status === 1" type="warning">待支付</el-tag>
@@ -74,7 +79,8 @@ const onBuyAgain = async (orderId: number) => {
       <div class="order-actions">
         <el-button v-if="order.status === 4" type="primary" size="small" @click="onBuyAgain(order.id)">再次购买</el-button>
         <el-button v-if="order.status === 1" type="primary" size="small">支付订单</el-button>
-        <el-button v-if="order.status === 1" type="danger" size="small" @click="onCancelOrder(order.id)">取消订单</el-button>
+        <el-button v-if="order.status === 1" type="danger" size="small"
+          @click="onCancelOrder(order.id)">取消订单</el-button>
       </div>
     </el-card>
   </div>

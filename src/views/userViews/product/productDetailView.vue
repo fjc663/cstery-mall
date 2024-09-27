@@ -2,8 +2,8 @@
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import type { icartProduct } from '@/composables/interfaceType';
-import { useProduct } from '@/composables/useProduct';
-import { useCart } from '@/composables/useCart';
+import useProduct from '@/composables/useProduct';
+import useCart from '@/composables/useCart';
 import useFavorites from '@/composables/useFavorites'
 
 const route = useRoute();
@@ -98,11 +98,15 @@ const removeFavorites = async (productId: number) => {
                         </el-button>
                         <el-button v-if="product.isFavorites" type="info" size="large" class="remove-custom-favorite"
                             @click="removeFavorites(product.id)">
-                            <i class="el-icon-star-off"></i> 移除收藏
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shoucang"></use>
+                            </svg> 移除收藏
                         </el-button>
                         <el-button v-else type="success" size="large" class="custom-favorite"
                             @click="addToFavorites(product.id)">
-                            <i class="el-icon-star-off"></i> 收藏
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-shoucang"></use>
+                            </svg> 收藏
                         </el-button>
                     </div>
                 </el-col>

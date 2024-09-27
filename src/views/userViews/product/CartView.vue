@@ -2,14 +2,14 @@
 import { ref, onMounted, computed } from 'vue';
 import type { icart } from '@/composables/interfaceType';
 import { ElMessage } from 'element-plus';
-import { useCart } from '@/composables/useCart';
+import useCart from '@/composables/useCart';
 import router from '@/router';
+import { useRoute } from 'vue-router';
+import type { TableInstance } from 'element-plus'
+
 
 // 购物车数据、计算总价、请求当前用户购物车数据函数
 const { cartItems, getCartItems, deleteAllCart, deleteCart, updateCartItemQuantity } = useCart();
-
-// 初始化购物车数据
-onMounted(() => getCartItems());
 
 // 选中的商品列表
 const selectedItems = ref<icart[]>([]);
@@ -54,6 +54,30 @@ const createOrder = () => {
         query: { selectedItems: JSON.stringify(selectedItemIds) },
     });
 };
+
+const cartTableRef = ref<TableInstance>()
+
+// 从路由参数获取选中的商品ID列表
+const route = useRoute();
+const selectedItemIds: number[] = route.query.selectedCartIds ? JSON.parse(route.query.selectedCartIds as string) : [];
+
+// 初始化购物车数据
+onMounted(async () => {
+    await getCartItems();
+
+    // 找到被选中的商品并选中
+    cartItems.value.forEach((item) => {
+        if (selectedItemIds.includes(item.id)) {
+            cartTableRef.value?.toggleRowSelection(item, true);  // 选中该行
+        }
+    });
+
+});
+
+// 返回上级路由
+const goBack = () => {
+  router.back();
+}
 </script>
 
 <template>
@@ -73,11 +97,12 @@ const createOrder = () => {
     <!-- 购物车页面 -->
     <el-container class="cart-page">
         <el-header>
+            <el-page-header @back="goBack" />
             <h1 class="cart-title">购物车</h1>
         </el-header>
 
         <el-main>
-            <el-table :data="cartItems" stripe border @selection-change="selectedItems = $event">
+            <el-table :data="cartItems" stripe border @selection-change="selectedItems = $event" ref="cartTableRef">
                 <!-- 左侧选择框 -->
                 <el-table-column type="selection" width="50" align="center" />
 

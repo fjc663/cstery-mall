@@ -16,7 +16,7 @@ const uploadAvatar = async (formData: FormData): Promise<result> => {
     return res;
 }
 
-export function useUpload() {
+export default function() {
     return {
         uploadAvatar
     }

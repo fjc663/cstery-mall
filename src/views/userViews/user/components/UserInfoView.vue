@@ -5,8 +5,8 @@ import type { ComponentSize, FormRules, FormInstance, UploadProps } from 'elemen
 import type { iuserInfo, result } from '@/composables/interfaceType';
 import { pcaTextArr } from 'element-china-area-data'
 import { useUserInfoStore } from '@/stores/userInfoStore';
-import { useUser } from '@/composables/useUser';
-import { useUpload } from '@/composables/useUpload';
+import useUser from '@/composables/useUser';
+import useUpload from '@/composables/useUpload';
 
 // 用户信息展示页面设置
 const size = ref<ComponentSize>('default')

@@ -72,7 +72,7 @@ const addPorductToCart = async (cartProduct: icartProduct) => {
   }
 };
 
-export function useCart() {
+export default function() {
   return {
     cartItems,
     getCartItems,
