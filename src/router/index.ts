@@ -123,6 +123,18 @@ const router = createRouter({
       component: () => import('@/views/userViews/LoginView.vue')
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: () => import('@/views/adminViews/layout/HomeView.vue'),
+      children: [
+        {
+          path: 'AdminCategory',
+          name: 'AdminCategory',
+          component: () => import('@/views/adminViews/category/CategoryView.vue')
+        }
+      ]
+    },
+    {
       path: '/:pathMatch(.*)*', // 匹配所有路径
       name: 'NotFound',
       component: () => import('@/views/NotFound.vue')

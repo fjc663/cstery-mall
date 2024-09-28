@@ -13,12 +13,34 @@ export interface result {
     data: any
 }
 
+// 提交给后端分类信息接口
+export interface icategoryDTO {
+    id?: number | null,
+    name?: string,
+    description?: string,
+    imageUrl?: string,
+    status?: number,
+    sortOrder?: number,
+    parentId?: number | null
+}
+
+// 分页查询分类信息接口
+export interface ipageQueryCategory {
+    page: number,
+    pageSize: number,
+    name?: string,
+    status?: number | null,
+}
+
 // 后端返回分类信息接口
 export interface category {
     id: number,
     name: string,
     description: string,
     imageUrl: string,
+    status?: number,
+    sortOrder?: number,
+    parentId?: number,
     subCategories?: category[]
 }
 
