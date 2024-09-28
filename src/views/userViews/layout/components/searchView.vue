@@ -25,15 +25,15 @@ const page = ref<number>(1);
 const pageSize = ref<number>(20);
 
 // 每页大小改变时触发
-const handleSizeChange = (page: number) => {
-    pageQuery.value.page = page;
-
+const handleSizeChange = (pageSize: number) => {
+    pageQuery.value.pageSize = pageSize;
+    
     pageQueryByCategoryId();
 };
 
 // 页码改变时触发
-const handleCurrentChange = (pageSize: number) => {
-    pageQuery.value.pageSize = pageSize;
+const handleCurrentChange = (page: number) => {
+    pageQuery.value.page = page;
 
     pageQueryByCategoryId();
 };

@@ -226,6 +226,11 @@ const goToCart = () => {
     color: #fff;
 }
 
+.el-dropdown,
+.el-dropdown * {
+    outline: none;
+}
+
 .el-dropdown-menu {
     background-color: #f5f7fa;
     color: #333;
