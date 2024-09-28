@@ -1,4 +1,4 @@
-import { uploadAvatarAPI } from "@/apis/uploadApli";
+import { uploadAvatarAPI, uploadCategoryAPI } from "@/apis/uploadApli";
 import type { result } from "./interfaceType";
 import { ElMessage } from "element-plus";
 
@@ -16,8 +16,22 @@ const uploadAvatar = async (formData: FormData): Promise<result> => {
     return res;
 }
 
+// 上传分类图片
+const uploadCategory = async (formData: FormData): Promise<result> => {
+    const res: result = await uploadCategoryAPI(formData);
+
+    if (res.code === 1) {
+        ElMessage.success("上传成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+
+    return res;
+}
+
 export default function() {
     return {
-        uploadAvatar
+        uploadAvatar,
+        uploadCategory
     }
 }

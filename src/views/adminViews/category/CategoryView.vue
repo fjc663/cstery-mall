@@ -3,6 +3,9 @@ import { ref, onMounted } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import useCategory from '@/composables/useCategory';
 import type { icategoryDTO } from '@/composables/interfaceType';
+import type { result } from '@/composables/interfaceType';
+import type { UploadProps } from 'element-plus'
+import useUpload from '@/composables/useUpload';
 
 
 // 处理分类数据的逻辑代码
@@ -39,6 +42,8 @@ const form = ref<icategoryDTO>({
 const dialogVisible = ref<boolean>(false);
 // 判断是添加还是修改
 const isAdd = ref<boolean>(true);
+// 判断是二级分类还是一级分类
+const isSub = ref<boolean>(false);
 
 // 添加分类
 const onAddCategory = (parentId: number | null) => {
@@ -52,6 +57,12 @@ const onAddCategory = (parentId: number | null) => {
         parentId: parentId,
     };
 
+    if (parentId) {
+        isSub.value = true;
+    } else {
+        isSub.value = false;
+    }
+
     isAdd.value = true;
     dialogVisible.value = true;
 };
@@ -60,6 +71,11 @@ const onAddCategory = (parentId: number | null) => {
 const onEditCategory = (category: icategoryDTO) => {
     Object.assign(form.value, category);
     isAdd.value = false;
+    if (category.parentId) {
+        isSub.value = true;
+    } else {
+        isSub.value = false;
+    }
     dialogVisible.value = true;
 };
 
@@ -137,6 +153,29 @@ onMounted(() => {
 
     pageQueryCategory()
 });
+
+const { uploadCategory } = useUpload();
+
+// 上传分类图片
+const onUploadCategory = async (avatar: any) => {
+    const formData = new FormData();
+    formData.append('categoryFile', avatar.file);
+
+    const res: result = await uploadCategory(formData);
+
+    if (res.code === 1) {
+        form.value.imageUrl = res.data;
+    }
+}
+
+// 上传分类图片前的钩子函数
+const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
+    if (rawFile.size / 1024 / 1024 > 10) {
+        ElMessage.error('头像大小必须小于10MB')
+        return false;
+    }
+    return true;
+}
 </script>
 
 <template>
@@ -271,10 +310,6 @@ onMounted(() => {
                 @current-change="handleCurrentChange" />
         </div>
 
-        <el-dialog v-model="dialogVisible">
-            <img w-full :src="dialogImageUrl" alt="Preview Image" />
-        </el-dialog>
-
         <!-- 分类编辑/添加弹窗 -->
         <el-dialog v-model="dialogVisible" draggable width="500px" :title="isAdd ? '添加分类' : '修改分类'">
             <el-form :model="form" label-width="80px" class="category-form">
@@ -286,16 +321,15 @@ onMounted(() => {
                     <el-input v-model="form.description" type="textarea" placeholder="请输入分类描述"></el-input>
                 </el-form-item>
 
-                <el-form-item label="图片">
-                    <el-input v-model="form.imageUrl" placeholder="请输入图片链接"></el-input>
-                    <el-upload class="avatar-uploader" :http-request="onUploadAvatar" :show-file-list="false"
-                :before-upload="beforeAvatarUpload">
-                <img v-if="user.avatarUrl" v-lazy="user.avatarUrl" fit="cover" class="avatar" />
-                <el-icon v-else class="avatar-uploader-icon">
-                    <Plus />
-                </el-icon>
-            </el-upload>
-
+                <el-form-item label="分类图片" v-if="!isSub">
+                    <el-upload class="category-uploader" :http-request="onUploadCategory" :show-file-list="false"
+                        :before-upload="beforeCategoryUpload">
+                        <!-- 如果有图片显示图片，否则显示图标 -->
+                        <img v-if="form.imageUrl" :src="form.imageUrl" class="uploaded-image" />
+                        <el-icon v-else class="category-uploader-icon">
+                            <Plus />
+                        </el-icon>
+                    </el-upload>
                 </el-form-item>
 
                 <el-form-item label="状态">
@@ -434,5 +468,53 @@ onMounted(() => {
 .dialog-footer .el-button {
     margin-left: 10px;
     /* 按钮之间的间距 */
+}
+
+/* 上传区域样式优化 */
+.category-uploader {
+    width: 180px;
+    height: 180px;
+    border: 2px dashed #d9d9d9;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* 悬停时的效果 */
+.category-uploader:hover {
+    border-color: #409eff;
+    background-color: #f0f9ff;
+}
+
+/* 上传图片的样式 */
+.uploaded-image {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 上传图标的样式 */
+.category-uploader-icon {
+    font-size: 36px;
+    color: #8c939d;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    transition: color 0.3s ease;
+}
+
+/* 悬停时图标颜色变化 */
+.category-uploader:hover .category-uploader-icon {
+    color: #409eff;
 }
 </style>
