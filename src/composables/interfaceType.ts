@@ -1,9 +1,9 @@
 // 登录和注册表单接口
 export interface form {
     username: string,
-    email: string,
+    email?: string,
     password: string,
-    comfirmPwd: string
+    comfirmPwd?: string
 }
 
 // 后端返回结果数据接口
@@ -140,6 +140,7 @@ export interface iuserInfo {
     username: string,
     email: string,
     phone: string,
+    role?: string,
     avatarUrl: string,
     gender: number,
     birthdate: string,

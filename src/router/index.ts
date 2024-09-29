@@ -123,16 +123,31 @@ const router = createRouter({
       component: () => import('@/views/userViews/LoginView.vue')
     },
     {
-      path: '/admin',
+      path: '/admin/',
       name: 'admin',
-      component: () => import('@/views/adminViews/layout/HomeView.vue'),
+      component: () => import('@/views/adminViews/layout/LayoutView.vue'),
       children: [
         {
-          path: 'AdminCategory',
-          name: 'AdminCategory',
+          path: 'adminCategory',
+          name: 'adminCategory',
           component: () => import('@/views/adminViews/category/CategoryView.vue')
-        }
+        },
+        {
+          path: 'adminInfo',
+          name: 'adminInfo',
+          component: () => import('@/views/adminViews/adminInfo/InfoView.vue')
+        },
+        {
+          path: 'adminEditPassword',
+          name: 'adminEditPassword',
+          component: () => import('@/views/adminViews/adminInfo/EditAdminPassword.vue')
+        },
       ]
+    },
+    {
+      path: '/adminLogin',
+      name: 'adminLogin',
+      component: () => import('@/views/adminViews/AdminLogin.vue')
     },
     {
       path: '/:pathMatch(.*)*', // 匹配所有路径

@@ -62,7 +62,7 @@ const register = async () => {
 
     // 校验邮箱
     var pattern = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
-    if (!pattern.test(loginRegisterForm.value.email)) {
+    if (!pattern.test(loginRegisterForm.value.email || '')) {
         ElMessage.error("请输入正确的邮箱");
         return;
     }

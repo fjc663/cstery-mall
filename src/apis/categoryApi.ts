@@ -1,5 +1,6 @@
 import type { icategoryDTO, ipageQueryCategory } from "@/composables/interfaceType";
 import http from "@/utils/http";
+import httpAdmin from "@/utils/httpAdmin";
 
 // 请求无父级分类的分类
 export function getCategoryListAPI(): any {
@@ -17,7 +18,7 @@ export function getSubCategoryListAPI(id: number): any {
 
 // 增加分类
 export function addCategoryAPI(categoryDTO: icategoryDTO): any {
-    return http({
+    return httpAdmin({
         url: 'admin/category',
         method: 'Post',
         data: categoryDTO
@@ -26,7 +27,7 @@ export function addCategoryAPI(categoryDTO: icategoryDTO): any {
 
 // 分页查询分类数据
 export function pageQueryCategoryAPI(pageQueryCategory: ipageQueryCategory): any {
-    return http({
+    return httpAdmin({
         url: 'admin/category/page',
         params: pageQueryCategory
     })
@@ -34,7 +35,7 @@ export function pageQueryCategoryAPI(pageQueryCategory: ipageQueryCategory): any
 
 // 修改分类
 export function editCategoryAPI(categoryDTO: icategoryDTO): any {
-    return http({
+    return httpAdmin({
         url: 'admin/category',
         method: 'Put',
         data: categoryDTO
@@ -43,7 +44,7 @@ export function editCategoryAPI(categoryDTO: icategoryDTO): any {
 
 // 删除分类
 export function deleteCategoryAPI(id: number): any {
-    return http({
+    return httpAdmin({
         url: 'admin/category',
         method: 'Delete',
         params: {id: id}
