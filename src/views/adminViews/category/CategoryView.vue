@@ -3,12 +3,9 @@ import { ref, onMounted } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import useCategory from '@/composables/useCategory';
 import type { icategoryDTO } from '@/composables/interfaceType';
-<<<<<<< HEAD
 import type { result } from '@/composables/interfaceType';
 import type { UploadProps } from 'element-plus'
 import useUpload from '@/composables/useUpload';
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
 
 
 // 处理分类数据的逻辑代码
@@ -45,11 +42,8 @@ const form = ref<icategoryDTO>({
 const dialogVisible = ref<boolean>(false);
 // 判断是添加还是修改
 const isAdd = ref<boolean>(true);
-<<<<<<< HEAD
 // 判断是二级分类还是一级分类
 const isSub = ref<boolean>(false);
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
 
 // 添加分类
 const onAddCategory = (parentId: number | null) => {
@@ -63,15 +57,12 @@ const onAddCategory = (parentId: number | null) => {
         parentId: parentId,
     };
 
-<<<<<<< HEAD
     if (parentId) {
         isSub.value = true;
     } else {
         isSub.value = false;
     }
 
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
     isAdd.value = true;
     dialogVisible.value = true;
 };
@@ -80,14 +71,11 @@ const onAddCategory = (parentId: number | null) => {
 const onEditCategory = (category: icategoryDTO) => {
     Object.assign(form.value, category);
     isAdd.value = false;
-<<<<<<< HEAD
     if (category.parentId) {
         isSub.value = true;
     } else {
         isSub.value = false;
     }
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
     dialogVisible.value = true;
 };
 
@@ -110,23 +98,17 @@ const onDeleteCategory = (id: number) => {
 
 // 提交表单 (新增或编辑)
 const submitForm = async () => {
-<<<<<<< HEAD
     // 校验
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
     if (!form.value.name) {
         ElMessage.error('分类名称不能为空');
         return;
     }
-<<<<<<< HEAD
     if (form.value.name.length < 1 || form.value.name.length > 20) {
         ElMessage.error('分类名称字符长度为1到20');
         return;
     }
 
 
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
     dialogVisible.value = false;
     if (isAdd.value) {
         await addCategory(form.value);
@@ -171,7 +153,6 @@ onMounted(() => {
 
     pageQueryCategory()
 });
-<<<<<<< HEAD
 
 const { uploadCategory } = useUpload();
 
@@ -195,8 +176,6 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
     }
     return true;
 }
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
 </script>
 
 <template>
@@ -254,11 +233,7 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
                                 :cell-style="{ 'text-align': 'center' }"
                                 :default-sort="{ prop: 'sortOrder', order: 'ascending' }">
                                 <el-table-column type="index" label="序号" width="60" />
-<<<<<<< HEAD
                                 <el-table-column :label="category.row.name + '的二级分类'" prop="name" />
-=======
-                                <el-table-column :label="category.row.name +  '的二级分类'" prop="name" />
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
                                 <el-table-column label="描述" prop="description" />
                                 <el-table-column prop="imageUrl" label="图片" width="150">
                                     <template #default="scope">
@@ -336,7 +311,6 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
         </div>
 
         <!-- 分类编辑/添加弹窗 -->
-<<<<<<< HEAD
         <el-dialog v-model="dialogVisible" draggable width="500px" :title="isAdd ? '添加分类' : '修改分类'">
             <el-form :model="form" label-width="80px" class="category-form">
                 <el-form-item label="名称">
@@ -360,38 +334,16 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
 
                 <el-form-item label="状态">
                     <el-select v-model="form.status" placeholder="请选择状态" class="form-select">
-=======
-        <el-dialog v-model="dialogVisible" draggable overflow :title="isAdd ? '添加分类' : '修改分类'">
-            <el-form :model="form" label-width="80px">
-                <el-form-item label="名称">
-                    <el-input v-model="form.name"></el-input>
-                </el-form-item>
-                <el-form-item label="描述">
-                    <el-input v-model="form.description"></el-input>
-                </el-form-item>
-                <el-form-item label="图片">
-                    <el-input v-model="form.imageUrl"></el-input>
-                </el-form-item>
-                <el-form-item label="状态">
-                    <el-select v-model="form.status">
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
                         <el-option label="启用" :value="1"></el-option>
                         <el-option label="禁用" :value="0"></el-option>
                     </el-select>
                 </el-form-item>
-<<<<<<< HEAD
 
                 <el-form-item label="排序">
                     <el-input-number v-model="form.sortOrder" :min="0" label="排序"></el-input-number>
                 </el-form-item>
             </el-form>
 
-=======
-                <el-form-item label="排序">
-                    <el-input-number :min="0" v-model="form.sortOrder"></el-input-number>
-                </el-form-item>
-            </el-form>
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
             <div class="dialog-footer">
                 <el-button @click="dialogVisible = false">取消</el-button>
                 <el-button type="primary" @click="submitForm">{{ isAdd ? '添加' : '修改' }}</el-button>
@@ -475,7 +427,6 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
     display: flex;
     justify-content: end;
 }
-<<<<<<< HEAD
 
 /* 弹窗整体样式优化 */
 .el-dialog {
@@ -566,6 +517,4 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
 .category-uploader:hover .category-uploader-icon {
     color: #409eff;
 }
-=======
->>>>>>> db2ae2d40912731652b7cf231b19d00a6fd31838
 </style>
