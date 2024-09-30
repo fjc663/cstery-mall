@@ -17,6 +17,12 @@ import router from '@/router';
             </svg>
             <span>分类管理</span>
         </el-menu-item>
+        <el-menu-item index="/admin/adminSpecification">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-dizhi"></use>
+            </svg>
+            <span>规格管理</span>
+        </el-menu-item>
         <el-menu-item index="/admin/adminOrderManager">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-dingdan"></use>

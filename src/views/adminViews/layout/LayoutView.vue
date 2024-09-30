@@ -28,7 +28,7 @@ onMounted(() => getAdminUserInfo())
             </div>
         </el-header>
 
-        <el-container>
+        <el-container style="padding-left: 30px;">
             <!-- 左侧：侧边栏导航 -->
             <el-aside width="240px" class="sidebar">
                 <AsideView />
@@ -67,7 +67,6 @@ onMounted(() => getAdminUserInfo())
     border-radius: 10px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    margin-right: 50px;
 }
 
 .icon {

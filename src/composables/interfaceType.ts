@@ -184,3 +184,20 @@ export interface ieditPasswordDTO {
     newPassword: string,
     confirmPassword: string
 }
+
+// 规格分页查询传输对象
+export interface ipageQuerySpec {
+    page: number,
+    pageSize: number,
+    name?: string,
+    status?: number | null
+}
+
+// 规格传给后端传输对象
+export interface ispecificationDTO {
+    id?: number | null,
+    name?: string,
+    description?: string,
+    status?: number,
+    specificationOptions?: string
+}

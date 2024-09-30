@@ -133,6 +133,11 @@ const router = createRouter({
           component: () => import('@/views/adminViews/category/CategoryView.vue')
         },
         {
+          path: 'adminSpecification',
+          name: 'adminSpecification',
+          component: () => import('@/views/adminViews/product/SpecificationView.vue')
+        },
+        {
           path: 'adminInfo',
           name: 'adminInfo',
           component: () => import('@/views/adminViews/adminInfo/InfoView.vue')
