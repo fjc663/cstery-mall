@@ -1,5 +1,5 @@
 import { getCartItemsNumAPI } from "@/apis/cartApi";
-import type { result } from "@/composables/interfaceType";
+import type { result } from "@/composables/interfaceType/commonInterface";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 

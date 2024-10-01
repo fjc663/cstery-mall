@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
-import type { ieditPasswordDTO } from '@/composables/interfaceType';
+import type { ieditPassword } from '@/composables/interfaceType/commonInterface';
 import { ElMessage } from 'element-plus';
 import { type FormRules, type FormInstance } from 'element-plus'
 import useAdmin from '@/composables/useAdmin';
@@ -9,14 +9,14 @@ import useAdmin from '@/composables/useAdmin';
 const formRef = ref<FormInstance>();
 
 // 表单数据
-const form = ref<ieditPasswordDTO>({
+const form = ref<ieditPassword>({
     oldPassword: '',
     newPassword: '',
     confirmPassword: ''
 });
 
 // 验证规则
-const rules = ref<FormRules<ieditPasswordDTO>>({
+const rules = ref<FormRules<ieditPassword>>({
     oldPassword: [
         { required: true, message: '请输入旧密码', trigger: 'blur' },
         { min: 6, max: 18, message: '密码长度应为 6 到 18 个字符', trigger: 'blur' }

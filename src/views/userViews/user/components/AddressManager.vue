@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import useAddress from '@/composables/useAddress';
-import type { iaddress } from '@/composables/interfaceType';
+import type { iaddress } from '@/composables/interfaceType/userInterface';
 import type{  FormRules, FormInstance } from 'element-plus'
 import { pcaTextArr } from 'element-china-area-data'
 

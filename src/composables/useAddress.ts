@@ -1,4 +1,5 @@
-import type { iaddress, result } from '@/composables/interfaceType';
+import type { result } from './interfaceType/commonInterface';
+import type { iaddress } from './interfaceType/userInterface';
 import { ref } from 'vue';
 import { addNewAddressAPI, deleteAddressAPI, geTAddressAPI, setDefaultAddressAPI, updateAddressAPI } from '@/apis/addressApi';
 import { ElMessage } from 'element-plus';

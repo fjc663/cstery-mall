@@ -1,5 +1,9 @@
 import { adminLoginAPI, editAdminPasswordAPI, getAdminUserInfoAPI, saveAdminInfoAPI } from '@/apis/userApi';
-import type { result, iuserInfo, form, ieditPasswordDTO } from './interfaceType';
+import type { result } from './interfaceType/commonInterface';
+import type { iadmin } from '@/composables/interfaceType/adminInterface';
+import type { iadminUserInfo } from '@/composables/interfaceType/adminInterface';
+import type { ieditPassword } from '@/composables/interfaceType/commonInterface';
+
 import { ElMessage } from 'element-plus';
 import router from '@/router';
 import { ref } from 'vue';
@@ -8,7 +12,7 @@ import { useAdminInfoStore } from '@/stores/adminInfoStore';
 const useAdminInfo = useAdminInfoStore();
 
 // 用户数据
-const admin = ref<iuserInfo>({
+const admin = ref<iadminUserInfo>({
     id: -1,
     username: '',
     email: '',
@@ -16,13 +20,11 @@ const admin = ref<iuserInfo>({
     role: '',
     avatarUrl: '',
     gender: -1,
-    birthdate: '',
-    address: '',
     lastLogin: '',
 });
 
 // 请求登录
-const adminLogin = async (loginRegisterForm: form): Promise<number> => {
+const adminLogin = async (loginRegisterForm: iadmin): Promise<number> => {
     //删除用户名和密码左右两端的空格
     loginRegisterForm.username = loginRegisterForm.username.replace(/(^\s*)|(\s*$)/g, "");
     loginRegisterForm.password = loginRegisterForm.password.replace(/(^\s*)|(\s*$)/g, "");
@@ -52,7 +54,7 @@ const logout = () => {
 
 
 // 修改密码
-const editAdminPassword = async (form: ieditPasswordDTO) => {
+const editAdminPassword = async (form: ieditPassword) => {
     const res: result = await editAdminPasswordAPI(form);
 
     if (res.code === 1) {

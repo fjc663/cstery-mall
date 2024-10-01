@@ -2,7 +2,8 @@
 import { ElMessage } from 'element-plus';
 import { onMounted, ref } from 'vue'
 import type { ComponentSize, FormRules, FormInstance, UploadProps } from 'element-plus'
-import type { iuserInfo, result } from '@/composables/interfaceType';
+import type { result } from '@/composables/interfaceType/commonInterface';
+import type { iuserInfo } from '@/composables/interfaceType/userInterface';
 import { pcaTextArr } from 'element-china-area-data'
 import { useUserInfoStore } from '@/stores/userInfoStore';
 import useUser from '@/composables/useUser';

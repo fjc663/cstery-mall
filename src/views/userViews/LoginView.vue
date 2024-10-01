@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type{ form } from '@/composables/interfaceType'
+import type { iuser } from '@/composables/interfaceType/userInterface';
 import { ElMessage } from 'element-plus';
 import router from '@/router';
 import useUser from '@/composables/useUser';
@@ -16,7 +16,7 @@ if (isLoginNum == 0) {
 }
 
 // 登录和注册表单
-const loginRegisterForm = ref<form>({
+const loginRegisterForm = ref<iuser>({
     username: '',
     email: '',
     password: '',

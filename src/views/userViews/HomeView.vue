@@ -3,7 +3,7 @@ import { ElCarousel, ElCarouselItem, ElCard, ElRow, ElCol } from 'element-plus';
 import { onMounted, ref } from 'vue';
 import useCategory from '@/composables/useCategory';
 import { useRouter } from 'vue-router';
-import type { category, ifeaturedproduct } from '@/composables/interfaceType';
+import type { iuserCategory, ifeaturedproduct } from '@/composables/interfaceType/userInterface';
 import useProduct from '@/composables/useProduct';
 
 const router = useRouter();
@@ -43,12 +43,12 @@ const goToProductDetail = (productId: number) => {
 };
 
 // 跳转一级分类
-const handleCategoryClick = (category: category) => {
+const handleCategoryClick = (category: iuserCategory) => {
     router.push({ path: `/subCategory/${category.id}`, query: { name: category.name } });
 };
 
 // 跳转二级分类
-const handleClick = (category: category, subCategory: category) => {
+const handleClick = (category: iuserCategory, subCategory: iuserCategory) => {
     router.push({
         path: `/subCategory/${category.id}`,
         query: { name: category.name, subCategoryId: subCategory.id, subCategoryName: subCategory.name },

@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import type { result, ifavoritesproduct } from '@/composables/interfaceType';
+import type { result } from './interfaceType/commonInterface';
+import type { ifavoritesproduct } from './interfaceType/userInterface';
 import { ElMessage } from 'element-plus';
 import { addProductToFavoritesAPI, getFavoritesProductAPI, deleteFavoritesProductAPI } from '@/apis/favoritesApi';
 

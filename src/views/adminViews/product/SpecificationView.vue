@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import type { FormRules, FormInstance } from 'element-plus'
 import useSpecification from '@/composables/useSpecification';
-import type { ispecificationDTO } from '@/composables/interfaceType';
+import type { ispecification } from '@/composables/interfaceType/adminInterface';
 
 
 // 规格操作相关逻辑
@@ -18,7 +18,7 @@ const dialogVisible = ref<boolean>(false);
 const isEdit = ref<boolean>(false);
 
 // 表单数据
-const specificationForm = ref<ispecificationDTO>({
+const specificationForm = ref<ispecification>({
     id: null,
     name: '',
     description: '',
@@ -29,7 +29,7 @@ const specificationForm = ref<ispecificationDTO>({
 const specificationFormRef = ref<FormInstance>();
 
 // 表单校验规则
-const rules = ref<FormRules<ispecificationDTO>>({
+const rules = ref<FormRules<ispecification>>({
     name: [
         { required: true, message: '规格名称不能为空', trigger: 'blur' },
         { min: 1, max: 20, message: '规格名称长度应为 1 到 20 个字符', trigger: 'blur' }
@@ -58,7 +58,7 @@ const addSpecification = () => {
 };
 
 // 编辑规格
-const editSpecification = (specification: ispecificationDTO) => {
+const editSpecification = (specification: ispecification) => {
     isEdit.value = true;
     dialogVisible.value = true;
     Object.assign(specificationForm.value, specification);

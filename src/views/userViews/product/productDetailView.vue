@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import type { icartProduct } from '@/composables/interfaceType';
+import type { icartProduct } from '@/composables/interfaceType/userInterface';
 import useProduct from '@/composables/useProduct';
 import useCart from '@/composables/useCart';
 import useFavorites from '@/composables/useFavorites'

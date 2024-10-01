@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import useAdmin from '@/composables/useAdmin';
 import { ref } from 'vue';
-import type { form } from '@/composables/interfaceType'
+import type { iadmin } from '@/composables/interfaceType/adminInterface';
 import { useRouter } from 'vue-router';
 
 // 登录表单
-const loginForm = ref<form>({
+const loginForm = ref<iadmin>({
     username: '',
     password: '',
 });

@@ -1,5 +1,5 @@
 import http from "@/utils/http";
-import type { icartProduct } from "@/composables/interfaceType";
+import type { icartProduct } from "@/composables/interfaceType/userInterface";
 
 // 添加商品到购物车
 export function addPorductToCartAPI(data: icartProduct): any {

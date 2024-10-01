@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
-import type { iorder, iaddress, icart } from '@/composables/interfaceType';
+import type { iorderDTO, iaddress, icart } from '@/composables/interfaceType/userInterface';
 import useCart from '@/composables/useCart';
 import useOrder from '@/composables/useOrder';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
@@ -136,7 +136,7 @@ const totalAmount = computed(() => {
 });
 
 // 订单数据
-const orderData = ref<iorder>({
+const orderData = ref<iorderDTO>({
     totalAmount: totalAmount.value, // 应付总金额
     paymentMethod: 1,  // 用户选择的地址ID和支付方式
     addressId: 0,

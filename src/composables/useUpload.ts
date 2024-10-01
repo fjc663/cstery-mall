@@ -1,5 +1,5 @@
 import { uploadAdminAvatarAPI, uploadAvatarAPI, uploadCategoryAPI } from "@/apis/uploadApli";
-import type { result } from "./interfaceType";
+import type { result } from "./interfaceType/commonInterface";
 import { ElMessage } from "element-plus";
 
 

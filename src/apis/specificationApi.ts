@@ -1,4 +1,4 @@
-import type { ipageQuerySpec, ispecificationDTO } from "@/composables/interfaceType";
+import type { ipageQuerySpec, ispecification } from "@/composables/interfaceType/adminInterface";
 import httpAdmin from "@/utils/httpAdmin";
 
 // 分页查询规格
@@ -10,7 +10,7 @@ export function pageQuerySpecApi(pageQuerySpec: ipageQuerySpec): any{
 }
 
 // 添加规格
-export function addSpecApi (spec: ispecificationDTO): any {
+export function addSpecApi (spec: ispecification): any {
     return httpAdmin({
         url: 'admin/spec',
         method: 'Post',
@@ -19,7 +19,7 @@ export function addSpecApi (spec: ispecificationDTO): any {
 }
 
 // 修改规格
-export function editSpecApi (spec: ispecificationDTO): any {
+export function editSpecApi (spec: ispecification): any {
     return httpAdmin({
         url: 'admin/spec',
         method: 'Put',

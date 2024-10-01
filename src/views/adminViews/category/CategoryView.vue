@@ -2,8 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { ElMessageBox, ElMessage } from 'element-plus';
 import useCategory from '@/composables/useCategory';
-import type { icategoryDTO } from '@/composables/interfaceType';
-import type { result } from '@/composables/interfaceType';
+import type { iadminCategory } from '@/composables/interfaceType/adminInterface';
+import type { result } from '@/composables/interfaceType/commonInterface';
 import type { UploadProps } from 'element-plus'
 import useUpload from '@/composables/useUpload';
 
@@ -29,7 +29,7 @@ const handleCurrentChange = (page: number) => {
 };
 
 // 表单数据
-const form = ref<icategoryDTO>({
+const form = ref<iadminCategory>({
     id: null,
     name: '',
     description: '',
@@ -68,7 +68,7 @@ const onAddCategory = (parentId: number | null) => {
 };
 
 // 编辑分类
-const onEditCategory = (category: icategoryDTO) => {
+const onEditCategory = (category: iadminCategory) => {
     Object.assign(form.value, category);
     isAdd.value = false;
     if (category.parentId) {

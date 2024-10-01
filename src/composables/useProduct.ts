@@ -1,16 +1,18 @@
 import { ref } from 'vue'
-import { getProductListByCategoryIdAPI, getProductDetailAPI, getFeaturedProductsAPI, pageQueryProductAPI } from '@/apis/productApi';
-import type { iproduct, result, ispecifications, ifeaturedproduct, ipageQueryProduct, } from '@/composables/interfaceType';
+import { getProductListByCategoryIdAPI, getProductDetailAPI, getFeaturedProductsAPI, pageQueryProductAPI, adminPageQueryProductAPI, addProductAPI, editProductAPI, deleteProductAPI } from '@/apis/productApi';
+import type { result } from "./interfaceType/commonInterface";
+import type { iuserProduct, ispecification, ifeaturedproduct, iuserPageQueryProduct } from './interfaceType/userInterface';
 import { ElMessage } from 'element-plus';
+import type { iadminPageQueryProduct, iadminProduct } from './interfaceType/adminInterface';
 
 // 当前选中的二级分类对应商品
-const products = ref<iproduct[]>([]);
+const products = ref<iuserProduct[]>([]);
 
 // 查询到的商品总条数
 const totalProduct = ref<number>(0);
 
 // 分页查询条件
-const pageQuery = ref<ipageQueryProduct>({
+const pageQuery = ref<iuserPageQueryProduct>({
     categoryId: -1,
     page: 1, // 当前页码
     pageSize: 20, // 当前页大小
@@ -21,15 +23,17 @@ const pageQuery = ref<ipageQueryProduct>({
 });
 
 // 商品详细数据和对应的规格数据
-const product = ref<iproduct>({
+const product = ref<iuserProduct>({
     id: 0,
     name: '',
     description: '',
     imageUrl: '',
     price: 0,
-    isFavorites: false
+    isFavorites: false,
+    sales: 0,
+    stock: 0
 });
-const specifications = ref<ispecifications[]>([]);
+const specifications = ref<ispecification[]>([]);
 
 // 特色商品数据
 const featuredProducts = ref<ifeaturedproduct[]>([]);
@@ -84,6 +88,58 @@ const getFeaturedProducts = async () => {
     featuredProducts.value = res.data;
 }
 
+// ===============================================================
+
+// 管理端返回的商品数据
+const adminProducts = ref<iadminProduct[]>([]);
+
+
+// 管理端分页查询商品数据
+const adminPageQueryProduct = async (pageQuery: iadminPageQueryProduct) => {
+    const res: result = await adminPageQueryProductAPI(pageQuery);
+
+    if (res.code === 0) {
+        ElMessage.error(res.msg);
+        return;
+    }
+
+    adminProducts.value = res.data;
+}
+
+// 管理端添加商品数据
+const addProduct = async (product: iadminProduct) => {
+    const res: result = await addProductAPI(product);
+
+    if (res.code === 1) {
+        ElMessage.success("添加成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+}
+
+// 管理端更新商品数据
+const editProduct = async (product: iadminProduct) => {
+    const res: result = await editProductAPI(product);
+
+    if (res.code === 1) {
+        ElMessage.success("修改成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+}
+
+// 管理端删除商品数据
+const deleteProduct = async (id: number) => {
+    const res: result = await deleteProductAPI(id);
+
+    if (res.code === 1) {
+        ElMessage.success("删除成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+}
+
+
 export default function() {
     return {
         products,
@@ -96,5 +152,9 @@ export default function() {
         pageQueryByCategoryId,
         getProductDetail,
         getFeaturedProducts,
+        adminPageQueryProduct,
+        addProduct,
+        editProduct,
+        deleteProduct
     }
 }

@@ -1,6 +1,7 @@
 import { buyAgainAPI, cancelOrderAPI, getOrderDetailAPI, getOrdersByStatusAPI, submitOrderAPI } from "@/apis/orderApi";
 import { ref } from "vue";
-import type { iorder, iorderVO, result } from "./interfaceType";
+import type { result, iorderVO } from "./interfaceType/commonInterface";
+import type { iorderDTO } from "./interfaceType/userInterface";
 import { ElMessage } from "element-plus";
 import router from "@/router";
 
@@ -76,7 +77,7 @@ const buyagain = async (orderId: number): Promise<number[]> => {
 }
 
 // 提交订单
-const submitOrder = async (orderData: iorder) => {
+const submitOrder = async (orderData: iorderDTO) => {
 
   const res: result = await submitOrderAPI(orderData);
 

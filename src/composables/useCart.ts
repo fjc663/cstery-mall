@@ -2,7 +2,8 @@
 import { ref } from 'vue';
 import { getCartItemsAPI, deleteAllCartAPI, deleteCartAPI, updateCartItemQuantityAPI, addPorductToCartAPI } from '@/apis/cartApi'; // 引入获取购物车数据的 API
 import { ElMessage } from 'element-plus';
-import type { icart, icartProduct, result } from '@/composables/interfaceType';
+import type { result } from './interfaceType/commonInterface';
+import type { icart, icartProduct } from './interfaceType/userInterface';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 
 // 购物车数据

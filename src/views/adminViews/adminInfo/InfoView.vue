@@ -3,7 +3,8 @@ import useAdmin from '@/composables/useAdmin';
 import { ref } from 'vue';
 import { onMounted } from 'vue';
 import { type FormRules, type FormInstance, type UploadProps, ElMessage } from 'element-plus'
-import type { iuserInfo, result } from '@/composables/interfaceType';
+import type { result } from '@/composables/interfaceType/commonInterface';
+import type { iuserInfo } from '@/composables/interfaceType/userInterface';
 import { useAdminInfoStore } from '@/stores/adminInfoStore';
 import useUpload from '@/composables/useUpload';
 

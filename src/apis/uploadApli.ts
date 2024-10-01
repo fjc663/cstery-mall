@@ -11,6 +11,8 @@ export function uploadAvatarAPI(data: FormData): any {
     })
 }
 
+// ==============================================================
+
 // 上传分类图片
 export function uploadCategoryAPI(data: FormData): any {
     return httpAdmin({

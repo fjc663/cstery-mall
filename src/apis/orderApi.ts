@@ -1,8 +1,8 @@
 import http from "@/utils/http";
-import type { iorder } from "@/composables/interfaceType";
+import type { iorderDTO } from "@/composables/interfaceType/userInterface";
 
 // 提交订单数据
-export function submitOrderAPI(data: iorder ): any {
+export function submitOrderAPI(data: iorderDTO ): any {
     return http({
         url: 'user/order',
         method: 'Post',

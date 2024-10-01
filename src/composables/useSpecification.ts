@@ -1,5 +1,6 @@
 import { addSpecApi, deleteSpecApi, editSpecApi, pageQuerySpecApi } from "@/apis/specificationApi"
-import type { ipageQuerySpec, ispecificationDTO, result } from "./interfaceType"
+import type { result } from "./interfaceType/commonInterface";
+import type { ipageQuerySpec, ispecification } from "./interfaceType/adminInterface";
 import { ref } from "vue";
 import { ElMessage } from "element-plus";
 
@@ -11,7 +12,7 @@ const pageQuery = ref<ipageQuerySpec>({
 })
 
 // 展示规格数据列表
-const specList = ref<ispecificationDTO[]>([]);
+const specList = ref<ispecification[]>([]);
 // 规格数据列表总条数
 const totalSpec = ref<number>(0);
 
@@ -28,7 +29,7 @@ const pageQuerySepc = async() => {
 }
 
 // 发送添加规格请求
-const addSepc = async(spec: ispecificationDTO) => {
+const addSepc = async(spec: ispecification) => {
     const res: result = await addSpecApi(spec);
 
     if (res.code === 1){
@@ -39,7 +40,7 @@ const addSepc = async(spec: ispecificationDTO) => {
 }
 
 // 发送修改规格请求
-const editSepc = async(spec: ispecificationDTO) => {
+const editSepc = async(spec: ispecification) => {
     const res: result = await editSpecApi(spec);
 
     if (res.code === 1){

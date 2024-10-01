@@ -1,7 +1,8 @@
 import { useUserInfoStore } from '@/stores/userInfoStore';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import { userLoginAPI, userRegisterAPI, editPasswordAPI, getUserInfoAPI, updateUserInfoAPI } from '@/apis/userApi';
-import type { result, ieditPasswordDTO, iuserInfo, form } from './interfaceType';
+import type { result, ieditPassword } from './interfaceType/commonInterface';
+import type { iuserInfo, iuser } from './interfaceType/userInterface';
 import { ElMessage } from 'element-plus';
 import router from '@/router';
 import { ref } from 'vue';
@@ -23,7 +24,7 @@ const user = ref<iuserInfo>({
 });
 
 // 请求登录
-const userLogin = async (loginRegisterForm: form): Promise<number> => {
+const userLogin = async (loginRegisterForm: iuser): Promise<number> => {
     //删除用户名和密码左右两端的空格
     loginRegisterForm.username = loginRegisterForm.username.replace(/(^\s*)|(\s*$)/g, "");
     loginRegisterForm.password = loginRegisterForm.password.replace(/(^\s*)|(\s*$)/g, "");
@@ -49,7 +50,7 @@ const userLogin = async (loginRegisterForm: form): Promise<number> => {
 };
 
 // 用户注册
-const userRegister = async (loginRegisterForm: form): Promise<number> => {
+const userRegister = async (loginRegisterForm: iuser): Promise<number> => {
     // 发送注册请求和处理响应结果
     const res: result = await userRegisterAPI(loginRegisterForm);
 
@@ -71,7 +72,7 @@ const logout = () => {
 
 
 // 修改密码
-const editPassword = async (form: ieditPasswordDTO) => {
+const editPassword = async (form: ieditPassword) => {
     const res: result = await editPasswordAPI(form);
 
     if (res.code === 1) {

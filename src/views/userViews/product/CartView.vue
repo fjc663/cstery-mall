@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, computed } from 'vue';
-import type { icart } from '@/composables/interfaceType';
+import type { icart } from '@/composables/interfaceType/userInterface';
 import { ElMessage } from 'element-plus';
 import useCart from '@/composables/useCart';
 import router from '@/router';

@@ -1,4 +1,4 @@
-import type { icategoryDTO, ipageQueryCategory } from "@/composables/interfaceType";
+import type { iadminCategory, ipageQueryCategory } from "@/composables/interfaceType/adminInterface";
 import http from "@/utils/http";
 import httpAdmin from "@/utils/httpAdmin";
 
@@ -16,12 +16,14 @@ export function getSubCategoryListAPI(id: number): any {
     })
 }
 
+// =====================================================================
+
 // 增加分类
-export function addCategoryAPI(categoryDTO: icategoryDTO): any {
+export function addCategoryAPI(category: iadminCategory): any {
     return httpAdmin({
         url: 'admin/category',
         method: 'Post',
-        data: categoryDTO
+        data: category
     })
 }
 
@@ -34,11 +36,11 @@ export function pageQueryCategoryAPI(pageQueryCategory: ipageQueryCategory): any
 }
 
 // 修改分类
-export function editCategoryAPI(categoryDTO: icategoryDTO): any {
+export function editCategoryAPI(category: iadminCategory): any {
     return httpAdmin({
         url: 'admin/category',
         method: 'Put',
-        data: categoryDTO
+        data: category
     })
 }
 
