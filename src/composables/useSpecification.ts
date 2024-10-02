@@ -1,4 +1,4 @@
-import { addSpecApi, deleteSpecApi, editSpecApi, pageQuerySpecApi } from "@/apis/specificationApi"
+import { addSpecApi, deleteSpecApi, editSpecApi, getAllSpecApi, pageQuerySpecApi } from "@/apis/specificationApi"
 import type { result } from "./interfaceType/commonInterface";
 import type { ipageQuerySpec, ispecification } from "./interfaceType/adminInterface";
 import { ref } from "vue";
@@ -15,6 +15,9 @@ const pageQuery = ref<ipageQuerySpec>({
 const specList = ref<ispecification[]>([]);
 // 规格数据列表总条数
 const totalSpec = ref<number>(0);
+
+// 所有规格数据列表
+const allSpecList = ref<ispecification[]>([]);
 
 // 发送分页查询请求
 const pageQuerySepc = async() => {
@@ -61,15 +64,29 @@ const deleteSepc = async(id: number) => {
     }
 }
 
+// 发送获得所有启用的规格请求
+const getAllSepc = async() => {
+    const res: result = await getAllSpecApi();
+
+    if (res.code === 0){
+        ElMessage.error(res.msg);
+        return;
+    }
+
+    allSpecList.value = res.data;
+}
+
 
 export default function(){
     return {
         pageQuery,
         specList,
         totalSpec,
+        allSpecList,
         pageQuerySepc,
         addSepc,
         editSepc,
-        deleteSepc
+        deleteSepc,
+        getAllSepc
     }
 }

@@ -52,3 +52,10 @@ export function deleteCategoryAPI(id: number): any {
         params: {id: id}
     })
 }
+
+// 获得所有启用的二级分类
+export function getAllSubCategoryAPI(): any {
+    return httpAdmin({
+        url: 'admin/category/allSub',
+    })
+}

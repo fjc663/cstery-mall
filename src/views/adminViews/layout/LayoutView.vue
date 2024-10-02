@@ -24,7 +24,7 @@ onMounted(() => getAdminUserInfo())
             <div class="header-right">
                 <el-avatar :src="admin.avatarUrl" />
                 <span class="user-name">{{ admin.username }} {{ admin.role === 'SUPER' ? '超级管理员' : '管理员' }}</span>
-                <el-button type="text" @click="logout">退出</el-button>
+                <el-button link type="primary" @click="logout">退出</el-button>
             </div>
         </el-header>
 

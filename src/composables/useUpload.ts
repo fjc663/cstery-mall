@@ -1,4 +1,4 @@
-import { uploadAdminAvatarAPI, uploadAvatarAPI, uploadCategoryAPI } from "@/apis/uploadApli";
+import { uploadAdminAvatarAPI, uploadAvatarAPI, uploadCategoryAPI, uploadProductAPI } from "@/apis/uploadApli";
 import type { result } from "./interfaceType/commonInterface";
 import { ElMessage } from "element-plus";
 
@@ -16,7 +16,7 @@ const uploadAvatar = async (formData: FormData): Promise<result> => {
     return res;
 }
 
-// 上传分类图片
+// 上传商品图片
 const uploadCategory = async (formData: FormData): Promise<result> => {
     const res: result = await uploadCategoryAPI(formData);
 
@@ -42,10 +42,24 @@ const uploadAdminAvatar = async (formData: FormData): Promise<result> => {
     return res;
 }
 
+// 上传分类图片
+const uploadProduct = async (formData: FormData): Promise<result> => {
+    const res: result = await uploadProductAPI(formData);
+
+    if (res.code === 1) {
+        ElMessage.success("上传成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+
+    return res;
+}
+
 export default function() {
     return {
         uploadAvatar,
         uploadCategory,
-        uploadAdminAvatar
+        uploadAdminAvatar,
+        uploadProduct
     }
 }

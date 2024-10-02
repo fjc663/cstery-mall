@@ -257,7 +257,7 @@ onMounted(async () => {
 /* 商品图片 */
 .product-image {
   width: 100%;
-  height: 230px;
+  height: 330px;
   object-fit: cover;
 }
 

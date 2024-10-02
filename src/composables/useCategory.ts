@@ -2,7 +2,7 @@ import { ref } from "vue";
 import type { result } from "./interfaceType/commonInterface";
 import type { iuserCategory } from "./interfaceType/userInterface";
 import type { iadminCategory, ipageQueryCategory } from "./interfaceType/adminInterface";
-import { addCategoryAPI, deleteCategoryAPI, editCategoryAPI, getCategoryListAPI, getSubCategoryListAPI, pageQueryCategoryAPI } from "@/apis/categoryApi";
+import { addCategoryAPI, deleteCategoryAPI, editCategoryAPI, getAllSubCategoryAPI, getCategoryListAPI, getSubCategoryListAPI, pageQueryCategoryAPI } from "@/apis/categoryApi";
 import { ElMessage } from "element-plus";
 
 // 一级分类数据
@@ -40,6 +40,9 @@ const getSubCategoryList = async (subCategoryId: number) => {
 }
 
 // ================================================================
+
+// 所有启用的二级分类数据
+const subAllCategories = ref<iadminCategory[]>([]);
 
 // 全部分类数据
 const allCategories = ref<iadminCategory[]>([]);
@@ -101,6 +104,18 @@ const deleteCategory = async (categoryId: number) => {
     } else {
         ElMessage.error(res.msg);
     }
+}
+
+// 获得所有启用的二级分类
+const getAllSubCategory = async () => {
+    const res: result = await getAllSubCategoryAPI();
+
+    if (res.code === 0) {
+        ElMessage.error(res.msg);
+        return;
+    }
+
+    subAllCategories.value = res.data;
 
 }
 
@@ -113,9 +128,12 @@ export default function () {
         pageQueryCategoryDTO,
         getCategoryList,
         getSubCategoryList,
+        
         addCategory,
         pageQueryCategory,
         editCategory,
-        deleteCategory
+        deleteCategory,
+        subAllCategories,
+        getAllSubCategory
     }
 }

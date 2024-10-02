@@ -32,3 +32,13 @@ export function uploadAdminAvatarAPI(data: FormData): any {
         data: data
     })
 }
+
+// 上传商品图片
+export function uploadProductAPI(data: FormData): any {
+    return httpAdmin({
+        headers: {"Content-Type": "multipart/form-data"},
+        url: '/upload/admin/product',
+        method: 'Post',
+        data: data
+    })
+}

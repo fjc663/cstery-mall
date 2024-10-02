@@ -220,7 +220,7 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
                 <!-- 可展开的子分类 -->
                 <el-table-column label="子分类" type="expand" width="80">
                     <template #default="category">
-                        <div class="sub-category" style="margin: 20px;">
+                        <div class="sub-category" style="margin: 20px 100px;">
                             <!-- 添加二级分类按钮 -->
                             <div class="add-subCategory-btn">
                                 <el-button type="primary" plain @click="onAddCategory(category.row.id)">
@@ -235,11 +235,6 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
                                 <el-table-column type="index" label="序号" width="60" />
                                 <el-table-column :label="category.row.name + '的二级分类'" prop="name" />
                                 <el-table-column label="描述" prop="description" />
-                                <el-table-column prop="imageUrl" label="图片" width="150">
-                                    <template #default="scope">
-                                        <el-image :src="scope.row.imageUrl" fit="cover" class="image-thumbnail" />
-                                    </template>
-                                </el-table-column>
                                 <el-table-column prop="status" label="状态" width="100">
                                     <template #default="scope">
                                         <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">

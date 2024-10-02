@@ -36,3 +36,9 @@ export function deleteSpecApi (id: number): any {
     })
 }
 
+// 获得所有启用的规格
+export function getAllSpecApi (): any {
+    return httpAdmin({
+        url: 'admin/spec'
+    })
+}

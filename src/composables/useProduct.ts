@@ -92,18 +92,27 @@ const getFeaturedProducts = async () => {
 
 // 管理端返回的商品数据
 const adminProducts = ref<iadminProduct[]>([]);
+// 管理端查询到的商品总条数
+const totalProductAdmin = ref<number>(0);
+
+// 管理端分页查询条件
+const pageQueryAdmin = ref<iadminPageQueryProduct>({
+    page: 1, // 当前页码
+    pageSize: 30, // 当前页大小
+});
 
 
 // 管理端分页查询商品数据
-const adminPageQueryProduct = async (pageQuery: iadminPageQueryProduct) => {
-    const res: result = await adminPageQueryProductAPI(pageQuery);
+const adminPageQueryProduct = async () => {
+    const res: result = await adminPageQueryProductAPI(pageQueryAdmin.value);
 
     if (res.code === 0) {
         ElMessage.error(res.msg);
         return;
     }
 
-    adminProducts.value = res.data;
+    adminProducts.value = res.data.records;
+    totalProductAdmin.value = res.data.total;
 }
 
 // 管理端添加商品数据
@@ -152,6 +161,10 @@ export default function() {
         pageQueryByCategoryId,
         getProductDetail,
         getFeaturedProducts,
+
+        adminProducts,
+        totalProductAdmin,
+        pageQueryAdmin,
         adminPageQueryProduct,
         addProduct,
         editProduct,

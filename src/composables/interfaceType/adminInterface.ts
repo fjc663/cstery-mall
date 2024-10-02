@@ -40,21 +40,8 @@ export interface iadminPageQueryProduct {
     page: number,
     pageSize: number,
     name?: string,
-    status?: number,
-    categoryId?: number,
-}
-
-// 管理端后端返回商品信息接口
-export interface iadminProduct {
-    id: number,
-    name: string,
-    description: string,
-    imageUrl: string,
-    price: number,
-    status: number,
-    stock: number,
-    categoryId: number,
-    sales: number,
+    status?: number | null,
+    categoryId?: number | null,
 }
 
 // 管理端规格分页查询传输对象
@@ -72,4 +59,19 @@ export interface ispecification {
     description?: string,
     status?: number,
     specificationOptions?: string
+}
+
+// 管理端后端返回商品信息接口
+export interface iadminProduct {
+    id?: number | null,
+    name?: string,
+    description?: string,
+    imageUrl?: string,
+    price?: number,
+    status?: number,
+    stock?: number,
+    categoryId?: number | null,
+    sales?: number,
+    specifications?: ispecification[]
+    specIds?: number[]
 }
