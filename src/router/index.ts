@@ -128,6 +128,10 @@ const router = createRouter({
       component: () => import('@/views/adminViews/layout/LayoutView.vue'),
       children: [
         {
+          path: '',
+          name: 'overview',
+          component: () => import('@/views/adminViews/layout/components/OverView.vue')
+        }, {
           path: 'adminCategory',
           name: 'adminCategory',
           component: () => import('@/views/adminViews/category/CategoryView.vue')
@@ -136,11 +140,11 @@ const router = createRouter({
           path: 'adminSpecification',
           name: 'adminSpecification',
           component: () => import('@/views/adminViews/product/SpecificationView.vue')
-        },{
+        }, {
           path: 'adminProduct',
           name: 'adminProduct',
           component: () => import('@/views/adminViews/product/ProductView.vue')
-        },{
+        }, {
           path: 'adminOrder',
           name: 'adminOrder',
           component: () => import('@/views/adminViews/order/OrderView.vue')

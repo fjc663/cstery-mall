@@ -82,3 +82,23 @@ export interface ipageQueryOrder {
     pageSize: number,
     status?: number | null
 }
+
+// 管理端总览页面数据
+export interface ireport {
+    totalSale: number,
+    totalOrder: number,
+    totalUser:number,
+    hotProduct: string
+}
+
+// 管理端图表数据
+export interface ichart {
+    saleList: number[],
+    statusList: number[],
+    userList: number[],
+    productNameList: string [],
+    productList: number[],
+    dataList: number[],
+    cumulativeSaleList: number[],
+    cumulativeUserList: number[]
+}

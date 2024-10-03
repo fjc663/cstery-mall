@@ -6,9 +6,12 @@ import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate' //引入持久化插件
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import Lazyload from "vue3-lazyload";  //引入图片懒加载插件
+import 'echarts';
+import ECharts from 'vue-echarts';
 
 import App from './App.vue'
 import router from './router'
+
 
 // 初始化阿里图标样式
 import '@/assets/csteryMallIcon/iconfont.css'
@@ -19,6 +22,8 @@ const app = createApp(App)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
+
+app.component('VueEcharts', ECharts)
 
 //注册插件
 app.use(Lazyload, {

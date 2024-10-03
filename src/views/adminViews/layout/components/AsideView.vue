@@ -5,7 +5,7 @@ import router from '@/router';
 
 <template>
     <el-menu :default-active="router.currentRoute.value.path" class="menu" router>
-        <el-menu-item index="/admin/overview">
+        <el-menu-item index="/admin">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-shoucang1"></use>
             </svg>
