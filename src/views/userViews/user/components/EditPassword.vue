@@ -99,8 +99,8 @@ const submitForm = (formEl: any) => {
 .password-change-page {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 85vh;
+    align-items: flex-start;
+    min-height: 100vh;
     position: relative;
     background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
 }
@@ -117,6 +117,7 @@ const submitForm = (formEl: any) => {
 
 /* 表单卡片设计 */
 .password-card {
+    margin-top: 100px;
     padding: 40px;
     border-radius: 15px;
     background-color: rgba(255, 255, 255, 0.85);

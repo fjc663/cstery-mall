@@ -22,7 +22,7 @@ const { adminPageQueryProduct, adminProducts, totalProductAdmin, pageQueryAdmin,
 
 // 分页信息
 const page = ref<number>(1);
-const pageSize = ref<number>(30);
+const pageSize = ref<number>(20);
 
 // 搜索和过滤功能
 const filters = ref({
@@ -282,7 +282,7 @@ onMounted(() => {
 
         <!-- 分页 -->
         <div class="product-pagination-block">
-            <el-pagination v-model:current-page="page" v-model:page-size="pageSize" :page-sizes="[30, 50, 100, 200]"
+            <el-pagination v-model:current-page="page" v-model:page-size="pageSize" :page-sizes="[20, 40, 60, 80, 100]"
                 layout="total, sizes, prev, pager, next, jumper" :total="totalProductAdmin"
                 @size-change="handleSizeChange" @current-change="handleCurrentChange" />
         </div>

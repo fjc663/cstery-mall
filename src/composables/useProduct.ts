@@ -98,7 +98,7 @@ const totalProductAdmin = ref<number>(0);
 // 管理端分页查询条件
 const pageQueryAdmin = ref<iadminPageQueryProduct>({
     page: 1, // 当前页码
-    pageSize: 30, // 当前页大小
+    pageSize: 20, // 当前页大小
 });
 
 

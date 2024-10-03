@@ -9,6 +9,7 @@ import useAddress from '@/composables/useAddress';
 import { type FormRules, type FormInstance } from 'element-plus'
 import { pcaTextArr } from 'element-china-area-data'
 import { useRoute } from 'vue-router';
+import type { result } from '@/composables/interfaceType/commonInterface';
 
 // 购物车数量状态管理
 const cartItemsNumStore = useCartItemsNumStore();
@@ -154,7 +155,10 @@ const onSubmitOrder = async () => {
     orderData.value.selectedCardId = selectedItemIds.value;
 
     // 提交订单
-    await submitOrder(orderData.value);
+    const res: result = await submitOrder(orderData.value);
+    if (res.code === 1) {
+        router.push(`/pay/${res.data}`);
+    }
 
     cartItemsNumStore.getCartItemsNum();
 };

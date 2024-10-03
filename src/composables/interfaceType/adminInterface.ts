@@ -75,3 +75,10 @@ export interface iadminProduct {
     specifications?: ispecification[]
     specIds?: number[]
 }
+
+// 管理端订单分页查询传输对象
+export interface ipageQueryOrder {
+    page: number,
+    pageSize: number,
+    status?: number | null
+}

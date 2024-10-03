@@ -29,7 +29,7 @@ import router from '@/router';
             </svg>
             <span>商品管理</span>
         </el-menu-item>
-        <el-menu-item index="/admin/adminOrderManager">
+        <el-menu-item index="/admin/adminOrder">
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-dingdan"></use>
             </svg>

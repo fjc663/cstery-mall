@@ -1,8 +1,10 @@
 import http from "@/utils/http";
+import httpAdmin from "@/utils/httpAdmin";
 import type { iorderDTO } from "@/composables/interfaceType/userInterface";
+import type { ipageQueryOrder } from "@/composables/interfaceType/adminInterface";
 
 // 提交订单数据
-export function submitOrderAPI(data: iorderDTO ): any {
+export function submitOrderAPI(data: iorderDTO): any {
     return http({
         url: 'user/order',
         method: 'Post',
@@ -35,10 +37,45 @@ export function cancelOrderAPI(orderId: number): any {
     })
 }
 
+// 根据订单id支付订单
+export function payOrderAPI(orderId: number): any {
+    return http({
+        url: `user/order/pay/${orderId}`,
+        method: 'Put'
+    })
+}
+
+// 根据订单id完成订单
+export function completeOrderAPI(orderId: number): any {
+    return http({
+        url: `user/order/complete/${orderId}`,
+        method: 'Put'
+    })
+}
+
 // 根据订单id再次购买
 export function buyAgainAPI(orderId: number): any {
     return http({
         url: `user/order/buyagain/${orderId}`,
         method: 'Post',
+    })
+}
+
+// ============================================================
+
+// 分页查询订单数据
+export function pageQueryOrderApi(pageQueryuery: ipageQueryOrder): any {
+    return httpAdmin({
+        url: 'admin/order/page',
+        params: pageQueryuery
+    })
+}
+
+// 修改订单状态
+export function setOrderStatusApi(id: number, status: number): any {
+    return httpAdmin({
+        url: `admin/order/status/${status}`,
+        method: 'Put',
+        params: { id: id }
     })
 }

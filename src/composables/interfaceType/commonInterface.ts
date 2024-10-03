@@ -28,7 +28,7 @@ export interface iorderVO {
     discountAmount: number,
     createdAt: string,
     paidAt: string,
-    shippingAt: string,
+    shippedAt: string,
     completedAt: string,
     canceledAt: string,
     remark: string,

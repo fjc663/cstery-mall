@@ -2,7 +2,7 @@
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import useOrder from '@/composables/useOrder';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import router from '@/router';
 
@@ -11,25 +11,22 @@ const cartItemsNumStore = useCartItemsNumStore();
 
 // 使用组合函数获取订单详情数据
 const route = useRoute();
-const { orderDetail, getOrderDetail, cancelOrder, buyagain, countdowns, formatTime } = useOrder();
+const orderId: number = Number(route.params.orderId); // 从路由中获取订单ID
+const { orderDetail, getOrderDetail, cancelOrder, buyagain, countdowns, formatTime, completeOrder } = useOrder();
 
 // 获取订单详情
 onMounted(() => {
-  const orderId: number = Number(route.params.orderId); // 从路由中获取订单ID
   getOrderDetail(orderId); // 调用获取订单详情的函数
 });
 
-// 路由函数用来实现操作
-const contactSeller = () => {
-  console.log("联系卖家");
-};
-
+// 再次购买
 const reorder = async () => {
   await buyagain(orderDetail.value.id);
   cartItemsNumStore.getCartItemsNum();
   router.push("/cart");
 };
 
+// 取消订单
 const onCancelOrder = async () => {
   const code = await cancelOrder(orderDetail.value.id);
   if (code === 1) {
@@ -38,9 +35,27 @@ const onCancelOrder = async () => {
   getOrderDetail(orderDetail.value.id);
 };
 
+// 支付订单
 const payOrder = () => {
-  console.log("支付订单");
+  router.push(`/pay/${orderId}`)
 };
+
+// 确认订单
+const onCompleteOrder = (orderId: number) => {
+  ElMessageBox.confirm('确认完成订单吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(async () => {
+    // 修改订单为完成状态
+    await completeOrder(orderId);
+    router.push('/orderManager');
+    getOrderDetail(orderDetail.value.id);
+  }).catch(() => {
+    ElMessage.info('已取消');
+  });
+}
+
 </script>
 
 <template>
@@ -59,7 +74,7 @@ const payOrder = () => {
             <p><strong>订单编号:</strong> {{ orderDetail.orderNumber }}</p>
             <p><strong>下单时间:</strong> {{ orderDetail.createdAt }}</p>
             <p v-if="orderDetail.status === 2"><strong>支付时间:</strong> {{ orderDetail.paidAt }}</p>
-            <p v-if="orderDetail.status === 3"><strong>发货时间:</strong> {{ orderDetail.shippingAt }}</p>
+            <p v-if="orderDetail.status === 3"><strong>发货时间:</strong> {{ orderDetail.shippedAt }}</p>
             <p v-if="orderDetail.status === 4"><strong>完成时间:</strong> {{ orderDetail.completedAt }}</p>
             <p v-if="orderDetail.status === 5"><strong>取消时间:</strong> {{ orderDetail.canceledAt }}</p>
           </el-col>
@@ -127,9 +142,9 @@ const payOrder = () => {
       <!-- 操作按钮 -->
       <div class="order-actions">
         <el-button v-if="orderDetail.status === 1" type="danger" @click="onCancelOrder">取消订单</el-button>
-        <el-button v-if="orderDetail.status === 1" type="primary" @click="payOrder">支付订单</el-button>
+        <el-button v-if="orderDetail.status === 1" type="warning" @click="payOrder">支付订单</el-button>
+        <el-button v-if="orderDetail.status === 3" type="success" @click="onCompleteOrder">完成订单</el-button>
         <el-button v-if="orderDetail.status === 4" type="primary" @click="reorder">再次购买</el-button>
-        <el-button type="info" @click="contactSeller">联系卖家</el-button>
       </div>
     </el-main>
   </el-container>

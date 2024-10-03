@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import useOrder from '@/composables/useOrder';
-import { ElMessage } from 'element-plus';
-import { useRouter } from 'vue-router';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import { useRouter, useRoute } from 'vue-router';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 
 // 购物车数量显示状态管理
 const cartItemsNumStore = useCartItemsNumStore();
 
 // 使用组合函数获取订单数据
-const { orders, getOrdersByStatus, cancelOrder, buyagain, countdowns, formatTime } = useOrder();
+const { orders, getOrdersByStatus, cancelOrder, buyagain, countdowns, formatTime, completeOrder } = useOrder();
 
 // 路由对象，用于跳转订单详情页
 const router = useRouter();
+const route = useRoute();
 
 // 查看订单详情
 const viewOrderDetail = (orderId: number) => {
@@ -24,8 +25,9 @@ const onCancelOrder = async (orderId: number) => {
   if (code === 1) {
     ElMessage.success("取消成功");
   }
-  router.push('/orderManager');
-  getOrdersByStatus(-1);
+
+  const status = route.query.status ? Number(route.query.status) : -1;  // 从路由参数获取订单状态
+  getOrdersByStatus(status);
 }
 
 // 再来一单
@@ -36,6 +38,28 @@ const onBuyAgain = async (orderId: number) => {
   router.push({
     path: '/cart',
     query: { selectedCartIds: JSON.stringify(cartIds) }
+  });
+}
+
+// 支付订单
+const payOrder = (orderId: number) => {
+  router.push(`/pay/${orderId}`)
+};
+
+// 确认订单
+const onCompleteOrder = (orderId: number) => {
+  ElMessageBox.confirm('确认完成订单吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(async () => {
+    // 修改订单为完成状态
+    await completeOrder(orderId);
+
+    const status = route.query.status ? Number(route.query.status) : -1;  // 从路由参数获取订单状态
+    getOrdersByStatus(status);
+  }).catch(() => {
+    ElMessage.info('已取消');
   });
 }
 
@@ -77,10 +101,14 @@ const onBuyAgain = async (orderId: number) => {
 
       <!-- 订单操作按钮 -->
       <div class="order-actions">
-        <el-button v-if="order.status === 4" type="primary" size="small" @click="onBuyAgain(order.id)">再次购买</el-button>
-        <el-button v-if="order.status === 1" type="primary" size="small">支付订单</el-button>
+        <el-button v-if="order.status === 4" type="primary" size="small"
+          @click.stop="onBuyAgain(order.id)">再次购买</el-button>
+        <el-button v-if="order.status === 3" type="success" size="small"
+          @click.stop="onCompleteOrder(order.id)">订单完成</el-button>
+        <el-button v-if="order.status === 1" type="warning" size="small"
+          @click.stop="payOrder(order.id)">支付订单</el-button>
         <el-button v-if="order.status === 1" type="danger" size="small"
-          @click="onCancelOrder(order.id)">取消订单</el-button>
+          @click.stop="onCancelOrder(order.id)">取消订单</el-button>
       </div>
     </el-card>
   </div>

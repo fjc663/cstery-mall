@@ -3,7 +3,6 @@ import axios from "axios"
 import { useAdminInfoStore } from "@/stores/adminInfoStore";
 import { ElMessage } from "element-plus";
 import router from "@/router";
-import { useRoute } from "vue-router";
 
 const httpAdminInstance = axios.create({
     baseURL: '/api',
@@ -28,9 +27,7 @@ httpAdminInstance.interceptors.response.use(res => res.data, e => {
         const adminInfoStore = useAdminInfoStore();
         adminInfoStore.removeTokenAndUsername();  // 清除token
 
-        const route = useRoute();
-
-        router.push({path: '/adminLogin', query: {redirect: route.fullPath}})  // 登录完返回登录前页面
+        router.push({path: '/adminLogin', query: {redirect: router.currentRoute.value.fullPath}})  // 登录完返回登录前页面
     }
 
     return Promise.reject(e)

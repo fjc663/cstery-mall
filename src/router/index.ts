@@ -51,7 +51,7 @@ const router = createRouter({
           component: () => import('@/views/userViews/product/OrderView.vue')
         },
         {
-          path: '/pay',
+          path: '/pay/:orderId',
           name: 'pay',
           component: () => import('@/views/userViews/product/PayView.vue')
         },
@@ -140,6 +140,10 @@ const router = createRouter({
           path: 'adminProduct',
           name: 'adminProduct',
           component: () => import('@/views/adminViews/product/ProductView.vue')
+        },{
+          path: 'adminOrder',
+          name: 'adminOrder',
+          component: () => import('@/views/adminViews/order/OrderView.vue')
         },
         {
           path: 'adminInfo',
@@ -175,19 +179,19 @@ const router = createRouter({
   }
 });
 
-// 全局路由守卫,控制支付界面的跳转
-router.beforeEach((to, from, next) => {
-  if (to.path === '/pay') {
-    // 检查是否是从 /order 页面跳转过来的
-    if (from.path === '/order') {
-      next(); // 允许跳转
-    } else {
-      next('/'); // 阻止跳转,直接返回首页
-    }
-  } else {
-    next(); // 对其他页面不做限制
-  }
-});
+// // 全局路由守卫,控制支付界面的跳转
+// router.beforeEach((to, from, next) => {
+//   if (to.path === '/pay') {
+//     // 检查是否是从 /order 页面跳转过来的
+//     if (from.path === '/order') {
+//       next(); // 允许跳转
+//     } else {
+//       next('/'); // 阻止跳转,直接返回首页
+//     }
+//   } else {
+//     next(); // 对其他页面不做限制
+//   }
+// });
 
 
 export default router
