@@ -102,3 +102,11 @@ export interface ichart {
     cumulativeSaleList: number[],
     cumulativeUserList: number[]
 }
+
+// 分页查询条件
+export interface ipagequeryUser {
+    page: number,
+    pageSize: number,
+    username?: string,
+    role?: string | null
+}

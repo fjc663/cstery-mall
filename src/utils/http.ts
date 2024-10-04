@@ -1,6 +1,6 @@
 // 封装axiios
 import axios from "axios"
-import { useUserInfoStore } from "@/stores/userInfoStore"
+import { useUserInfoStore } from "@/stores/useUserInfoStore"
 import { ElMessage } from "element-plus";
 import router from "@/router";
 

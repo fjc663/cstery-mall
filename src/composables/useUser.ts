@@ -1,4 +1,4 @@
-import { useUserInfoStore } from '@/stores/userInfoStore';
+import { useUserInfoStore } from '@/stores/useUserInfoStore';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import { userLoginAPI, userRegisterAPI, editPasswordAPI, getUserInfoAPI, updateUserInfoAPI } from '@/apis/userApi';
 import type { result, ieditPassword } from './interfaceType/commonInterface';

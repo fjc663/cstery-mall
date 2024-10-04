@@ -291,9 +291,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.specification-management {
-    padding: 20px;
-}
 
 /* 设置顶部卡片样式 */
 .search-card {

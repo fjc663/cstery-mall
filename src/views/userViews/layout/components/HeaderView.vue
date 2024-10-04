@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import router from '@/router';
-import { useUserInfoStore } from '@/stores/userInfoStore';
+import { useUserInfoStore } from '@/stores/useUserInfoStore';
 import { useCartItemsNumStore } from '@/stores/useCartItemsNumStore';
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';

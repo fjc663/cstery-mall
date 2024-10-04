@@ -1,13 +1,13 @@
-import { adminLoginAPI, editAdminPasswordAPI, getAdminUserInfoAPI, saveAdminInfoAPI } from '@/apis/userApi';
+import { adminLoginAPI, editAdminPasswordAPI, getAdminUserInfoAPI, pageQueryUserApi, resetPasswordApi, saveAdminInfoAPI, setRoleApi } from '@/apis/userApi';
 import type { result } from './interfaceType/commonInterface';
-import type { iadmin } from '@/composables/interfaceType/adminInterface';
+import type { iadmin, ipagequeryUser } from '@/composables/interfaceType/adminInterface';
 import type { iadminUserInfo } from '@/composables/interfaceType/adminInterface';
 import type { ieditPassword } from '@/composables/interfaceType/commonInterface';
 
 import { ElMessage } from 'element-plus';
 import router from '@/router';
 import { ref } from 'vue';
-import { useAdminInfoStore } from '@/stores/adminInfoStore';
+import { useAdminInfoStore } from '@/stores/useAdminInfoStore';
 
 const useAdminInfo = useAdminInfoStore();
 
@@ -39,6 +39,7 @@ const adminLogin = async (loginRegisterForm: iadmin): Promise<number> => {
         useAdminInfo.setToken(res.data.token);
         useAdminInfo.setUsername(loginRegisterForm.username);
         useAdminInfo.setAvatar(res.data.avatarUrl);
+        useAdminInfo.setRole(res.data.role);
 
     } else {
         ElMessage.error(res.msg);
@@ -48,7 +49,7 @@ const adminLogin = async (loginRegisterForm: iadmin): Promise<number> => {
 
 // 退出登录
 const logout = () => {
-    useAdminInfo.removeTokenAndUsername()
+    useAdminInfo.remove()
     router.push('/adminLogin');
 }
 
@@ -97,13 +98,68 @@ const saveAdminInfo = async () => {
     getAdminUserInfo();
 };
 
-export default function() {
+// 分页条件
+const pageQuery = ref<ipagequeryUser>({
+    page: 1,
+    pageSize: 10
+})
+
+// 用户总数
+const totalUser = ref<number>(0);
+
+// 分页查询的用户数据
+const users = ref<iadminUserInfo[]>([]);
+
+// 分页查询用户信息
+const pageQueryUser = async () => {
+    const res: result = await pageQueryUserApi(pageQuery.value);
+
+    if (res.code === 0) {
+        ElMessage.error(res.msg);
+        return;
+    }
+
+    totalUser.value = res.data.total;
+    users.value = res.data.records;
+}
+
+// 设置用户角色
+const setRole = async (id: number, role: string) => {
+    const res: result = await setRoleApi(id, role);
+
+    if (res.code === 1) {
+        ElMessage.success("设置成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+}
+
+// 重置密码
+const resetPassword = async (id: number, password: string): Promise<number> => {
+    const res: result = await resetPasswordApi(id, password);
+
+    if (res.code === 1) {
+        ElMessage.success("设置成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+
+    return res.code;
+}
+
+export default function () {
     return {
         admin,
         adminLogin,
         logout,
         editAdminPassword,
         getAdminUserInfo,
-        saveAdminInfo
+        saveAdminInfo,
+        pageQuery,
+        totalUser,
+        users,
+        pageQueryUser,
+        setRole,
+        resetPassword
     }
 }

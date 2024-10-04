@@ -200,7 +200,11 @@ onMounted(() => {
                 <el-form-item label="商品名称">
                     <el-input v-model="filters.name" placeholder="请输入商品名称" clearable class="search-input">
                         <template #append>
-                            <el-button @click="searchProduct">搜索</el-button>
+                            <el-button @click="searchProduct">
+                                <svg class="icon" aria-hidden="true">
+                                    <use xlink:href="#icon-find"></use>
+                                </svg>
+                            </el-button>
                         </template>
                     </el-input>
                 </el-form-item>

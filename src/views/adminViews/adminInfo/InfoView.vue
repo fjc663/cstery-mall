@@ -5,7 +5,7 @@ import { onMounted } from 'vue';
 import { type FormRules, type FormInstance, type UploadProps, ElMessage } from 'element-plus'
 import type { result } from '@/composables/interfaceType/commonInterface';
 import type { iuserInfo } from '@/composables/interfaceType/userInterface';
-import { useAdminInfoStore } from '@/stores/adminInfoStore';
+import { useAdminInfoStore } from '@/stores/useAdminInfoStore';
 import useUpload from '@/composables/useUpload';
 
 const {admin, getAdminUserInfo, saveAdminInfo} = useAdmin();

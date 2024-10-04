@@ -5,7 +5,7 @@ import type { ComponentSize, FormRules, FormInstance, UploadProps } from 'elemen
 import type { result } from '@/composables/interfaceType/commonInterface';
 import type { iuserInfo } from '@/composables/interfaceType/userInterface';
 import { pcaTextArr } from 'element-china-area-data'
-import { useUserInfoStore } from '@/stores/userInfoStore';
+import { useUserInfoStore } from '@/stores/useUserInfoStore';
 import useUser from '@/composables/useUser';
 import useUpload from '@/composables/useUpload';
 

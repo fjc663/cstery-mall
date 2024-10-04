@@ -5,6 +5,7 @@ export const useAdminInfoStore = defineStore('adminInfo', () => {
     const token = ref<string>('');
     const username = ref<string>('');
     const avatarUrl = ref<string>('');
+    const role = ref<string>('');
 
     function setToken(newToken: string) {
         token.value = newToken;
@@ -18,13 +19,18 @@ export const useAdminInfoStore = defineStore('adminInfo', () => {
         avatarUrl.value = newAvatarUrl;
     }
 
-    function removeTokenAndUsername() {
+    function setRole(newRole: string) {
+        role.value = newRole;
+    }
+
+    function remove() {
         token.value = '';
         username.value = '';
         avatarUrl.value = '';
+        role.value = '';
     }
 
-    return { token, username, avatarUrl, setToken, setUsername, setAvatar, removeTokenAndUsername }
+    return { token, username, avatarUrl, role, setToken, setUsername, setAvatar, remove, setRole }
 
 },
     {

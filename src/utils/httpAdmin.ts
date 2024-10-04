@@ -1,6 +1,6 @@
 // 封装axiios
 import axios from "axios"
-import { useAdminInfoStore } from "@/stores/adminInfoStore";
+import { useAdminInfoStore } from "@/stores/useAdminInfoStore";
 import { ElMessage } from "element-plus";
 import router from "@/router";
 
@@ -25,7 +25,7 @@ httpAdminInstance.interceptors.response.use(res => res.data, e => {
         ElMessage.warning("请先登录");
 
         const adminInfoStore = useAdminInfoStore();
-        adminInfoStore.removeTokenAndUsername();  // 清除token
+        adminInfoStore.remove();  // 清除token
 
         router.push({path: '/adminLogin', query: {redirect: router.currentRoute.value.fullPath}})  // 登录完返回登录前页面
     }

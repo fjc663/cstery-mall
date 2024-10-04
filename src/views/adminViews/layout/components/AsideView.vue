@@ -7,33 +7,39 @@ import router from '@/router';
     <el-menu :default-active="router.currentRoute.value.path" class="menu" router>
         <el-menu-item index="/admin">
             <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-shoucang1"></use>
+                <use xlink:href="#icon-zonglan"></use>
             </svg>
-            <span>概览</span>
+            <span>总览</span>
         </el-menu-item>
         <el-menu-item index="/admin/adminCategory">
             <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-dizhi"></use>
+                <use xlink:href="#icon-fenleiguanli"></use>
             </svg>
             <span>分类管理</span>
         </el-menu-item>
         <el-menu-item index="/admin/adminSpecification">
             <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-dizhi"></use>
+                <use xlink:href="#icon-guigeguanli"></use>
             </svg>
             <span>规格管理</span>
         </el-menu-item>
         <el-menu-item index="/admin/adminProduct">
             <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-dizhi"></use>
+                <use xlink:href="#icon-shangpinguanli"></use>
             </svg>
             <span>商品管理</span>
         </el-menu-item>
         <el-menu-item index="/admin/adminOrder">
             <svg class="icon" aria-hidden="true">
-                <use xlink:href="#icon-dingdan"></use>
+                <use xlink:href="#icon-dingdanguanli"></use>
             </svg>
             <span>订单管理</span>
+        </el-menu-item>
+        <el-menu-item index="/admin/user">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-yonghuguanli"></use>
+            </svg>
+            <span>用户管理</span>
         </el-menu-item>
         <el-menu-item index="/admin/adminInfo">
             <svg class="icon" aria-hidden="true">

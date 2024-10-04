@@ -28,7 +28,7 @@ onMounted(() => getAdminUserInfo())
             </div>
         </el-header>
 
-        <el-container style="padding-left: 30px;">
+        <el-container class="container">
             <!-- 左侧：侧边栏导航 -->
             <el-aside width="240px" class="sidebar">
                 <AsideView />
@@ -64,9 +64,13 @@ onMounted(() => getAdminUserInfo())
     align-items: center;
     padding: 0 20px;
     background-color: #fff;
-    border-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+}
+
+.container{
+    background-color: #ffffffa2;
 }
 
 .icon {
@@ -94,14 +98,15 @@ onMounted(() => getAdminUserInfo())
 .sidebar {
     background-color: #fff;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
 
 /* 主内容样式 */
 .main-content {
     flex: 1;
     padding: 0 30px;
+    padding-top: 10px;
 }
 
 /* 底部样式 */

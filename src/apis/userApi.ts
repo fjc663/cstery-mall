@@ -1,7 +1,7 @@
 import http from '@/utils/http'
 import httpAdmin from '@/utils/httpAdmin'
 import type { iuser } from '@/composables/interfaceType/userInterface'
-import type { iadmin } from '@/composables/interfaceType/adminInterface'
+import type { iadmin, ipagequeryUser } from '@/composables/interfaceType/adminInterface'
 import type { iuserInfo } from '@/composables/interfaceType/userInterface'
 import type { iadminUserInfo } from '@/composables/interfaceType/adminInterface'
 import type { ieditPassword } from '@/composables/interfaceType/commonInterface'
@@ -83,5 +83,31 @@ export function editAdminPasswordAPI(data: ieditPassword): any {
         url: 'admin/user/editPassword',
         method: 'Put',
         data: data
+    })
+}
+
+// 分页查询用户数据
+export function pageQueryUserApi(pageQuery: ipagequeryUser): any {
+    return httpAdmin({
+        url: 'admin/user/page',
+        params: pageQuery
+    })
+}
+
+// 设置职责
+export function setRoleApi(id: number, role: string): any {
+    return httpAdmin({
+        url: `admin/user/role/${id}`,
+        method: 'Put',
+        params: { role: role }
+    })
+}
+
+// 重置密码
+export function resetPasswordApi(id: number, password: string): any {
+    return httpAdmin({
+        url: `admin/user/reset/${id}`,
+        method: 'Put',
+        params: { password: password }
     })
 }
