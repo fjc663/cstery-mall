@@ -70,3 +70,21 @@ export function deleteProductAPI(id: number): any {
         params: { id: id }
     })
 }
+
+// 设置商品类型
+export function setProductTypeAPI(id: number, type: number): any {
+    return httpAdmin({
+        url: `admin/product/type/${id}`,
+        method: 'Put',
+        params: { type: type }
+    })
+}
+
+// 重置商品类型
+export function resetProductTypeAPI(id: number, type: number): any {
+    return httpAdmin({
+        url: `admin/product/reset/${id}`,
+        method: 'Put',
+        params: { type: type }
+    })
+}

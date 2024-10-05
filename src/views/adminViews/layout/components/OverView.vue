@@ -140,18 +140,26 @@ const fetchData = async () => {
     // 更新 Top 10 热门商品图表
     const topProductChart = echarts.init(document.getElementById('topProductChart') as HTMLElement);
     const topProductOption = {
-        title: { text: '', left: 'center' },
+        title: { text: 'Top 10 热门商品', left: 'center' },
         tooltip: {
             trigger: 'axis',
             formatter: '{b0}: {c0}', // 鼠标悬浮时显示数值
         },
-        xAxis: { type: 'category', data: chartData.value.productNameList },
+        xAxis: {
+            type: 'category',
+            data: chartData.value.productNameList,
+            axisLabel: {
+                rotate: 30,  // 将标签旋转30度，避免重叠
+                interval: 0, // 强制显示所有标签
+            },
+        },
         yAxis: { type: 'value' },
         series: [
             {
                 name: '销量',
                 data: chartData.value.productList,
                 type: 'bar',
+                barWidth: '50%', // 设置柱状图宽度
             },
         ],
     };

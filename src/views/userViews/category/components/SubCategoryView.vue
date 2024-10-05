@@ -106,6 +106,9 @@ onMounted(async () => {
   handleSearch();
 
 });
+
+console.log(route.fullPath);
+
 </script>
 
 <template>
@@ -134,7 +137,6 @@ onMounted(async () => {
               </el-button>
             </template>
           </el-input>
-
         </div>
 
         <el-select v-model="priceOrder" placeholder="价格排序" @change="handlePriceOrderChange" class="select-prict-order">

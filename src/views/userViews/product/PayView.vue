@@ -41,7 +41,7 @@ const showQrCode = () => {
         // 完成支付后选择跳转页面
         ElMessageBox({
             title: '支付成功',
-            message: '您可以选择查看订单详情，或者等待5秒自动返回主页。',
+            message: '您可以选择查看订单详情，或者返回主页。',
             showCancelButton: true,
             confirmButtonText: '查看订单',
             cancelButtonText: '返回主页',
@@ -54,10 +54,6 @@ const showQrCode = () => {
             router.push('/');
         });
 
-        // 5秒后自动跳转到主页
-        setTimeout(() => {
-            router.push('/');
-        }, 5000);
     }).catch(() => {
         // 用户取消支付
         ElMessage.info("取消支付");

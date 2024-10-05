@@ -42,6 +42,7 @@ export interface iadminPageQueryProduct {
     name?: string,
     status?: number | null,
     categoryId?: number | null,
+    type?: number | null
 }
 
 // 管理端规格分页查询传输对象
@@ -73,7 +74,10 @@ export interface iadminProduct {
     categoryId?: number | null,
     sales?: number,
     specifications?: ispecification[]
-    specIds?: number[]
+    specIds?: number[],
+    isSlides?: boolean,
+    isHot?: boolean,
+    isNew?: boolean
 }
 
 // 管理端订单分页查询传输对象

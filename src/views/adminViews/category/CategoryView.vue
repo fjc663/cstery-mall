@@ -217,6 +217,42 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
                 :default-sort="{ prop: 'sortOrder', order: 'ascending' }">
                 <el-table-column type="index" label="序号" width="60" />
 
+                <!-- 图片展示 -->
+                <el-table-column prop="imageUrl" label="分类图片" width="150">
+                    <template #default="scope">
+                        <el-image :src="scope.row.imageUrl" fit="cover" class="image-thumbnail" />
+                    </template>
+                </el-table-column>
+
+                <!-- 父分类名称 -->
+                <el-table-column prop="name" label="分类名称"></el-table-column>
+                <el-table-column prop="description" label="描述"></el-table-column>
+
+                <!-- 状态标签 -->
+                <el-table-column prop="status" label="状态" width="100">
+                    <template #default="scope">
+                        <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">
+                            {{ scope.row.status === 1 ? '启用' : '禁用' }}
+                        </el-tag>
+                    </template>
+                </el-table-column>
+
+                <!-- 排序列 -->
+                <el-table-column prop="sortOrder" sortable label="排序" width="80" />
+
+                <!-- 操作列 -->
+                <el-table-column label="操作" width="200">
+                    <template #default="scope">
+                        <el-button :type="scope.row.status === 1 ? 'danger' : 'success'" size="small" link
+                            @click="enOrDisAble(scope.row.id, scope.row.status === 1 ? 0 : 1)">
+                            {{ scope.row.status === 1 ? '禁用' : '启用' }}
+                        </el-button>
+                        <el-button size="small" type="primary" @click="onEditCategory(scope.row)" link>编辑</el-button>
+                        <el-button size="small" type="danger" @click="onDeleteCategory(scope.row.id)"
+                            link>删除</el-button>
+                    </template>
+                </el-table-column>
+
                 <!-- 可展开的子分类 -->
                 <el-table-column label="子分类" type="expand" width="80">
                     <template #default="category">
@@ -259,42 +295,7 @@ const beforeCategoryUpload: UploadProps['beforeUpload'] = (rawFile) => {
                         </div>
                     </template>
                 </el-table-column>
-
-                <!-- 父分类名称 -->
-                <el-table-column prop="name" label="分类名称"></el-table-column>
-                <el-table-column prop="description" label="描述"></el-table-column>
-
-                <!-- 图片展示 -->
-                <el-table-column prop="imageUrl" label="图片" width="150">
-                    <template #default="scope">
-                        <el-image :src="scope.row.imageUrl" fit="cover" class="image-thumbnail" />
-                    </template>
-                </el-table-column>
-
-                <!-- 状态标签 -->
-                <el-table-column prop="status" label="状态" width="100">
-                    <template #default="scope">
-                        <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">
-                            {{ scope.row.status === 1 ? '启用' : '禁用' }}
-                        </el-tag>
-                    </template>
-                </el-table-column>
-
-                <!-- 排序列 -->
-                <el-table-column prop="sortOrder" sortable label="排序" width="80" />
-
-                <!-- 操作列 -->
-                <el-table-column label="操作" width="200">
-                    <template #default="scope">
-                        <el-button :type="scope.row.status === 1 ? 'danger' : 'success'" size="small" link
-                            @click="enOrDisAble(scope.row.id, scope.row.status === 1 ? 0 : 1)">
-                            {{ scope.row.status === 1 ? '禁用' : '启用' }}
-                        </el-button>
-                        <el-button size="small" type="primary" @click="onEditCategory(scope.row)" link>编辑</el-button>
-                        <el-button size="small" type="danger" @click="onDeleteCategory(scope.row.id)"
-                            link>删除</el-button>
-                    </template>
-                </el-table-column>
+                
             </el-table>
         </el-card>
 

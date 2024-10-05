@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { getProductListByCategoryIdAPI, getProductDetailAPI, getFeaturedProductsAPI, pageQueryProductAPI, adminPageQueryProductAPI, addProductAPI, editProductAPI, deleteProductAPI } from '@/apis/productApi';
+import { getProductListByCategoryIdAPI, getProductDetailAPI, getFeaturedProductsAPI, pageQueryProductAPI, adminPageQueryProductAPI, addProductAPI, editProductAPI, deleteProductAPI, setProductTypeAPI, resetProductTypeAPI } from '@/apis/productApi';
 import type { result } from "./interfaceType/commonInterface";
 import type { iuserProduct, ispecification, ifeaturedproduct, iuserPageQueryProduct } from './interfaceType/userInterface';
 import { ElMessage } from 'element-plus';
@@ -148,6 +148,30 @@ const deleteProduct = async (id: number) => {
     }
 }
 
+// 设置商品类型
+const setProductType = async (id: number, type: number) => {
+    const res: result = await setProductTypeAPI(id, type);
+
+    if (res.code === 1) {
+        ElMessage.success("设置成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+
+}
+
+// 取消设置商品类型
+const resetProductType = async (id: number, type: number) => {
+    const res: result = await resetProductTypeAPI(id, type);
+
+    if (res.code === 1) {
+        ElMessage.success("取消设置成功");
+    } else {
+        ElMessage.error(res.msg);
+    }
+
+}
+
 
 export default function() {
     return {
@@ -168,6 +192,8 @@ export default function() {
         adminPageQueryProduct,
         addProduct,
         editProduct,
-        deleteProduct
+        deleteProduct,
+        setProductType,
+        resetProductType
     }
 }

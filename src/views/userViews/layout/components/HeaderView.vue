@@ -238,10 +238,7 @@ const goToCart = () => {
 
 /* 购物车样式 */
 .cart-badge {
-    margin-left: 10px;
     position: relative;
-    font-size: 18px;
-    /* 调整购物车图标的大小 */
 }
 
 .cart-icon-button {
@@ -254,7 +251,7 @@ const goToCart = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 20px;
+    font-size: 28px;
     /* 调整购物车图标的大小 */
     transition: background-color 0.3s ease;
 }

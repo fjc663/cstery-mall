@@ -18,7 +18,7 @@ const { subAllCategories, getAllSubCategory } = useCategory();
 const { allSpecList, getAllSepc } = useSpecification();
 
 // 管理端商品处理逻辑
-const { adminPageQueryProduct, adminProducts, totalProductAdmin, pageQueryAdmin, addProduct, editProduct, deleteProduct } = useProduct();
+const { adminPageQueryProduct, adminProducts, totalProductAdmin, pageQueryAdmin, addProduct, editProduct, deleteProduct, setProductType, resetProductType } = useProduct();
 
 // 分页信息
 const page = ref<number>(1);
@@ -29,6 +29,7 @@ const filters = ref({
     name: '',
     categoryId: null,
     status: null,
+    type: null
 });
 
 // 表单相关
@@ -65,6 +66,7 @@ const searchProduct = () => {
     pageQueryAdmin.value.name = filters.value.name;
     pageQueryAdmin.value.categoryId = filters.value.categoryId;
     pageQueryAdmin.value.status = filters.value.status;
+    pageQueryAdmin.value.type = filters.value.type;
 
     adminPageQueryProduct();
 };
@@ -180,10 +182,26 @@ const beforeProductUpload: UploadProps['beforeUpload'] = (rawFile) => {
     return true;
 }
 
+// 设置商品类型
+const setType = async (id: number, type: number) => {
+    await setProductType(id, type);
+    adminPageQueryProduct()
+}
+
+// 取消设置商品类型
+const resetType = async (id: number, type: number) => {
+    await resetProductType(id, type);
+    adminPageQueryProduct()
+}
+
 // 初始化页面数据
 onMounted(() => {
     pageQueryAdmin.value.page = page.value;
     pageQueryAdmin.value.pageSize = pageSize.value;
+    pageQueryAdmin.value.name = filters.value.name;
+    pageQueryAdmin.value.categoryId = filters.value.categoryId
+    pageQueryAdmin.value.status = filters.value.status;
+    pageQueryAdmin.value.type = filters.value.type;
 
     adminPageQueryProduct();
     getAllSubCategory();
@@ -224,6 +242,16 @@ onMounted(() => {
                         <el-option label="下架" :value="0" />
                     </el-select>
                 </el-form-item>
+
+                <!-- 类型过滤 -->
+                <el-form-item label="商品类型" style="width: 200px;">
+                    <el-select v-model="filters.type" @change="searchProduct" placeholder="请选择类型" clearable>
+                        <el-option label="轮播图商品" :value="1" />
+                        <el-option label="热门商品" :value="2" />
+                        <el-option label="新品" :value="3" />
+                    </el-select>
+                </el-form-item>
+
             </el-form>
 
             <!-- 添加商品按钮 -->
@@ -265,12 +293,67 @@ onMounted(() => {
             <el-table-column prop="price" label="价格" width="100" />
             <el-table-column prop="stock" label="库存" width="100" />
             <el-table-column prop="sales" label="销量" width="100" />
+
             <el-table-column prop="status" label="状态" width="80">
                 <template #default="scope">
                     <el-tag :type="scope.row.status === 1 ? 'success' : 'danger'">{{ scope.row.status === 1 ? '上架' :
                         '下架' }}</el-tag>
                 </template>
             </el-table-column>
+
+            <el-table-column label="商品类型" width="180">
+                <template #default="scope">
+                    <el-tooltip v-if="scope.row.isSlides" class="box-item" effect="dark" content="取消作为轮播图商品" placement="top">
+                        <el-button @click="resetType(scope.row.id, 1)" link>
+                            <svg class="type-icon" aria-hidden="true">
+                                <use xlink:href="#icon-lunbotu"></use>
+                            </svg>
+                        </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip v-else class="box-item" effect="dark" content="设置为轮播图商品" placement="top">
+                        <el-button @click="setType(scope.row.id, 1)" link>
+                            <svg class="type-icon" aria-hidden="true">
+                                <use xlink:href="#icon-lunbotu1"></use>
+                            </svg>
+                        </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip v-if="scope.row.isHot" class="box-item" effect="dark" content="取消作为热门商品" placement="top">
+                        <el-button @click="resetType(scope.row.id, 2)" link>
+                            <svg class="type-icon" aria-hidden="true">
+                                <use xlink:href="#icon-remenshangpin"></use>
+                            </svg>
+                        </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip v-else class="box-item" effect="dark" content="设置为热门商品" placement="top">
+                        <el-button @click="setType(scope.row.id, 2)" link>
+                            <svg class="type-icon" aria-hidden="true">
+                                <use xlink:href="#icon-remenshangpin1"></use>
+                            </svg>
+                        </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip v-if="scope.row.isNew" class="box-item" effect="dark" content="取消作为新商品" placement="top">
+                        <el-button @click="resetType(scope.row.id, 3)" link>
+                            <svg class="type-icon" aria-hidden="true">
+                                <use xlink:href="#icon-xinpin1"></use>
+                            </svg>
+                        </el-button>
+                    </el-tooltip>
+
+                    <el-tooltip v-else class="box-item" effect="dark" content="设置为新商品" placement="top">
+                        <el-button @click="setType(scope.row.id, 3)" link>
+                            <svg class="type-icon" aria-hidden="true">
+                                <use xlink:href="#icon-xinpin"></use>
+                            </svg>
+                        </el-button>
+                    </el-tooltip>
+
+                </template>
+            </el-table-column>
+
             <el-table-column label="操作" width="220">
                 <template #default="scope">
                     <el-button :type="scope.row.status === 1 ? 'danger' : 'success'" size="small" link
@@ -384,6 +467,18 @@ onMounted(() => {
 
 .el-table {
     margin-top: 20px;
+}
+
+.image-thumbnail {
+    border-radius: 8px;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.type-icon{
+    width: 25px;
+    height: 25px;
 }
 
 /* 分页组件样式 */

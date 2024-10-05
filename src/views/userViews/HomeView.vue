@@ -75,10 +75,9 @@ const handleClick = (category: iuserCategory, subCategory: iuserCategory) => {
 
             <el-main class="carousel-container">
                 <!-- 轮播图 -->
-                <el-carousel height="400px" :interval="5000" arrow="always">
+                <el-carousel height="600px" :interval="5000" arrow="always">
                     <el-carousel-item v-for="slide in slides" :key="slide.id">
-                        <img :src="slide.product.imageUrl" :alt="slide.product.name"
-                            style="width: 100%; height: 100%; object-fit: cover;cursor: pointer;"
+                        <img :src="slide.product.imageUrl" :alt="slide.product.name" class="carousel-img"
                             @click="goToProductDetail(slide.product.id)" />
                         <div class="carousel-text">
                             <h2>{{ slide.product.name }}</h2>
@@ -159,7 +158,7 @@ const handleClick = (category: iuserCategory, subCategory: iuserCategory) => {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: 400px;
+    height: 600px;
 }
 
 .carousel-container {
@@ -167,6 +166,14 @@ const handleClick = (category: iuserCategory, subCategory: iuserCategory) => {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.carousel-img{
+    width: 100%;
+    height: 600px;
+    object-fit: contain;
+    cursor: pointer;
+    background-color: #f5e6e6;
 }
 
 .carousel-text {
@@ -185,6 +192,7 @@ const handleClick = (category: iuserCategory, subCategory: iuserCategory) => {
     background-color: #fff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    margin: 10px;
 }
 
 .product-card:hover,
@@ -196,10 +204,9 @@ const handleClick = (category: iuserCategory, subCategory: iuserCategory) => {
 .product-image,
 .news-image {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    height: 300px;
+    object-fit: contain; /* 保持图片完整显示，并等比例缩放 */
+    background-color: #f0f0f0; /* 设置一个背景色以在图片比例不合适时填充空白部分 */
 }
 
 /* 商品价格样式 */

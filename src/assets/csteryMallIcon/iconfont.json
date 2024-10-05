@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "1418241",
+      "name": "新品",
+      "font_class": "xinpin",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "4624465",
+      "name": "轮播图",
+      "font_class": "lunbotu",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "5238124",
+      "name": "热门商品",
+      "font_class": "remenshangpin",
+      "unicode": "eaf1",
+      "unicode_decimal": 60145
+    },
+    {
+      "icon_id": "9526743",
+      "name": "新品",
+      "font_class": "xinpin1",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "34281967",
+      "name": "热门商品",
+      "font_class": "remenshangpin1",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "41123706",
+      "name": "轮播图",
+      "font_class": "lunbotu1",
+      "unicode": "e700",
+      "unicode_decimal": 59136
+    },
+    {
       "icon_id": "4194150",
       "name": "用户管理",
       "font_class": "yonghuguanli",
