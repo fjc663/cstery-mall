@@ -93,7 +93,8 @@ onMounted(() => {
             <el-table-column prop="totalAmount" label="金额" />
             <el-table-column prop="status" label="订单状态">
                 <template #default="scope">
-                    <el-tag :type="scope.row.status === 1 ? 'warning' : scope.row.status === 2 ? 'success' : 'info'">
+                    <el-tag
+                        :type="scope.row.status === 1 ? 'warning' : scope.row.status === 2 ? 'success' : scope.row.status === 3 ? 'primary' : scope.row.status === 4 ? 'danger' : 'info'">
                         {{ scope.row.status === 1 ? '待付款' : scope.row.status === 2 ? '已付款' : scope.row.status === 3 ?
                             '已发货' : scope.row.status === 4 ? '已完成' : '已取消' }}
                     </el-tag>
