@@ -5,7 +5,7 @@ import httpAdmin from "@/utils/httpAdmin";
 export function uploadAvatarAPI(data: FormData): any {
     return http({
         headers: {"Content-Type": "multipart/form-data"},
-        url: '/upload/user/avatar',
+        url: '/user/user/upload/avatar',
         method: 'Post',
         data: data
     })
@@ -17,7 +17,7 @@ export function uploadAvatarAPI(data: FormData): any {
 export function uploadCategoryAPI(data: FormData): any {
     return httpAdmin({
         headers: {"Content-Type": "multipart/form-data"},
-        url: '/upload/admin/category',
+        url: '/admin/category/upload',
         method: 'Post',
         data: data
     })
@@ -27,7 +27,7 @@ export function uploadCategoryAPI(data: FormData): any {
 export function uploadAdminAvatarAPI(data: FormData): any {
     return httpAdmin({
         headers: {"Content-Type": "multipart/form-data"},
-        url: '/upload/admin/avatar',
+        url: '/admin/user/upload/avatar',
         method: 'Post',
         data: data
     })
@@ -37,7 +37,7 @@ export function uploadAdminAvatarAPI(data: FormData): any {
 export function uploadProductAPI(data: FormData): any {
     return httpAdmin({
         headers: {"Content-Type": "multipart/form-data"},
-        url: '/upload/admin/product',
+        url: '/admin/product/upload',
         method: 'Post',
         data: data
     })

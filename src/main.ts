@@ -27,8 +27,8 @@ app.component('VueEcharts', ECharts)
 
 //注册插件
 app.use(Lazyload, {
-    loading: "http://localhost:8080/loading.gif",  //指定加载中的图像
-    error: "http://localhost:8080/err.png",  //指定加载失败的图像
+    loading: "http://localhost:8080/imgs/loading.gif",  //指定加载中的图像
+    error: "http://localhost:8080/imgs/err.png",  //指定加载失败的图像
  });
 
 const pinia = createPinia()

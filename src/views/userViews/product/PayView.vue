@@ -21,7 +21,7 @@ const showQrCode = () => {
           <div style="text-align: center; padding: 20px;">
             <img 
                 style="width: 200px; height: 200px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);" 
-                src="http://localhost:8080/pay.jpg" 
+                src="http://localhost:8080/imgs/pay.jpg" 
                 alt="二维码"/>
             <p style="margin-top: 15px; font-size: 16px; font-weight: bold; color: #333;">请使用微信扫码支付</p>
             <p style="color: #999; font-size: 14px; margin-top: 5px;">支付完成后点击确认按钮</p>

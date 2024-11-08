@@ -208,7 +208,7 @@ const fetchData = async () => {
                 <el-card>
                     <div class="stat-card">
                         <div class="stat-title">热门商品</div>
-                        <div class="stat-value">{{ report.hotProduct }}</div>
+                        <div class="stat-value">{{ report.hotProduct || '暂无'  }}</div>
                     </div>
                 </el-card>
             </el-col>
